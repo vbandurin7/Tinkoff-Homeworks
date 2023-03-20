@@ -1,9 +1,12 @@
 package ru.tinkoff.edu.java.linkParser.validators;
 
-public class StackoverflowValidator {
-    public static final String ID_REGEXP = "^[0-9]*$";
+public final class StackoverflowValidator implements Validator {
+    public static final String ID_REGEXP = "^[0-9]+$";
 
-    public boolean checkIfValid(String id) {
-        return id.matches(StackoverflowValidator.ID_REGEXP);
+    public static void validate(String id) {
+        if (!id.matches(ID_REGEXP)) {
+            throw new IllegalArgumentException("ID is incorrect, digits expected, got " + id);
+        }
     }
 }
+

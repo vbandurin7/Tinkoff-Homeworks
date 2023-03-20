@@ -10,7 +10,7 @@ public final class LinkParser {
     public ParseResult parseURL(URL url) {
         LinkParserChain linkParserChain = new LinkParserChain();
         String authority = url.getAuthority();
-        for (AbstactParser parser : linkParserChain.getParserList()) {
+        for (Parser parser : linkParserChain.getParserList()) {
             if (parser.supports(authority)) {
                 return parser.parse(url);
             }

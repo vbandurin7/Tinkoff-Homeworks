@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.linkParser.parser;
 
 import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -22,7 +23,11 @@ public abstract sealed class AbstactParser implements Parser permits GitHubParse
         }
     }
 
-    protected abstract boolean supports(String authority);
+    public boolean supports(String authority) {
+        return supportsImpl(authority);
+    }
+
+    protected abstract boolean supportsImpl(String authority);
 
     protected abstract ParseResult parseImpl(URI uri);
 }

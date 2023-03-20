@@ -10,21 +10,15 @@ import java.util.List;
 
 public class Test {
 
-    private static class Cat {
-        int age;
-       public Cat(int age) {
-            this.age = age;
-        }
-    }
-    public static void main(String[] args) throws MalformedURLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws MalformedURLException {
         LinkParser linkParser = new LinkParser();
 
-        List<String> correctTests = new ArrayList<>(List.of(
+        List<String> correctTests = List.of(
                 "https://github.com/sanyarnd/tinkoff-java-course-2022/",
                 "https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c"
-        ));
+        );
 
-        List<String> incorrectTests = new ArrayList<>(List.of(
+        List<String> incorrectTests = List.of(
                 "https://github.com/sanyarnd/tinkoff-java-co@urse-2022/",
                 "https://github.com/sanyarnd//",
                 "https://github.com/a/b/",
@@ -37,7 +31,7 @@ public class Test {
                 "https://stackoverflow.com/questions/   23412/what-is-the-operator-in-c",
                 "https://stackoverflow.com/questions/23  412/what-is-the-operator-in-c",
                 "https://stackoverflow.com/questions  /23412/what-is-the-operator-in-c"
-        ));
+        );
 
         for (String correctTest : correctTests) {
             System.out.println(linkParser.parseURL(new URL(correctTest)));
@@ -50,7 +44,6 @@ public class Test {
                 System.out.println(e.getMessage());
             }
         }
-
     }
 
 }

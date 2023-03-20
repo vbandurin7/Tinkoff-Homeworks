@@ -6,4 +6,6 @@ import java.net.URL;
 
 public sealed interface Parser permits AbstactParser {
     ParseResult parse(URL url);
+
+    boolean supports(String authority);
 }
