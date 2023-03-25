@@ -1,0 +1,8 @@
+app:
+  test: 123
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+
+

@@ -1,7 +1,7 @@
 package ru.tinkoff.edu.java.linkParser.validators;
 
 public final class StackoverflowValidator implements Validator {
-    public static final String ID_REGEXP = "^[0-9]+$";
+    private static final String ID_REGEXP = "^[0-9]+$";
 
     public static void validate(String id) {
         if (!id.matches(ID_REGEXP)) {

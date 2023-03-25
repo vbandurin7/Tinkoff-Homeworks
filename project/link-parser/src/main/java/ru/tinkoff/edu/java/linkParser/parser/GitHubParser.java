@@ -18,7 +18,7 @@ public final class GitHubParser extends AbstactParser {
     }
 
     @Override
-    protected boolean supportsImpl(String authority) {
+    public boolean supports(String authority) {
         return authority.equals("github.com");
     }
 

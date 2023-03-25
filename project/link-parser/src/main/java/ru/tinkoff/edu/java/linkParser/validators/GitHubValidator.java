@@ -1,8 +1,8 @@
 package ru.tinkoff.edu.java.linkParser.validators;
 
 public final class GitHubValidator implements Validator {
-    public static final String USERNAME_REGEXP = "^[a-zA-Z][a-zA-Z0-9_-]{1,39}$";
-    public static final String REPOSITORY_REGEXP = "^[a-zA-Z][a-zA-Z0-9_-]{1,100}$";
+    private static final String USERNAME_REGEXP = "^[a-zA-Z][a-zA-Z0-9_-]{1,39}$";
+    private static final String REPOSITORY_REGEXP = "^[a-zA-Z][a-zA-Z0-9_-]{1,100}$";
 
     public static void validate(String username, String repository) {
         if (!username.matches(USERNAME_REGEXP)) {

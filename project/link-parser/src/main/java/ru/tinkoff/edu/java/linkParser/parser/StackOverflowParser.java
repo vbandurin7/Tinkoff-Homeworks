@@ -19,7 +19,7 @@ public final class StackOverflowParser extends AbstactParser {
     }
 
     @Override
-    protected boolean supportsImpl(String authority) {
+    public boolean supports(String authority) {
         return authority.equals("stackoverflow.com");
     }
 }

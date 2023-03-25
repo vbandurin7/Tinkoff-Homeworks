@@ -23,11 +23,7 @@ public abstract sealed class AbstactParser implements Parser permits GitHubParse
         }
     }
 
-    public boolean supports(String authority) {
-        return supportsImpl(authority);
-    }
-
-    protected abstract boolean supportsImpl(String authority);
+    public abstract boolean supports(String authority);
 
     protected abstract ParseResult parseImpl(URI uri);
 }
