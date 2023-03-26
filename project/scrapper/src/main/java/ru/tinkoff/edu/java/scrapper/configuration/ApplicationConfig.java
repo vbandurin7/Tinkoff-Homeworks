@@ -13,6 +13,5 @@ import java.time.Duration;
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 @Import(ClientConfiguration.class)
 public record ApplicationConfig(@NotNull String test, Scheduler scheduler) {
-//    @Value("${app.scheduler.interval}")
-//    private static Duration schedulerInterval;
+    record Scheduler(Duration interval) {}
 }
