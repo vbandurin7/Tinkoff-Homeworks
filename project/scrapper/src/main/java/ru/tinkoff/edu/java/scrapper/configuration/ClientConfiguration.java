@@ -5,24 +5,15 @@ import org.springframework.context.annotation.Configuration;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 
+@Configuration
 public class ClientConfiguration {
 
-    @Bean(name = "GitHubClient")
-    public GitHubClient gitHubClient(String url) {
-        return new GitHubClient(url);
-    }
-
-    @Bean(name = "GitHubClient")
+    @Bean(name = "gitHubClient")
     public GitHubClient gitHubClient() {
         return new GitHubClient();
     }
 
-    @Bean(name = "GitHubClient")
-    public StackoverflowClient stackoverflowClient(String url) {
-        return new StackoverflowClient(url);
-    }
-
-    @Bean(name = "GitHubClient")
+    @Bean(name = "stackoverflowClient")
     public StackoverflowClient stackoverflowClient() {
         return new StackoverflowClient();
     }
@@ -31,4 +22,6 @@ public class ClientConfiguration {
     public long schedulerInterval(ApplicationConfig config) {
         return config.scheduler().interval().toMillis();
     }
+
+
 }

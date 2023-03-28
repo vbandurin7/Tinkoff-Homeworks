@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.controller;
 
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,21 +15,21 @@ import java.util.Arrays;
 
 
 @RestControllerAdvice
-public class AdviceController {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(TypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiErrorResponse> typeMismatchHandler(TypeMismatchException e) {
-        return commonHandler("Incorrect request parameters", HttpStatus.BAD_REQUEST, e);
+        return createError("Incorrect request parameters", HttpStatus.BAD_REQUEST, e);
     }
 
     @ExceptionHandler({ChatNotFoundException.class, LinkNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ApiErrorResponse> chatNotFoundHandler(Exception e) {
-        return commonHandler("Chat doesn't exist", HttpStatus.NOT_FOUND, e);
+        return createError("Chat doesn't exist", HttpStatus.NOT_FOUND, e);
     }
 
-    private ResponseEntity<ApiErrorResponse> commonHandler(String message, HttpStatus httpStatus, Exception e) {
+    private ResponseEntity<ApiErrorResponse> createError(String message, HttpStatus httpStatus, Exception e) {
         return new ResponseEntity<>(new ApiErrorResponse(
                 message, Integer.toString(httpStatus.value()),
                 e.getClass().getSimpleName(), e.getMessage(),

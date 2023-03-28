@@ -1,29 +1,30 @@
 package ru.tinkoff.edu.java.scrapper.client;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.GitHubResponse;
 
+import java.util.Optional;
+
 public class GitHubClient {
+    private final static String GITHUB_BASE_URL = "https://api.github.com";
     private final WebClient webClient;
 
     public GitHubClient() {
         this.webClient = WebClient.builder().
-                baseUrl("https://github.com").
+                baseUrl(GITHUB_BASE_URL).
                 build();
     }
 
     public GitHubClient(String url) {
         this.webClient = WebClient.builder()
-                .baseUrl(url == null ? "https://github.com" : url)
+                .baseUrl(url)
                 .build();
     }
 
-    public Mono<GitHubResponse> fetchRepository(String user, String repo) {
+    public Optional<GitHubResponse> fetchRepository(String user, String repo) {
         return webClient.get()
-                .uri("/{user}/{repo}", user, repo)
+                .uri("/repos/{user}/{repo}", user, repo)
                 .retrieve()
-                .bodyToMono(GitHubResponse.class);
+                .bodyToMono(GitHubResponse.class)
+                .blockOptional();
     }
 }

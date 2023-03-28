@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
-public record StackoverflowResponse(String title, @JsonProperty("last_edit_date") OffsetDateTime updatedAt) {
+public record StackoverflowResponse(@JsonProperty("title") String title, @JsonProperty("last_edit_date") OffsetDateTime lastEditDate) {
 }

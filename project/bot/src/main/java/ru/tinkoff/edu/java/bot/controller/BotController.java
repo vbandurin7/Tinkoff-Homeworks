@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ru.tinkoff.edu.java.bot.dto.LinkUpdateRequest;
-import ru.tinkoff.edu.java.bot.dto.LinkUpdateResponse;
+import ru.tinkoff.edu.java.bot.dto.request.LinkUpdateRequest;
+import ru.tinkoff.edu.java.bot.dto.response.LinkUpdateResponse;
 
 import java.util.UUID;
 
