@@ -11,9 +11,7 @@ public class StackoverflowClient {
     private final WebClient webClient;
 
     public StackoverflowClient() {
-        this.webClient = WebClient.builder().
-                baseUrl(STACKOVERFLOW_BASE_URL).
-                build();
+        this(STACKOVERFLOW_BASE_URL);
     }
 
     public StackoverflowClient(String url) {

@@ -9,9 +9,7 @@ public class GitHubClient {
     private final WebClient webClient;
 
     public GitHubClient() {
-        this.webClient = WebClient.builder().
-                baseUrl(GITHUB_BASE_URL).
-                build();
+        this(GITHUB_BASE_URL);
     }
 
     public GitHubClient(String url) {
