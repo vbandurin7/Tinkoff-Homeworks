@@ -1,5 +1,6 @@
 app:
   test: 123
+  bot-token: ${BOT_TOKEN}
 
 springdoc:
   swagger-ui:
