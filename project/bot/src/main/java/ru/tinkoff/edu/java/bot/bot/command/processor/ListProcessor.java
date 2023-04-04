@@ -1,11 +1,11 @@
 package ru.tinkoff.edu.java.bot.bot.command.processor;
 
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.bot.command.commands.Command;
-import ru.tinkoff.edu.java.bot.bot.command.processor.AbstractCommandProcessor;
 import ru.tinkoff.edu.java.bot.bot.command.validator.CommandValidatorImpl;
 import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
@@ -40,20 +40,18 @@ public final class ListProcessor extends AbstractCommandProcessor {
             return send(update, "Wrong number of arguments.");
         }
 
-        Optional<List<LinkResponse>> linkList = linkService.getLinksList();
-        if (linkList.isEmpty()) {
-            // todo
-            // тут мб какие-то ошибки будут, но обработку пока не буду добавлять, непонятно что именно может быть
-        }
-        return send(update, createMessage(new ListLinksResponse(List.of(
-                new LinkResponse(1, URI.create("test-link1")),
-                new LinkResponse(2, URI.create("test-link2"))), 2)));
+        Optional<ListLinksResponse> linkList = linkService.getLinksList();
+
+        return send(update, createMessage(linkList));
     }
 
-    private String createMessage(ListLinksResponse linkResponses) {
-        return "All tracking links are below: " + System.lineSeparator().repeat(2) +
-                linkResponses.links().stream()
-                .map(l -> l.url().toString())
+    private String createMessage(Optional<ListLinksResponse> linkResponses) {
+        if (linkResponses.isEmpty() || linkResponses.get().size() == 0) {
+            return "No links for track were added. Try <b>'/track <link>'</b>";
+        }
+        return "<b>All tracking links are below:</b> " + System.lineSeparator() +
+                linkResponses.get().links().stream()
+                .map(l -> "<i>" + l.url().toString() + "</i>")
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 }

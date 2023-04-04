@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.bot.bot.command.processor;
 
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public final class HelpProcessor extends AbstractCommandProcessor {
     @Override
     public SendMessage handle(Update update) {
         if (commandValidator.validateCommand(0, update.message().text()).isEmpty()) {
-            return send(update, "No arguments expected");
+            return send(update, "No arguments expected").parseMode(ParseMode.HTML);
         }
         return send(update, createMessage());
     }

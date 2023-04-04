@@ -2,6 +2,7 @@ package ru.tinkoff.edu.java.bot.service;
 
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
+import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ public final class LinkService {
         return Optional.empty();
     }
 
-    public Optional<List<LinkResponse>> getLinksList() {
+    public Optional<ListLinksResponse> getLinksList() {
         return Optional.empty();
     }
 }
