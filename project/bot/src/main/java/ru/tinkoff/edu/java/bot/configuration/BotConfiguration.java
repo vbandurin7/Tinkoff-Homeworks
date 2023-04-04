@@ -1,6 +1,8 @@
 package ru.tinkoff.edu.java.bot.configuration;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.BotCommand;
+import com.pengrad.telegrambot.request.SetMyCommands;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +19,9 @@ public class BotConfiguration {
     @Bean("telegramBot")
     public TelegramBot telegramBot(GlobalCommandHandler globalCommandHandler) {
         TelegramBot tgBot = new TelegramBot(applicationProperties.botToken());
-        tgBot.setUpdatesListener(new TelegramBotCommandListener(tgBot, globalCommandHandler));
+        TelegramBotCommandListener telegramBotCommandListener = new TelegramBotCommandListener(tgBot, globalCommandHandler);
+        tgBot.setUpdatesListener(telegramBotCommandListener);
+        tgBot.execute(new SetMyCommands(telegramBotCommandListener.getCommands().toArray(new BotCommand[0])));
         return tgBot;
     }
 }

@@ -26,4 +26,7 @@ public final class GlobalCommandHandler {
         return new SendMessage(update.message().chat().id(), "Unknown command. Try '/help'");
     }
 
+    public List<CommandProcessor> getCommandProcessors() {
+        return commandProcessors;
+    }
 }
