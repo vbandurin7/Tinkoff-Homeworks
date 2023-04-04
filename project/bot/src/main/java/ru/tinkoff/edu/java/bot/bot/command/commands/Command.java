@@ -1,6 +1,6 @@
-package ru.tinkoff.edu.java.bot.bot.command;
+package ru.tinkoff.edu.java.bot.bot.command.commands;
 
-public enum Commands {
+public enum Command {
     HELP("/help", "Show all commands"),
     START("/start", "Register new user"),
     TRACK("/track", "Start tracking new link by '/track <link>'"),
@@ -11,7 +11,7 @@ public enum Commands {
     private String command;
     private String description;
 
-    Commands(String command, String description) {
+    Command(String command, String description) {
         this.command = command;
         this.description = description;
     }

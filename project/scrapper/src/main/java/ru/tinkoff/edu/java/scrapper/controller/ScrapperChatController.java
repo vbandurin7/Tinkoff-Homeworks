@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.edu.java.scrapper.dto.response.DeleteChatResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.RegisterChatResponse;
 import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
 
@@ -27,10 +28,10 @@ public class ScrapperChatController {
 
     @DeleteMapping(value = "/tg-chat/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<RegisterChatResponse> deleteChat(@PathVariable("id") @NotNull Long id) {
+    public ResponseEntity<DeleteChatResponse> deleteChat(@PathVariable("id") @NotNull Long id) {
         // Если передадут неверный id, выкинет TypeMismatchException, добавим обработку в AdviceController
         // либо если чата не существует, прокинем ChatNotFoundException
-        return ResponseEntity.ok(new RegisterChatResponse("Chat with id " + id + " was deleted successfully"));
+        return ResponseEntity.ok(new DeleteChatResponse("Chat with id " + id + " was deleted successfully"));
     }
 
 

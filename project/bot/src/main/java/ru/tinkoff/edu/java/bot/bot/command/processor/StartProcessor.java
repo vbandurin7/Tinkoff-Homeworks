@@ -1,9 +1,11 @@
-package ru.tinkoff.edu.java.bot.bot.command;
+package ru.tinkoff.edu.java.bot.bot.command.processor;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.tinkoff.edu.java.bot.bot.command.commands.Command;
+import ru.tinkoff.edu.java.bot.bot.command.processor.AbstractCommandProcessor;
 import ru.tinkoff.edu.java.bot.bot.command.validator.CommandValidatorImpl;
 
 @Component
@@ -14,12 +16,12 @@ public final class StartProcessor extends AbstractCommandProcessor {
 
     @Override
     public String command() {
-        return Commands.START.getCommand();
+        return Command.START.getCommand();
     }
 
     @Override
     public String description() {
-        return Commands.START.getDescription();
+        return Command.START.getDescription();
     }
 
     @Override

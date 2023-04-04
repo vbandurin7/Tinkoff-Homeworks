@@ -5,9 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import ru.tinkoff.edu.java.bot.bot.TelegramBotCommandListener;
-import ru.tinkoff.edu.java.bot.bot.command.GlobalCommandHandler;
+import ru.tinkoff.edu.java.bot.bot.command.commandHandler.GlobalCommandHandler;
 
 @Configuration
 @EnableConfigurationProperties(ApplicationConfig.class)

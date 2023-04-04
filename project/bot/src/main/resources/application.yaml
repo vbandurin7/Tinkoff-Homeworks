@@ -1,7 +1,13 @@
 app:
   test: 123
   bot-token: ${BOT_TOKEN}
+  api:
+    scrapperBaseUrl: 'http://localhost:8080'
 
 springdoc:
   swagger-ui:
     path: /swagger-ui
+
+server:
+  port: 8081
+
