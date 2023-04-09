@@ -3,8 +3,8 @@ package ru.tinkoff.edu.java.bot.bot.command.commands;
 public enum Command {
     HELP("/help", "Show all commands"),
     START("/start", "Register new user"),
-    TRACK("/track", "Start tracking new link by '/track <link>'"),
-    UNTRACK("/untrack", "Stop tracking link by '/untrack <link>'"),
+    TRACK("/track", "Start tracking new link by '/track [link]'"),
+    UNTRACK("/untrack", "Stop tracking link by '/untrack [link]'"),
     LIST("/list", "Show all tracking links");
 
 
