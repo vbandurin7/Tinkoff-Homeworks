@@ -1,7 +1,7 @@
 package ru.tinkoff.edu.scrapper.database;
 
 import org.junit.jupiter.api.Test;
-import ru.tinkoff.edu.scrapper.utils.IntegrationEnvironment;
+import ru.tinkoff.edu.scrapper.IntegrationEnvironment;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
