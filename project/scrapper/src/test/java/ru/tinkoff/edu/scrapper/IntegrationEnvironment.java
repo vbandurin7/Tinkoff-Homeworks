@@ -6,6 +6,7 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.DirectoryResourceAccessor;
+import org.springframework.stereotype.Component;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.io.FileNotFoundException;
@@ -14,7 +15,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class IntegrationEnvironment {
-
     protected static final PostgreSQLContainer<?> POSTGRE_SQL_CONTAINER;
 
     static {

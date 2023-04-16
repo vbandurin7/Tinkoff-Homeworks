@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.tinkoff.edu.java.scrapper.dto.response.ApiErrorResponse;
+import ru.tinkoff.edu.java.scrapper.exception.ChatAlreadyExistsException;
 import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
 
@@ -27,6 +29,15 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ApiErrorResponse> chatNotFoundHandler(Exception e) {
         return createError("Chat doesn't exist", HttpStatus.NOT_FOUND, e);
+    }
+
+    @ExceptionHandler({ChatAlreadyExistsException.class})
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ApiErrorResponse> chatAlreadyExistsHandler(ChatAlreadyExistsException e) {
+        return createError("""
+                        The request could not be completed due to a conflict \
+                        with the current state of the resource: chat with id %d already exists""".formatted(e.getChatId()),
+                HttpStatus.CONFLICT, e);
     }
 
     private ResponseEntity<ApiErrorResponse> createError(String message, HttpStatus httpStatus, Exception e) {

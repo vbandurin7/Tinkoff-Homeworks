@@ -3,6 +3,12 @@ app:
   scheduler:
     interval: 5000
 
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scrapper
+    username: root
+    password: root
+
 springdoc:
   swagger-ui:
     path: /swagger-ui

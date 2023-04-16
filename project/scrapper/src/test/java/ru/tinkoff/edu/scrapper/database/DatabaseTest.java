@@ -13,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DatabaseTest extends IntegrationEnvironment {
-
     @Test
     void migrationChatTest() {
 
