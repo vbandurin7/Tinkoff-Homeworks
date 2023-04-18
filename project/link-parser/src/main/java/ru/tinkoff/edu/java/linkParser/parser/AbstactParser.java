@@ -7,15 +7,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public abstract sealed class AbstactParser implements Parser permits GitHubParser, StackOverflowParser {
-    public ParseResult parse(URL url) {
-        URI uri = initURI(url);
-        if (supports(uri.getAuthority())) {
-            return parseImpl(uri);
+    public ParseResult parse(URI url) {
+        if (supports(url.getAuthority())) {
+            return parseImpl(url);
         }
         return null;
     }
 
-    protected URI initURI(URL url) {
+    protected URI initURI(URI url) {
         try {
             return new URI(url.toString());
         } catch (URISyntaxException e) {

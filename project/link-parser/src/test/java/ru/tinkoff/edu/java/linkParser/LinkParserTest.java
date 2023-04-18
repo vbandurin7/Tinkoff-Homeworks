@@ -26,7 +26,7 @@ public class LinkParserTest {
     @ParameterizedTest
     @MethodSource("incorrectTestsProvider")
     void parseURL_invalidLinks_exceptionThrown(String link) {
-        assertThrows(RuntimeException.class, () -> linkParser.parseURL(URI.create(link).toURL()));
+        assertThrows(RuntimeException.class, () -> linkParser.parseURL(URI.create(link)));
     }
 
     @SneakyThrows
@@ -34,7 +34,7 @@ public class LinkParserTest {
     @MethodSource("gitHubLinksProvider")
     void parseURL_validGitHubLinks_GitHubResultExpected(List<String> vals) {
         //given
-        URL url = URI.create(vals.get(0)).toURL();
+        URI url = URI.create(vals.get(0));
         GitHubResult expectedResult = new GitHubResult(vals.get(1), vals.get(2));
 
         //when
@@ -49,7 +49,7 @@ public class LinkParserTest {
     @MethodSource("stackoverflowLinksProvider")
     void parseURL_validStackoverflowLinks_stackoverflowResultExpected(List<String> vals) {
         //given
-        URL url = URI.create(vals.get(0)).toURL();
+        URI url = URI.create(vals.get(0));
         StackOverflowResult expectedResult = new StackOverflowResult(vals.get(1));
 
         //when

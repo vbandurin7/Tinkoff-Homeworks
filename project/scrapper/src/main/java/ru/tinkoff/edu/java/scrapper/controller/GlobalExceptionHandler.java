@@ -31,15 +31,6 @@ public class GlobalExceptionHandler {
         return createError("Chat doesn't exist", HttpStatus.NOT_FOUND, e);
     }
 
-    @ExceptionHandler({ChatAlreadyExistsException.class})
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ResponseEntity<ApiErrorResponse> chatAlreadyExistsHandler(ChatAlreadyExistsException e) {
-        return createError("""
-                        The request could not be completed due to a conflict \
-                        with the current state of the resource: chat with id %d already exists""".formatted(e.getChatId()),
-                HttpStatus.CONFLICT, e);
-    }
-
     private ResponseEntity<ApiErrorResponse> createError(String message, HttpStatus httpStatus, Exception e) {
         return new ResponseEntity<>(new ApiErrorResponse(
                 message, Integer.toString(httpStatus.value()),

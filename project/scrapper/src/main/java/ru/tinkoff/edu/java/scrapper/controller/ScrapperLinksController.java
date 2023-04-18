@@ -23,12 +23,11 @@ import java.util.List;
 public class ScrapperLinksController {
 
     private final JdbcSubscriptionService jdbcSubscriptionService;
-    private final JdbcLinkService jdbcLinkService;
 
     @GetMapping(value = "/links", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ListLinksResponse> getLinks(@Valid @NotNull @RequestHeader("Tg-Chat-Id") Long tgChatId) {
-        List<Link> links = jdbcLinkService.findAllByChat(tgChatId);
+        List<Link> links = jdbcSubscriptionService.listAll(tgChatId);
         return ResponseEntity.ok(ListLinksResponse.create(links));
     }
 

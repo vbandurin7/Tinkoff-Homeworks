@@ -8,8 +8,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.java.scrapper.dto.response.DeleteChatResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.RegisterChatResponse;
-import ru.tinkoff.edu.java.scrapper.exception.ChatAlreadyExistsException;
-import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcChatService;
 
@@ -26,24 +24,14 @@ public class ScrapperChatController {
     @PostMapping(value = "/tg-chat/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RegisterChatResponse> registerChat(@PathVariable("id") @NotNull Long id) {
-        if (id == null) {
-            throw new ChatNotFoundException();
-        }
-        Chat chat = new Chat(id);
-        if (jdbcChatService.count(chat.getId()) != 0) {
-            throw new ChatAlreadyExistsException(id, "Chat already exists.");
-        }
-        jdbcChatService.save(chat);
+        jdbcChatService.register(new Chat(id));
         return ResponseEntity.ok(new RegisterChatResponse("Chat with id " + id + " was registered successfully"));
-
     }
 
     @DeleteMapping(value = "/tg-chat/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<DeleteChatResponse> deleteChat(@PathVariable("id") @NotNull Long id) {
-        jdbcChatService.deleteById(id); // обработать ошибки
+        jdbcChatService.unregister(id);
         return ResponseEntity.ok(new DeleteChatResponse("Chat with id " + id + " was deleted successfully"));
     }
-
-
 }

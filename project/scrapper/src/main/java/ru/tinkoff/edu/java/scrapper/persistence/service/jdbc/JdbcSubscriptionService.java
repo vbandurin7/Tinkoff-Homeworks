@@ -4,20 +4,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
-import ru.tinkoff.edu.java.scrapper.persistence.repository.SubscriptionService;
+import ru.tinkoff.edu.java.scrapper.persistence.repository.SubscriptionRepository;
+import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
 
 
 import java.net.URI;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class JdbcSubscriptionService implements SubscriptionService {
-
-    private final JdbcTemplate jdbcTemplate;
     private final JdbcLinkService jdbcLinkService;
     private final JdbcChatService jdbcChatService;
+    private final SubscriptionRepository subscriptionRepository;
 
 
     @Override
@@ -25,8 +27,10 @@ public class JdbcSubscriptionService implements SubscriptionService {
     public Link addLink(long tgChatId, URI url) {
         Link link = new Link(url);
         jdbcLinkService.save(link);
-        jdbcChatService.save(new Chat(tgChatId));
-        jdbcTemplate.update("INSERT into chat_link VALUES (?, ?)", tgChatId, link.getId());
+        jdbcChatService.register(new Chat(tgChatId));
+        if (!inRelation(tgChatId, link)) {
+            subscriptionRepository.addRelation(tgChatId, link.getUrl().toString());
+        }
         return link;
     }
 
@@ -34,23 +38,35 @@ public class JdbcSubscriptionService implements SubscriptionService {
     @Transactional
     public Link removeLink(long tgChatId, URI url) {
         Link link = jdbcLinkService.findByUrl(url.toString());
-        jdbcTemplate.update("DELETE FROM chat_link WHERE chat_id = ? AND link_id = ?", tgChatId, link.getId());
-        if (countLinkTracks(link.getId()) == 0) {
-            jdbcLinkService.deleteById(link.getId());
+        if (link == null) {
+            throw new LinkNotFoundException();
+        }
+        subscriptionRepository.deleteRelation(tgChatId, link.getUrl().toString());
+        if (countLinkTracks(link.getUrl().toString()) == 0) {
+            jdbcLinkService.delete(link.getUrl());
         }
         if (countChatTracks(tgChatId) == 0) {
-            jdbcChatService.deleteById(tgChatId);
+            jdbcChatService.unregister(tgChatId);
         }
         return link;
     }
 
-    private long countLinkTracks(Long id) {
-        Long count = jdbcTemplate.queryForObject("SELECT count(*) FROM chat_link WHERE link_id = ?", Long.class, id);
-        return count == null ? 0 : count;
+    @Override
+    public List<Link> listAll(long tgChatId) {
+        return subscriptionRepository.findAllByChat(tgChatId);
     }
 
-    private long countChatTracks(Long id) {
-        Long count = jdbcTemplate.queryForObject("SELECT count(*) FROM chat_link WHERE chat_id = ?", Long.class, id);
-        return count == null ? 0 : count;
+    private long countLinkTracks(String linkUrl) {
+        return subscriptionRepository.countLinkTracks(linkUrl);
     }
+
+    private long countChatTracks(long tgChatId) {
+        return subscriptionRepository.countChatTracks(tgChatId);
+    }
+
+    private boolean inRelation(long tgChatId, Link link) {
+        return subscriptionRepository.findAllByChat(tgChatId).contains(link);
+    }
+
+
 }

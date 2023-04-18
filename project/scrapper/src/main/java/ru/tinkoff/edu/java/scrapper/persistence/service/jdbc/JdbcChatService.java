@@ -1,44 +1,42 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service.jdbc;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
+import ru.tinkoff.edu.java.scrapper.exception.ChatAlreadyExistsException;
+import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
-import ru.tinkoff.edu.java.scrapper.persistence.repository.ChatService;
-
-import java.sql.ResultSet;
-import java.util.List;
+import ru.tinkoff.edu.java.scrapper.persistence.repository.ChatRepository;
+import ru.tinkoff.edu.java.scrapper.persistence.service.ChatService;
 
 @Service
 @RequiredArgsConstructor
 public class JdbcChatService implements ChatService {
+    private final ChatRepository chatRepository;
 
-    private final JdbcTemplate jdbcTemplate;
-    private static final RowMapper<Chat> CHAT_ROW_MAPPER = (ResultSet rs, int rownum) -> new Chat(rs.getLong("id"));
     @Override
-    public void deleteById(Long id) {
-        jdbcTemplate.update("DELETE FROM chat WHERE id = ?", id);
+    public Chat register(Chat chat) {
+        long tgChatId = chat.getId();
+        validateId(tgChatId);
+        if (count(tgChatId) != 0) {
+            return chat;
+        }
+        return chatRepository.save(chat);
     }
 
     @Override
-    public List<Chat> findAll() {
-        return jdbcTemplate.query("SELECT * FROM chat", CHAT_ROW_MAPPER);
+    public void unregister(Long tgChatId) {
+        validateId(tgChatId);
+        chatRepository.deleteById(tgChatId);
     }
 
     @Override
-    public long count(Long id) {
-        Long count = jdbcTemplate.queryForObject("SELECT count(*) FROM chat WHERE id = ?", Long.class, id);
-        return count == null ? 0 : count;
+    public long count(Long tgChatId) {
+        return chatRepository.count(tgChatId);
     }
 
-    @Override
-    public Chat findById(Long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM chat WHERE id = ?", CHAT_ROW_MAPPER, id);
-    }
-
-    @Override
-    public void save(Chat entity) {
-        jdbcTemplate.update("INSERT INTO chat VALUES (?)", entity.getId());
+    private void validateId(Long tgChatId) {
+        if (tgChatId == null || tgChatId < 0 || !tgChatId.toString().matches("^[0-9]{1,10}$")) {
+            throw new ChatNotFoundException();
+        }
     }
 }

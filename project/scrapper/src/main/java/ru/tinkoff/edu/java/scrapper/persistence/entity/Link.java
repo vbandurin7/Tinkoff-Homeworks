@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 
 import java.net.URI;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -21,5 +22,15 @@ public class Link {
     @Id
     private Long id;
     URI url;
-    Timestamp updated_at;
+    Timestamp lastCheckedAt;
+    Timestamp updatedAt;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Link ex) {
+            return Objects.equals(ex.getClass(), getClass())
+                    && Objects.equals(ex.getUrl(), url);
+        }
+        return false;
+    }
 }

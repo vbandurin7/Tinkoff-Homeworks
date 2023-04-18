@@ -10,7 +10,6 @@ import javax.sql.DataSource;
 @Configuration
 @Import(ClientConfiguration.class)
 public class ApplicationConfiguration {
-
     @Bean
     JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);

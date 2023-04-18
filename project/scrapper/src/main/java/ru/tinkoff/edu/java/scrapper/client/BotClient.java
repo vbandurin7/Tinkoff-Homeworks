@@ -2,9 +2,11 @@ package ru.tinkoff.edu.java.scrapper.client;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.LinkUpdateResponse;
 
+@Component
 @RequiredArgsConstructor
 public class BotClient {
     private final static String BOT_BASE_URL = "http://localhost:8081";
