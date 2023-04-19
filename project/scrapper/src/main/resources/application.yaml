@@ -2,6 +2,7 @@ app:
   test: 123
   scheduler:
     interval: 5000
+  check-interval: 300000
 
 spring:
   datasource:

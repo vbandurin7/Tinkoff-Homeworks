@@ -1,17 +1,18 @@
-package ru.tinkoff.edu.java.scrapper.persistence.repository;
+package ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.repository.ChatRepository;
 
 import java.sql.ResultSet;
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class ChatRepositoryImpl implements ChatRepository{
+public class JdbcChatRepository implements ChatRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -32,7 +33,7 @@ public class ChatRepositoryImpl implements ChatRepository{
     }
 
     @Override
-    public long count(Long id) {
+    public long countById(Long id) {
         Long count = jdbcTemplate.queryForObject(COUNT_SQL, Long.class, id);
         return count == null ? 0 : count;
     }

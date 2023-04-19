@@ -1,9 +1,11 @@
 package ru.tinkoff.edu.java.scrapper.client;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import ru.tinkoff.edu.java.scrapper.dto.request.LinkUpdateRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.LinkUpdateResponse;
 
 @Component
@@ -22,9 +24,11 @@ public class BotClient {
                 .build();
     }
 
-    public ResponseEntity<LinkUpdateResponse> postUpdate(long id) {
+    public ResponseEntity<LinkUpdateResponse> postUpdate(LinkUpdateRequest linkUpdateRequest) {
         return webClient.post()
                 .uri("/updates")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(linkUpdateRequest)
                 .retrieve()
                 .toEntity(LinkUpdateResponse.class)
                 .block();

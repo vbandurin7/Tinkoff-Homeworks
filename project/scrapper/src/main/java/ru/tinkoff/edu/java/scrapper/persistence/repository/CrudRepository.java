@@ -1,7 +1,5 @@
 package ru.tinkoff.edu.java.scrapper.persistence.repository;
 
-import org.springframework.stereotype.Component;
-
 public interface CrudRepository<T, ID> {
 
     void deleteById(ID id);
@@ -12,5 +10,5 @@ public interface CrudRepository<T, ID> {
 
     T save(T entity);
 
-    long count(ID id);
+    long countById(ID id);
 }

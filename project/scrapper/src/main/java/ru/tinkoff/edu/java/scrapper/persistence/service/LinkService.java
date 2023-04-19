@@ -12,4 +12,6 @@ public interface LinkService {
     void updateTime(Link link);
     List<Link> findAll();
     long count(String url);
+
+    List<Link> findUnchecked();
 }

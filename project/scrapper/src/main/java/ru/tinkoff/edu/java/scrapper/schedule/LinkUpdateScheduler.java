@@ -9,8 +9,6 @@ import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 
 @Slf4j
@@ -22,12 +20,11 @@ public class LinkUpdateScheduler {
 
     @Scheduled(fixedDelayString = "#{schedulerInterval}")
     public void update() {
-        List<Link> links = linkService.findAll();
-        links.stream().filter(link -> Timestamp.from(Instant.now()).getTime() - link.getLastCheckedAt().getTime() >= 300000)
-                .forEach(link -> {
-                    ParseResult parseResult = LinkParser.parseURL(link.getUrl());
-                    updateHandler.handleUpdate(link, parseResult);
-                });
+        List<Link> links = linkService.findUnchecked();
+        links.forEach(link -> {
+            ParseResult parseResult = LinkParser.parseURL(link.getUrl());
+            updateHandler.handleUpdate(link, parseResult);
+        });
     }
 }
 

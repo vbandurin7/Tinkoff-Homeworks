@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.persistence.repository;
 
+import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
 
 import java.util.List;
@@ -9,7 +10,10 @@ public interface SubscriptionRepository {
     void deleteRelation(long tgChatId, String linkUrl);
     List<Link> findAllByChat(long tgChatId);
 
+    List<Chat> findChatsByLink(String url);
+
     long countLinkTracks(String linkUrl);
 
     long countChatTracks(Long id);
+
 }

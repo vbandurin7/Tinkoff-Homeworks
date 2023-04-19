@@ -13,10 +13,11 @@ public interface LinkRepository extends CrudRepository<Link, Long> {
 
     void deleteByUrl(String url);
 
+    List<Link> findUncheckedLinks();
+
     List<Link> findAll();
 
     void updateTime(Link link);
 
     long countByUrl(String url);
-
 }

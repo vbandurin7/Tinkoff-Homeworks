@@ -23,11 +23,4 @@ public class ClientConfiguration {
     public BotClient botClient() {
         return new BotClient();
     }
-
-    @Bean
-    public long schedulerInterval(ApplicationProperties config) {
-        return config.scheduler().interval().toMillis();
-    }
-
-
 }

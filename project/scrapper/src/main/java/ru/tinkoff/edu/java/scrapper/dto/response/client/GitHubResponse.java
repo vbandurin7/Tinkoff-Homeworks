@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
-public record GitHubResponse(@JsonProperty("full_name") String fullName, @JsonProperty("updated_at") OffsetDateTime updatedAt) implements ClientResponse {
+public record GitHubResponse(@JsonProperty("full_name") String fullName, @JsonProperty("pushed_at") OffsetDateTime updatedAt) implements ClientResponse {
 }

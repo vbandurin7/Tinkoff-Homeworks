@@ -1,19 +1,20 @@
 package ru.tinkoff.edu.scrapper.persistence.service;
 
+import lombok.SneakyThrows;
+import org.jooq.tools.jdbc.SingleConnectionDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
-import ru.tinkoff.edu.java.scrapper.exception.ChatAlreadyExistsException;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
-import ru.tinkoff.edu.java.scrapper.persistence.repository.ChatRepositoryImpl;
+import ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc.JdbcChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcChatService;
 import ru.tinkoff.edu.scrapper.IntegrationEnvironment;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestProvider.*;
+import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvider.*;
 
 public class JdbcChatServiceTest extends IntegrationEnvironment {
 
@@ -21,14 +22,11 @@ public class JdbcChatServiceTest extends IntegrationEnvironment {
     static JdbcChatService jdbcChatService;
     static JdbcTemplate jdbcTemplate;
 
+    @SneakyThrows
     @BeforeAll
     public static void init() {
-        jdbcTemplate = new JdbcTemplate(DataSourceBuilder.create()
-                .url(POSTGRE_SQL_CONTAINER.getJdbcUrl())
-                .username(POSTGRE_SQL_CONTAINER.getUsername())
-                .password(POSTGRE_SQL_CONTAINER.getPassword())
-                .build());
-        jdbcChatService = new JdbcChatService(new ChatRepositoryImpl(jdbcTemplate));
+        jdbcTemplate = new JdbcTemplate(new SingleConnectionDataSource(POSTGRE_SQL_CONTAINER.createConnection("")));
+        jdbcChatService = new JdbcChatService(new JdbcChatRepository(jdbcTemplate));
     }
 
     @AfterEach
