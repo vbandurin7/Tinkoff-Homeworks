@@ -12,6 +12,8 @@ import ru.tinkoff.edu.java.scrapper.persistence.repository.SubscriptionRepositor
 
 import java.net.URI;
 import java.sql.ResultSet;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
@@ -32,10 +34,11 @@ public class JdbcSubscriptionRepository implements SubscriptionRepository {
     private static final RowMapper<Link> LINK_ROW_MAPPER = (ResultSet rs, int rownum) ->
     {
         try {
-            return new Link(rs.getLong("id"), URI.create(rs.getString("url")),
+            return new Link(rs.getLong("id"),
+                    URI.create(rs.getString("url")),
                     new ObjectMapper().readValue(rs.getString("link_info"), HashMap.class),
-                    rs.getTimestamp("last_checked_at").toLocalDateTime().atOffset(ZoneOffset.UTC),
-                    rs.getTimestamp("updated_at").toLocalDateTime().atOffset(ZoneOffset.UTC));
+                    OffsetDateTime.ofInstant(rs.getTimestamp("last_checked_at").toInstant(), ZoneId.of("UTC")),
+                    OffsetDateTime.ofInstant(rs.getTimestamp("updated_at").toInstant(), ZoneId.of("UTC")));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

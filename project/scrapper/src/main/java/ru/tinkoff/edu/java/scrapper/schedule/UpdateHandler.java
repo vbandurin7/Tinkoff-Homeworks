@@ -45,7 +45,7 @@ public class UpdateHandler {
                 subscriptionService.chatList(link.getUrl().toString()).stream().map(Chat::getId).toList()));
     }
 
-    private  <T> void updateLink(Optional<T> response, Function<T, OffsetDateTime> f, Link link) {
+    private <T> void updateLink(Optional<T> response, Function<T, OffsetDateTime> f, Link link) {
         if (response.isPresent()) {
             link.setUpdatedAt(f.apply(response.get()));
             link.setLastCheckedAt(OffsetDateTime.now());

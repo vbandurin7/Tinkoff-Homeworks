@@ -18,15 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 
 @Repository
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class JdbcLinkRepository implements LinkRepository {
     private final JdbcTemplate jdbcTemplate;
     private final long checkInterval;
-
-    public JdbcLinkRepository(JdbcTemplate jdbcTemplate, long checkInterval) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.checkInterval = checkInterval;
-    }
 
     private final static String DELETE_BY_URL_SQL = "DELETE FROM link WHERE url = ?";
     private final static String DELETE_BY_ID_SQL = "DELETE FROM link WHERE id = ?";
@@ -35,7 +30,7 @@ public class JdbcLinkRepository implements LinkRepository {
     private final static String FIND_BY_URL = "SELECT * FROM link WHERE url = ?";
     private final static String COUNT_SQL = "SELECT count(*) FROM link WHERE id = ?";
     private final static String COUNT_BY_URL_SQL = "SELECT count(*) FROM link WHERE url = ?";
-    private final static String SAVE_SQL = "INSERT INTO link (url, link_info) VALUES (?, ?::jsonb) RETURNING id";
+    private final static String SAVE_SQL = "INSERT INTO link (url, link_info, last_checked_at, updated_at) VALUES (?, ?::jsonb, now(), ?) RETURNING id";
     private final static String UPDATE_TIME_SQL = "UPDATE link SET updated_at = ?, last_checked_at = ? WHERE url = ?";
     private static final RowMapper<Link> LINK_ROW_MAPPER = (ResultSet rs, int rownum) ->
     {
@@ -44,7 +39,7 @@ public class JdbcLinkRepository implements LinkRepository {
                     URI.create(rs.getString("url")),
                     new ObjectMapper().readValue(rs.getString("link_info"), HashMap.class),
                     OffsetDateTime.ofInstant(rs.getTimestamp("last_checked_at").toInstant(), ZoneId.of("UTC")),
-                    (OffsetDateTime.ofInstant(rs.getTimestamp("updated_at").toInstant(), ZoneId.of("UTC"))));
+                    OffsetDateTime.ofInstant(rs.getTimestamp("updated_at").toInstant(), ZoneId.of("UTC")));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -100,9 +95,8 @@ public class JdbcLinkRepository implements LinkRepository {
     @Override
     public Link save(Link entity) {
         Long id = jdbcTemplate.queryForObject(SAVE_SQL,
-                Long.class, entity.getUrl().toString(), new JSONObject(entity.getLinkInfo()).toString());
+                Long.class, entity.getUrl().toString(), new JSONObject(entity.getLinkInfo()).toString(), entity.getUpdatedAt());
         entity.setId(id);
         return entity;
     }
-
 }

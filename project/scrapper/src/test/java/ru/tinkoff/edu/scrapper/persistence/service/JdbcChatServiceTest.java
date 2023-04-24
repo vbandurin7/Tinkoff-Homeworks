@@ -5,28 +5,27 @@ import org.jooq.tools.jdbc.SingleConnectionDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
-import ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc.JdbcChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcChatService;
 import ru.tinkoff.edu.scrapper.IntegrationEnvironment;
+import ru.tinkoff.edu.scrapper.configuration.TestConfig;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvider.*;
 
+@SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
 public class JdbcChatServiceTest extends IntegrationEnvironment {
 
     private static final Chat TEST_CHAT = new Chat(1);
-    static JdbcChatService jdbcChatService;
-    static JdbcTemplate jdbcTemplate;
 
-    @SneakyThrows
-    @BeforeAll
-    public static void init() {
-        jdbcTemplate = new JdbcTemplate(new SingleConnectionDataSource(POSTGRE_SQL_CONTAINER.createConnection("")));
-        jdbcChatService = new JdbcChatService(new JdbcChatRepository(jdbcTemplate));
-    }
-
+    @Autowired
+    private JdbcChatService jdbcChatService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     @AfterEach
     public void clearDB() {
         jdbcTemplate.update(CLEAR_CHAT_SQL);
