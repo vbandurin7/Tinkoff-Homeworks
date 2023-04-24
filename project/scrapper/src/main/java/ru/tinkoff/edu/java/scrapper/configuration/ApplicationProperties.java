@@ -9,7 +9,6 @@ import java.time.Duration;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-@Import(ClientConfiguration.class)
-public record ApplicationProperties(@NotNull String test, Scheduler scheduler, @NotNull Long checkInterval) {
+public record ApplicationProperties(@NotNull String test, Scheduler scheduler, @NotNull Duration checkInterval) {
     record Scheduler(Duration interval) {}
 }

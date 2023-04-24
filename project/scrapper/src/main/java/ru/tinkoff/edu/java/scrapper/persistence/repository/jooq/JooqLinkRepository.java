@@ -65,7 +65,7 @@ public class JooqLinkRepository implements LinkRepository {
     @Override
     public List<Link> findUncheckedLinks() {
         return findAll().stream().filter(link ->
-                Timestamp.from(Instant.now()).getTime() - link.getLastCheckedAt().getTime() > checkInterval).toList();
+                OffsetDateTime.now().toEpochSecond() - link.getLastCheckedAt().toEpochSecond() > checkInterval).toList();
     }
 
     @Override

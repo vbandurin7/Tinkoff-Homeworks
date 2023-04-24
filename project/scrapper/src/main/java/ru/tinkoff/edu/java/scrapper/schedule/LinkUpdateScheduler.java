@@ -24,6 +24,7 @@ public class LinkUpdateScheduler {
         links.forEach(link -> {
             ParseResult parseResult = LinkParser.parseURL(link.getUrl());
             updateHandler.handleUpdate(link, parseResult);
+            linkService.updateTime(link);
         });
     }
 }

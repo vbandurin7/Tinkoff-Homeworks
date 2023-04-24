@@ -9,11 +9,16 @@ import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.StackoverflowResponse;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.LinkRepository;
+import ru.tinkoff.edu.java.scrapper.schedule.utils.SchedulerUtils;
 
 import java.net.URI;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
+
 
 public abstract class AbstractLinkService implements LinkService {
     protected LinkRepository linkRepository;
@@ -35,6 +40,7 @@ public abstract class AbstractLinkService implements LinkService {
             }
         }
     }
+
     @Override
     public void delete(URI url) {
         linkRepository.deleteByUrl(url.toString());
@@ -48,6 +54,7 @@ public abstract class AbstractLinkService implements LinkService {
             return null;
         }
     }
+
     @Override
     public void updateTime(Link link) {
         linkRepository.updateTime(link);

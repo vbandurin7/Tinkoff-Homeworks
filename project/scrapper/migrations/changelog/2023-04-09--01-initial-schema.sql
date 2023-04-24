@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS link
     id              BIGSERIAL PRIMARY KEY,
     url             VARCHAR(2048) NOT NULL UNIQUE,
     link_info       jsonb NOT NULL,
-    last_checked_at timestamp with time zone DEFAULT (now() at time zone 'utc'),
+    last_checked_at timestamp with time zone,
     updated_at      timestamp with time zone
 );
 

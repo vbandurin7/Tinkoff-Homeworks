@@ -12,6 +12,7 @@ import ru.tinkoff.edu.java.scrapper.persistence.repository.SubscriptionRepositor
 
 import java.net.URI;
 import java.sql.ResultSet;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +34,8 @@ public class JdbcSubscriptionRepository implements SubscriptionRepository {
         try {
             return new Link(rs.getLong("id"), URI.create(rs.getString("url")),
                     new ObjectMapper().readValue(rs.getString("link_info"), HashMap.class),
-                    rs.getTimestamp("last_checked_at"), rs.getTimestamp("updated_at"));
+                    rs.getTimestamp("last_checked_at").toLocalDateTime().atOffset(ZoneOffset.UTC),
+                    rs.getTimestamp("updated_at").toLocalDateTime().atOffset(ZoneOffset.UTC));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

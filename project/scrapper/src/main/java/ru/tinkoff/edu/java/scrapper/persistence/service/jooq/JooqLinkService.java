@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jooq.JooqLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.AbstractLinkService;
+import ru.tinkoff.edu.java.scrapper.schedule.UpdateHandler;
 
 @Service
 public class JooqLinkService extends AbstractLinkService {

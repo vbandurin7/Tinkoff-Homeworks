@@ -16,8 +16,6 @@ import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.Optional;
@@ -28,7 +26,6 @@ import static ru.tinkoff.edu.java.scrapper.schedule.utils.SchedulerUtils.*;
 @Component
 @RequiredArgsConstructor
 public class UpdateHandler {
-    private final LinkService linkService;
     private final SubscriptionService subscriptionService;
     private final GitHubClient gitHubClient;
     private final StackoverflowClient stackoverflowClient;
@@ -47,12 +44,11 @@ public class UpdateHandler {
         botClient.postUpdate(new LinkUpdateRequest(link.getId(), link.getUrl().toString(), description,
                 subscriptionService.chatList(link.getUrl().toString()).stream().map(Chat::getId).toList()));
     }
-    private <T> void updateLink(Optional<T> response, Function<T, OffsetDateTime> f, Link link) {
-        if (response.isPresent() &&
-                !Objects.equals(f.apply(response.get()), timestampToOffset(linkService, link))) {
-            link.setUpdatedAt(Timestamp.from(f.apply(response.get()).toInstant()));
-            link.setLastCheckedAt(Timestamp.from(Instant.now()));
-            linkService.updateTime(link);
+
+    private  <T> void updateLink(Optional<T> response, Function<T, OffsetDateTime> f, Link link) {
+        if (response.isPresent()) {
+            link.setUpdatedAt(f.apply(response.get()));
+            link.setLastCheckedAt(OffsetDateTime.now());
         }
     }
 }

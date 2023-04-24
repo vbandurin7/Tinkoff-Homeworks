@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.AbstractLinkService;
+import ru.tinkoff.edu.java.scrapper.schedule.UpdateHandler;
 
 
 @Service
@@ -14,5 +15,4 @@ public class JdbcLinkService extends AbstractLinkService {
         this.linkRepository = linkRepository;
         this.stackoverflowClient = stackoverflowClient;
     }
-
 }

@@ -12,20 +12,27 @@ import ru.tinkoff.edu.java.scrapper.persistence.repository.LinkRepository;
 
 import java.net.URI;
 import java.sql.ResultSet;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class JdbcLinkRepository implements LinkRepository {
     private final JdbcTemplate jdbcTemplate;
     private final long checkInterval;
+
+    public JdbcLinkRepository(JdbcTemplate jdbcTemplate, long checkInterval) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.checkInterval = checkInterval;
+    }
+
     private final static String DELETE_BY_URL_SQL = "DELETE FROM link WHERE url = ?";
     private final static String DELETE_BY_ID_SQL = "DELETE FROM link WHERE id = ?";
     private final static String FIND_ALL_SQL = "SELECT * FROM link";
     private final static String FIND_BY_ID = "SELECT * FROM link WHERE id = ?";
     private final static String FIND_BY_URL = "SELECT * FROM link WHERE url = ?";
-    private static final String FIND_UNCHECKED_LINKS_SQL = "SELECT * FROM link WHERE now() - last_checked_at >= ?";
     private final static String COUNT_SQL = "SELECT count(*) FROM link WHERE id = ?";
     private final static String COUNT_BY_URL_SQL = "SELECT count(*) FROM link WHERE url = ?";
     private final static String SAVE_SQL = "INSERT INTO link (url, link_info) VALUES (?, ?::jsonb) RETURNING id";
@@ -36,8 +43,8 @@ public class JdbcLinkRepository implements LinkRepository {
             return new Link(rs.getLong("id"),
                     URI.create(rs.getString("url")),
                     new ObjectMapper().readValue(rs.getString("link_info"), HashMap.class),
-                    rs.getTimestamp("last_checked_at"),
-                    rs.getTimestamp("updated_at"));
+                    OffsetDateTime.ofInstant(rs.getTimestamp("last_checked_at").toInstant(), ZoneId.of("UTC")),
+                    (OffsetDateTime.ofInstant(rs.getTimestamp("updated_at").toInstant(), ZoneId.of("UTC"))));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -75,7 +82,7 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public List<Link> findUncheckedLinks() {
-        return jdbcTemplate.query(FIND_UNCHECKED_LINKS_SQL, LINK_ROW_MAPPER, checkInterval);
+        return findAll().stream().filter(link -> OffsetDateTime.now().toEpochSecond() - link.getLastCheckedAt().toEpochSecond() > checkInterval).toList();
     }
 
     @Override
