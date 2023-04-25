@@ -1,6 +1,3 @@
-#spring:
-#  liquibase:
-#    enabled: false
 app:
   test: 123
   scheduler:

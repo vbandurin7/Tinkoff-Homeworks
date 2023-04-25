@@ -28,11 +28,6 @@ public class JdbcChatRepository implements ChatRepository {
     }
 
     @Override
-    public List<Chat> findAll() {
-        return jdbcTemplate.query(FIND_ALL_SQL, CHAT_ROW_MAPPER);
-    }
-
-    @Override
     public long countById(Long id) {
         Long count = jdbcTemplate.queryForObject(COUNT_SQL, Long.class, id);
         return count == null ? 0 : count;

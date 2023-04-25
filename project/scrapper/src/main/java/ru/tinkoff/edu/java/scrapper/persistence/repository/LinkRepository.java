@@ -15,8 +15,6 @@ public interface LinkRepository extends CrudRepository<Link, Long> {
 
     List<Link> findUncheckedLinks();
 
-    List<Link> findAll();
-
     void updateTime(Link link);
 
     long countByUrl(String url);

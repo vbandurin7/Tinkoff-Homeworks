@@ -70,11 +70,6 @@ public abstract class AbstractLinkService implements LinkService {
     }
 
     @Override
-    public List<Link> findAll() {
-        return linkRepository.findAll();
-    }
-
-    @Override
     public List<Link> findUnchecked() {
         return linkRepository.findUncheckedLinks();
     }

@@ -10,8 +10,6 @@ public interface LinkService {
     void delete(String url);
     Link findByUrl(String url);
     void updateTime(Link link);
-    List<Link> findAll();
     long count(String url);
-
     List<Link> findUnchecked();
 }
