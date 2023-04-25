@@ -34,20 +34,8 @@ public class JooqLinkRepository implements LinkRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-        dslContext.deleteFrom(LINK).where(LINK.ID.eq(id)).execute();
-    }
-
-    @Override
     public long countById(Long id) {
         return dslContext.selectCount().from(LINK).where(LINK.ID.eq(id)).fetchOne().value1();
-    }
-
-    @Override
-    public Link findById(Long id) {
-        var res = dslContext.select(LINK.fields()).from(LINK).
-                where(LINK.ID.eq(id)).limit(1).fetchInto(Link.class);
-        return res.size() == 0 ? null : res.get(0);
     }
 
     @Override
@@ -64,13 +52,8 @@ public class JooqLinkRepository implements LinkRepository {
 
     @Override
     public List<Link> findUncheckedLinks() {
-        return findAll().stream().filter(link ->
+        return dslContext.select(LINK.fields()).from(LINK).fetchInto(Link.class).stream().filter(link ->
                 OffsetDateTime.now().toEpochSecond() - link.getLastCheckedAt().toEpochSecond() > checkInterval).toList();
-    }
-
-    @Override
-    public List<Link> findAll() {
-        return dslContext.select(LINK.fields()).from(LINK).fetchInto(Link.class);
     }
 
     @Override

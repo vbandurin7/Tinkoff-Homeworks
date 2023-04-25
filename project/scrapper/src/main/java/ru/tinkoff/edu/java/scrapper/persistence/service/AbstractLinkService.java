@@ -33,7 +33,7 @@ public abstract class AbstractLinkService implements LinkService {
     @Override
     public void save(Link link) {
         if (count(link.getUrl().toString()) == 0) {
-            ParseResult parseResult = LinkParser.parseURL(link.getUrl());
+            ParseResult parseResult = LinkParser.parseURL(URI.create(link.getUrl()));
             if (parseResult instanceof GitHubResult pr) {
                 link.setLinkInfo(Map.of("username", pr.name(), "repository", pr.repository()));
                 Optional<GitHubResponse> gitHubResponse = gitHubClient.fetchRepository(pr.name(), pr.repository());
@@ -53,8 +53,8 @@ public abstract class AbstractLinkService implements LinkService {
     }
 
     @Override
-    public void delete(URI url) {
-        linkRepository.deleteByUrl(url.toString());
+    public void delete(String url) {
+        linkRepository.deleteByUrl(url);
     }
 
     @Override
@@ -69,11 +69,6 @@ public abstract class AbstractLinkService implements LinkService {
     @Override
     public void updateTime(Link link) {
         linkRepository.updateTime(link);
-    }
-
-    @Override
-    public List<Link> findAll() {
-        return linkRepository.findAll();
     }
 
     @Override

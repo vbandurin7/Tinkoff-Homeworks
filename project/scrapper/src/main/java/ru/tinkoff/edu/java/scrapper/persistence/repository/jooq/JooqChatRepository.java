@@ -21,11 +21,6 @@ public class JooqChatRepository implements ChatRepository {
     }
 
     @Override
-    public List<Chat> findAll() {
-        return dslContext.select(CHAT.fields()).from(CHAT).fetchInto(Chat.class);
-    }
-
-    @Override
     public Chat findById(Long id) {
         var res = dslContext.select(CHAT.fields()).from(CHAT).
                 where(CHAT.ID.eq(id)).limit(1).fetchInto(Chat.class);

@@ -13,6 +13,6 @@ public class SchedulerConfiguration {
 
     @Bean("checkInterval")
     public long checkInterval(ApplicationProperties properties) {
-        return properties.checkInterval().toSeconds();
+        return properties.checkInterval().toMillis();
     }
 }

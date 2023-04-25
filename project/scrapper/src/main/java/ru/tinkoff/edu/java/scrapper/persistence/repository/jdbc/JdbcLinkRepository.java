@@ -25,8 +25,7 @@ public class JdbcLinkRepository implements LinkRepository {
 
     private final static String DELETE_BY_URL_SQL = "DELETE FROM link WHERE url = ?";
     private final static String DELETE_BY_ID_SQL = "DELETE FROM link WHERE id = ?";
-    private final static String FIND_ALL_SQL = "SELECT * FROM link";
-    private final static String FIND_BY_ID = "SELECT * FROM link WHERE id = ?";
+    private final static String FIND_UNCHECKED_SQL = "SELECT * FROM link WHERE now() - last_checked_at > INTERVAL '%d seconds'";
     private final static String FIND_BY_URL = "SELECT * FROM link WHERE url = ?";
     private final static String COUNT_SQL = "SELECT count(*) FROM link WHERE id = ?";
     private final static String COUNT_BY_URL_SQL = "SELECT count(*) FROM link WHERE url = ?";
@@ -36,7 +35,7 @@ public class JdbcLinkRepository implements LinkRepository {
     {
         try {
             return new Link(rs.getLong("id"),
-                    URI.create(rs.getString("url")),
+                    rs.getString("url"),
                     new ObjectMapper().readValue(rs.getString("link_info"), HashMap.class),
                     OffsetDateTime.ofInstant(rs.getTimestamp("last_checked_at").toInstant(), ZoneId.of("UTC")),
                     OffsetDateTime.ofInstant(rs.getTimestamp("updated_at").toInstant(), ZoneId.of("UTC")));
@@ -51,23 +50,8 @@ public class JdbcLinkRepository implements LinkRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-        jdbcTemplate.update(DELETE_BY_ID_SQL, id);
-    }
-
-    @Override
-    public List<Link> findAll() {
-        return jdbcTemplate.query(FIND_ALL_SQL, LINK_ROW_MAPPER);
-    }
-
-    @Override
     public void updateTime(Link link) {
         jdbcTemplate.update(UPDATE_TIME_SQL, link.getUpdatedAt(), link.getLastCheckedAt(), link.getUrl().toString());
-    }
-
-    @Override
-    public Link findById(Long id) {
-        return jdbcTemplate.queryForObject(FIND_BY_ID, LINK_ROW_MAPPER, id);
     }
 
     @Override
@@ -77,7 +61,7 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public List<Link> findUncheckedLinks() {
-        return findAll().stream().filter(link -> OffsetDateTime.now().toEpochSecond() - link.getLastCheckedAt().toEpochSecond() > checkInterval).toList();
+        return jdbcTemplate.query(FIND_UNCHECKED_SQL.formatted(checkInterval), LINK_ROW_MAPPER);
     }
 
     @Override

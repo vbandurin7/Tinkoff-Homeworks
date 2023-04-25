@@ -17,25 +17,25 @@ public abstract class AbstractSubscriptionService implements SubscriptionService
 
     @Override
     @Transactional
-    public Link addLink(long tgChatId, URI url) {
+    public Link addLink(long tgChatId, String url) {
         Link link = new Link(url);
         jdbcLinkService.save(link);
         jdbcChatService.register(new Chat(tgChatId));
         if (!inRelation(tgChatId, link)) {
-            subscriptionRepository.addRelation(tgChatId, link.getUrl().toString());
+            subscriptionRepository.addRelation(tgChatId, link.getUrl());
         }
         return link;
     }
 
     @Override
     @Transactional
-    public Link removeLink(long tgChatId, URI url) {
-        Link link = jdbcLinkService.findByUrl(url.toString());
+    public Link removeLink(long tgChatId, String url) {
+        Link link = jdbcLinkService.findByUrl(url);
         if (link == null) {
             throw new LinkNotFoundException();
         }
-        subscriptionRepository.deleteRelation(tgChatId, link.getUrl().toString());
-        if (countLinkTracks(link.getUrl().toString()) == 0) {
+        subscriptionRepository.deleteRelation(tgChatId, link.getUrl());
+        if (countLinkTracks(link.getUrl()) == 0) {
             jdbcLinkService.delete(link.getUrl());
         }
         if (countChatTracks(tgChatId) == 0) {

@@ -35,15 +35,15 @@ public class ScrapperLinksController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") @NotNull Long id,
                                                 @RequestBody @NotNull AddLinkRequest addLinkRequest) {
-        Link link = subscriptionService.addLink(id, URI.create(addLinkRequest.uri()));
-        return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUrl()));
+        Link link = subscriptionService.addLink(id, addLinkRequest.uri());
+        return ResponseEntity.ok(new LinkResponse(link.getId(), URI.create(link.getUrl())));
     }
 
     @DeleteMapping(value = "/links", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<LinkResponse> deleteLink(@RequestHeader("Tg-Chat-Id") @NotNull Long id,
                                                    @RequestBody @NotNull RemoveLinkRequest removeLinkRequest) {
-        Link link = subscriptionService.removeLink(id, URI.create(removeLinkRequest.link()));
-        return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUrl()));
+        Link link = subscriptionService.removeLink(id, removeLinkRequest.link());
+        return ResponseEntity.ok(new LinkResponse(link.getId(), URI.create(link.getUrl())));
     }
 }
