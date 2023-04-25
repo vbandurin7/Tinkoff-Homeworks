@@ -13,7 +13,6 @@ import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.scrapper.JdbcRepositoryTestEnvironment;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;
 
-import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -36,7 +35,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void save_linkDoesNotExist_linkAddedSuccessfully() {
         //given
-        Link link = new Link(URI.create(TEST_URL));
+        Link link = new Link(TEST_URL);
 
         //when
         jdbcLinkService.save(link);
@@ -45,34 +44,34 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
 
         //then
         assertThat(count).isEqualTo(1);
-        assertThat(testUrl.getUrl().toString()).isEqualTo(TEST_URL);
+        assertThat(testUrl.getUrl()).isEqualTo(TEST_URL);
     }
 
     @Test
     void save_linkExist_linkWasNotAdded() {
         //given
-        Link link = new Link(URI.create(TEST_URL));
+        Link link = new Link(TEST_URL);
         jdbcLinkService.save(link);
         long expectedCount = jdbcLinkService.count(TEST_URL);
 
         //when
-        jdbcLinkService.save(new Link(URI.create(TEST_URL)));
+        jdbcLinkService.save(new Link(TEST_URL));
         long count = jdbcLinkService.count(TEST_URL);
         Link testUrl = jdbcLinkService.findByUrl(TEST_URL);
 
         //then
         assertThat(count).isEqualTo(expectedCount).isEqualTo(1);
-        assertThat(testUrl.getUrl().toString()).isEqualTo(TEST_URL);
+        assertThat(testUrl.getUrl()).isEqualTo(TEST_URL);
     }
 
     @Test
     void delete_linkExists_linkIsDeleted() {
         //given
-        jdbcLinkService.save(new Link(URI.create(TEST_URL)));
+        jdbcLinkService.save(new Link(TEST_URL));
         Long expectedCount = jdbcTemplate.queryForObject(COUNT_LINK_SQL, Long.class, TEST_URL);
 
         //when
-        jdbcLinkService.delete(URI.create(TEST_URL));
+        jdbcLinkService.delete(TEST_URL);
         Long count = jdbcTemplate.queryForObject(COUNT_LINK_SQL, Long.class, TEST_URL);
 
         //then
@@ -85,7 +84,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
         Long expectedCount = jdbcTemplate.queryForObject(COUNT_LINK_SQL, Long.class, TEST_URL);
 
         //when
-        jdbcLinkService.delete(URI.create(TEST_URL));
+        jdbcLinkService.delete(TEST_URL);
         Long count = jdbcTemplate.queryForObject(COUNT_LINK_SQL, Long.class, TEST_URL);
 
         //then
@@ -95,13 +94,13 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void findByUrl_linkExists_linkFound() {
         //given
-        jdbcLinkService.save(new Link(URI.create(TEST_URL)));
+        jdbcLinkService.save(new Link(TEST_URL));
 
         //when
         Link byUrl = jdbcLinkService.findByUrl(TEST_URL);
 
         //then
-        assertThat(byUrl.getUrl().toString()).isEqualTo(TEST_URL);
+        assertThat(byUrl.getUrl()).isEqualTo(TEST_URL);
     }
 
     @Test
@@ -112,7 +111,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void count_linkExists_returnOne() {
         //given
-        jdbcLinkService.save(new Link(URI.create(TEST_URL)));
+        jdbcLinkService.save(new Link(TEST_URL));
 
         //when
         long count = jdbcLinkService.count(TEST_URL);
@@ -130,7 +129,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     void updateTime_linkNotExist_nothingHappens() {
 
         //when
-        jdbcLinkService.updateTime(new Link(URI.create(TEST_URL)));
+        jdbcLinkService.updateTime(new Link(TEST_URL));
 
         //then
         assertThat(jdbcLinkService.findByUrl(TEST_URL)).isEqualTo(null);
@@ -142,14 +141,14 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
         //given
         OffsetDateTime updatedAt = OffsetDateTime.now();
         OffsetDateTime lastCheckedAt = OffsetDateTime.now();
-        Link testLink = new Link(1L, URI.create(TEST_URL), null, lastCheckedAt, updatedAt);
+        Link testLink = new Link(1L, TEST_URL, null, lastCheckedAt, updatedAt);
         jdbcTemplate.update("INSERT INTO link (url, link_info, last_checked_at, updated_at) VALUES (?, ?::jsonb, ?, ?)",
                 TEST_URL, new JSONObject(LINK_INFO).toString(), lastCheckedAt, updatedAt);
 
         //when
         OffsetDateTime updatedAt2 = OffsetDateTime.now().plus(1, ChronoUnit.MINUTES);
         OffsetDateTime lastCheckedAt2 = OffsetDateTime.now().plus(1, ChronoUnit.MINUTES);
-        testLink = new Link(1L, URI.create(TEST_URL), LINK_INFO, updatedAt2, lastCheckedAt2);
+        testLink = new Link(1L, TEST_URL, LINK_INFO, updatedAt2, lastCheckedAt2);
         jdbcLinkService.updateTime(testLink);
         testLink = jdbcLinkService.findByUrl(TEST_URL);
 
@@ -179,7 +178,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
         //given
         OffsetDateTime updatedAt = OffsetDateTime.now();
         OffsetDateTime lastCheckedAt = OffsetDateTime.now().minus(6, ChronoUnit.MINUTES);
-        Link testLink = new Link(URI.create(TEST_URL));
+        Link testLink = new Link(TEST_URL);
         jdbcTemplate.update("INSERT INTO link (url, link_info, last_checked_at, updated_at) VALUES (?, ?::jsonb, ?, ?)",
                 TEST_URL, new JSONObject(LINK_INFO).toString(), lastCheckedAt, updatedAt);
         //when

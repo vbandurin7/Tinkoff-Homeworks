@@ -9,6 +9,7 @@ import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -22,7 +23,7 @@ public class LinkUpdateScheduler {
     public void update() {
         List<Link> links = linkService.findUnchecked();
         links.forEach(link -> {
-            ParseResult parseResult = LinkParser.parseURL(link.getUrl());
+            ParseResult parseResult = LinkParser.parseURL(URI.create(link.getUrl()));
             updateHandler.handleUpdate(link, parseResult);
             linkService.updateTime(link);
         });

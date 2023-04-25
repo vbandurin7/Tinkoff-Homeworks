@@ -35,7 +35,7 @@ public class JdbcSubscriptionRepository implements SubscriptionRepository {
     {
         try {
             return new Link(rs.getLong("id"),
-                    URI.create(rs.getString("url")),
+                    rs.getString("url"),
                     new ObjectMapper().readValue(rs.getString("link_info"), HashMap.class),
                     OffsetDateTime.ofInstant(rs.getTimestamp("last_checked_at").toInstant(), ZoneId.of("UTC")),
                     OffsetDateTime.ofInstant(rs.getTimestamp("updated_at").toInstant(), ZoneId.of("UTC")));

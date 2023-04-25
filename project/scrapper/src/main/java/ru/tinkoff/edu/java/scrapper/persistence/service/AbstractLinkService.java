@@ -11,13 +11,11 @@ import ru.tinkoff.edu.java.scrapper.dto.response.client.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.StackoverflowResponse;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.LinkRepository;
-import ru.tinkoff.edu.java.scrapper.schedule.utils.SchedulerUtils;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -32,8 +30,8 @@ public abstract class AbstractLinkService implements LinkService {
 
     @Override
     public void save(Link link) {
-        if (count(link.getUrl().toString()) == 0) {
-            ParseResult parseResult = LinkParser.parseURL(link.getUrl());
+        if (count(link.getUrl()) == 0) {
+            ParseResult parseResult = LinkParser.parseURL(URI.create(link.getUrl()));
             if (parseResult instanceof GitHubResult pr) {
                 link.setLinkInfo(Map.of("username", pr.name(), "repository", pr.repository()));
                 Optional<GitHubResponse> gitHubResponse = gitHubClient.fetchRepository(pr.name(), pr.repository());
@@ -53,8 +51,8 @@ public abstract class AbstractLinkService implements LinkService {
     }
 
     @Override
-    public void delete(URI url) {
-        linkRepository.deleteByUrl(url.toString());
+    public void delete(String url) {
+        linkRepository.deleteByUrl(url);
     }
 
     @Override

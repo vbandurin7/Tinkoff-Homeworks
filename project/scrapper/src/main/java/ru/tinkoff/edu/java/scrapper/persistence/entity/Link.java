@@ -16,13 +16,13 @@ import java.util.Objects;
 @EqualsAndHashCode(of = "url")
 public class Link {
 
-    public Link(URI uri) {
+    public Link(String uri) {
         this.url = uri;
         this.lastCheckedAt = OffsetDateTime.now();
     }
     @Id
     private Long id;
-    URI url;
+    String url;
     Map<String, String> linkInfo;
     OffsetDateTime lastCheckedAt;
     OffsetDateTime updatedAt;

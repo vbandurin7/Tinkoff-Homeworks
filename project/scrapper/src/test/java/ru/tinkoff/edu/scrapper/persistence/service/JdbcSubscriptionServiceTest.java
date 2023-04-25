@@ -1,6 +1,5 @@
 package ru.tinkoff.edu.scrapper.persistence.service;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +8,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
-import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcSubscriptionService;
 import ru.tinkoff.edu.scrapper.IntegrationEnvironment;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;
 
-import java.net.URI;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -42,7 +39,7 @@ public class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     void addLink_relationNotExist_relationAdded() {
 
         //when
-        jdbcSubscriptionService.addLink(TEST_CHAT.getId(), URI.create(TEST_URL));
+        jdbcSubscriptionService.addLink(TEST_CHAT.getId(), TEST_URL);
         Long count = jdbcTemplate.queryForObject(COUNT_CHAT_LINK_SQL, Long.class, TEST_URL, TEST_CHAT.getId());
 
         //then
@@ -52,12 +49,12 @@ public class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     @Test
     void addLink_relationExists_nothingHappened() {
         //given
-        jdbcLinkService.save(new Link(URI.create(TEST_URL)));
+        jdbcLinkService.save(new Link(TEST_URL));
         jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT.getId());
         jdbcTemplate.update(INSERT_CHAT_LINK_SQL, TEST_CHAT.getId(), TEST_URL);
 
         //when
-        jdbcSubscriptionService.addLink(TEST_CHAT.getId(), URI.create(TEST_URL));
+        jdbcSubscriptionService.addLink(TEST_CHAT.getId(), TEST_URL);
         Long count = jdbcTemplate.queryForObject(
                 COUNT_CHAT_LINK_SQL, Long.class, TEST_URL, TEST_CHAT.getId());
 
@@ -68,12 +65,12 @@ public class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     @Test
     void removeLink_relationExists_linkRemoved() {
         //given
-        jdbcLinkService.save(new Link(URI.create(TEST_URL)));
+        jdbcLinkService.save(new Link(TEST_URL));
         jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT.getId());
         jdbcTemplate.update("INSERT INTO chat_link VALUES (?,?)", TEST_CHAT.getId(), TEST_URL);
 
         //when
-        jdbcSubscriptionService.removeLink(TEST_CHAT.getId(), URI.create(TEST_URL));
+        jdbcSubscriptionService.removeLink(TEST_CHAT.getId(), TEST_URL);
         Long count = jdbcTemplate.queryForObject(
                 COUNT_CHAT_LINK_SQL, Long.class, TEST_URL, TEST_CHAT.getId());
 
@@ -84,11 +81,11 @@ public class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     @Test
     void removeLink_relationNotExist_nothingHappened() {
         //given
-        jdbcLinkService.save(new Link(URI.create(TEST_URL)));
+        jdbcLinkService.save(new Link(TEST_URL));
         jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT.getId());
 
         //when
-        jdbcSubscriptionService.removeLink(TEST_CHAT.getId(), URI.create(TEST_URL));
+        jdbcSubscriptionService.removeLink(TEST_CHAT.getId(), TEST_URL);
         Long count = jdbcTemplate.queryForObject(
                 COUNT_CHAT_LINK_SQL, Long.class, TEST_URL, TEST_CHAT.getId());
 
@@ -99,8 +96,8 @@ public class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     @Test
     void listAll_chatTracksSomeLinks_listOfLinksReturned() {
         //given
-        jdbcLinkService.save(new Link(URI.create(TEST_URL)));
-        jdbcLinkService.save(new Link(URI.create(TEST_URL_2)));
+        jdbcLinkService.save(new Link(TEST_URL));
+        jdbcLinkService.save(new Link(TEST_URL_2));
         jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT.getId());
         jdbcTemplate.update(INSERT_CHAT_LINK_SQL, TEST_CHAT.getId(), TEST_URL_2);
         jdbcTemplate.update(INSERT_CHAT_LINK_SQL, TEST_CHAT.getId(), TEST_URL);
@@ -111,8 +108,8 @@ public class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
 
         //then
         assertThat(links.size()).isEqualTo(2);
-        assertTrue(expectedLinks.contains(links.get(0).getUrl().toString()));
-        assertTrue(expectedLinks.contains(links.get(1).getUrl().toString()));
+        assertTrue(expectedLinks.contains(links.get(0).getUrl()));
+        assertTrue(expectedLinks.contains(links.get(1).getUrl()));
     }
 
     @Test
@@ -127,7 +124,7 @@ public class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     @Test
     void chatList_relationExists_listReturned() {
         //given
-        jdbcLinkService.save(new Link(URI.create(TEST_URL)));
+        jdbcLinkService.save(new Link(TEST_URL));
         jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT.getId());
         jdbcTemplate.update(INSERT_CHAT_LINK_SQL, TEST_CHAT.getId(), TEST_URL);
 

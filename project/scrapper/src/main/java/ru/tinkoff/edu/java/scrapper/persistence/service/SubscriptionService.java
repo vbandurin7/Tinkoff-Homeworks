@@ -7,8 +7,8 @@ import java.net.URI;
 import java.util.List;
 
 public interface SubscriptionService {
-    Link addLink(long tgChatId, URI url);
-    Link removeLink(long tgChatId, URI url);
+    Link addLink(long tgChatId, String url);
+    Link removeLink(long tgChatId, String url);
     List<Chat> chatList(String url);
     List<Link> listAll(long tgChatId);
 
