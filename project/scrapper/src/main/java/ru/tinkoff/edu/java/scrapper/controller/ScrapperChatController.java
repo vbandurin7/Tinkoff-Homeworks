@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.java.scrapper.dto.response.DeleteChatResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.RegisterChatResponse;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.service.ChatService;
 
 

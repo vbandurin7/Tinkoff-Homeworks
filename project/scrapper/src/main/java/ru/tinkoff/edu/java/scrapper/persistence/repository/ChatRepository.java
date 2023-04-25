@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.persistence.repository;
 
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
 
 public interface ChatRepository extends CrudRepository<Chat, Long> {
 

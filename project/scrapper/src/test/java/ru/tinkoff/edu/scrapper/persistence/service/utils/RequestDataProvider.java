@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.scrapper.persistence.service.utils;
 
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
 
 import java.util.Map;
 

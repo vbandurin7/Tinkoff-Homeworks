@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.linkParser.parser.LinkParser;
 import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 
 import java.net.URI;

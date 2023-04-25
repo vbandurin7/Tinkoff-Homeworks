@@ -11,13 +11,11 @@ import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkUpdateRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.StackoverflowResponse;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
-import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
 
 import java.time.OffsetDateTime;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 

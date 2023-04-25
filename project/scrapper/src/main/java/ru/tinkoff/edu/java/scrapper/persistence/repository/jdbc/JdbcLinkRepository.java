@@ -7,10 +7,9 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.LinkRepository;
 
-import java.net.URI;
 import java.sql.ResultSet;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -24,7 +23,6 @@ public class JdbcLinkRepository implements LinkRepository {
     private final long checkInterval;
 
     private final static String DELETE_BY_URL_SQL = "DELETE FROM link WHERE url = ?";
-    private final static String DELETE_BY_ID_SQL = "DELETE FROM link WHERE id = ?";
     private final static String FIND_UNCHECKED_SQL = "SELECT * FROM link WHERE now() - last_checked_at > INTERVAL '%d seconds'";
     private final static String FIND_BY_URL = "SELECT * FROM link WHERE url = ?";
     private final static String COUNT_SQL = "SELECT count(*) FROM link WHERE id = ?";

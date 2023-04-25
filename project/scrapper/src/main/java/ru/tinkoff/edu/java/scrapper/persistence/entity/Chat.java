@@ -1,15 +1,28 @@
 package ru.tinkoff.edu.java.scrapper.persistence.entity;
 
-import lombok.*;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.Set;
+
+@Entity
+@Table(name = "chat")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
 public class Chat {
+
+    public Chat(long id) {
+        this.id = id;
+    }
     @Id
     private long id;
 
+    @ManyToMany(mappedBy = "chats")
+    private Set<Link> links;
 }

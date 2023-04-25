@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.scrapper.JdbcRepositoryTestEnvironment;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;

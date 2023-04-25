@@ -5,11 +5,9 @@ import org.jooq.DSLContext;
 import org.jooq.JSONB;
 import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.LinkRepository;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;

@@ -9,7 +9,7 @@ import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.StackoverflowResponse;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.LinkRepository;
 
 import java.net.URI;

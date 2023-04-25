@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.dto.response;
 
-import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 
 import java.util.List;
 

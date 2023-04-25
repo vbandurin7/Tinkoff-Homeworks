@@ -1,7 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service;
 
 import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.ChatRepository;
 
 public abstract class AbstractChatService implements ChatService {

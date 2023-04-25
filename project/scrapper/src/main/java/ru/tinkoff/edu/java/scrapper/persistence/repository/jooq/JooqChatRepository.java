@@ -3,10 +3,8 @@ package ru.tinkoff.edu.java.scrapper.persistence.repository.jooq;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
-import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.ChatRepository;
-
-import java.util.List;
 
 import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.CHAT;
 
