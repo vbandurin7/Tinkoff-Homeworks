@@ -1,12 +1,10 @@
 package ru.tinkoff.edu.java.scrapper.persistence.repository;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 
 import java.util.List;
 
-
-@Component
 public interface LinkRepository extends CrudRepository<Link, Long> {
 
     Link findByUrl(String url);

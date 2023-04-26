@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service;
 
+import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.ChatRepository;
@@ -9,13 +10,13 @@ public abstract class AbstractChatService implements ChatService {
     protected ChatRepository chatRepository;
 
     @Override
-    public Chat register(Chat chat) {
-        long tgChatId = chat.getId();
+    public Chat register(ChatSaveRequest chr) {
+        long tgChatId = chr.getDtoChat().getId();
         validateId(tgChatId);
         if (count(tgChatId) != 0) {
-            return chat;
+            return chr.getDtoChat();
         }
-        return chatRepository.save(chat);
+        return chatRepository.save(chr.getDtoChat());
     }
 
     @Override

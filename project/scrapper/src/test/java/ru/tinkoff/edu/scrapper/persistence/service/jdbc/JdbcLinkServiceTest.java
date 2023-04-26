@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.scrapper.persistence.service;
+package ru.tinkoff.edu.scrapper.persistence.service.jdbc;
 
 import lombok.SneakyThrows;
 import org.json.JSONObject;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
+import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.scrapper.JdbcRepositoryTestEnvironment;
@@ -35,10 +36,10 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void save_linkDoesNotExist_linkAddedSuccessfully() {
         //given
-        Link link = new Link(TEST_URL);
+        LinkSaveRequest lr = new LinkSaveRequest(new Link(TEST_URL), null);
 
         //when
-        jdbcLinkService.save(link);
+        jdbcLinkService.save(lr);
         long count = jdbcLinkService.count(TEST_URL);
         Link testUrl = jdbcLinkService.findByUrl(TEST_URL);
 
@@ -50,12 +51,12 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void save_linkExist_linkWasNotAdded() {
         //given
-        Link link = new Link(TEST_URL);
-        jdbcLinkService.save(link);
+        LinkSaveRequest lr = new LinkSaveRequest(new Link(TEST_URL), null);
+        jdbcLinkService.save(lr);
         long expectedCount = jdbcLinkService.count(TEST_URL);
 
         //when
-        jdbcLinkService.save(new Link(TEST_URL));
+        jdbcLinkService.save(new LinkSaveRequest(new Link(TEST_URL), null));
         long count = jdbcLinkService.count(TEST_URL);
         Link testUrl = jdbcLinkService.findByUrl(TEST_URL);
 
@@ -67,7 +68,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void delete_linkExists_linkIsDeleted() {
         //given
-        jdbcLinkService.save(new Link(TEST_URL));
+        jdbcLinkService.save(new LinkSaveRequest(new Link(TEST_URL), null));
         Long expectedCount = jdbcTemplate.queryForObject(COUNT_LINK_SQL, Long.class, TEST_URL);
 
         //when
@@ -94,7 +95,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void findByUrl_linkExists_linkFound() {
         //given
-        jdbcLinkService.save(new Link(TEST_URL));
+        jdbcLinkService.save(new LinkSaveRequest(new Link(TEST_URL), null));
 
         //when
         Link byUrl = jdbcLinkService.findByUrl(TEST_URL);
@@ -111,7 +112,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void count_linkExists_returnOne() {
         //given
-        jdbcLinkService.save(new Link(TEST_URL));
+        jdbcLinkService.save(new LinkSaveRequest(new Link(TEST_URL), null));
 
         //when
         long count = jdbcLinkService.count(TEST_URL);

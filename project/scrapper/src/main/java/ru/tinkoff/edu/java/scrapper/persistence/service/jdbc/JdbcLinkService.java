@@ -5,16 +5,15 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc.JdbcLinkRepository;
+import ru.tinkoff.edu.java.scrapper.persistence.repository.jooq.JooqLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.AbstractLinkService;
+import ru.tinkoff.edu.java.scrapper.persistence.service.utils.LinkInfoUpdater;
 import ru.tinkoff.edu.java.scrapper.schedule.UpdateHandler;
 
 
-@Service
-@Primary
 public class JdbcLinkService extends AbstractLinkService {
-    public JdbcLinkService(JdbcLinkRepository linkRepository, StackoverflowClient stackoverflowClient, GitHubClient gitHubClient) {
+    public JdbcLinkService(JdbcLinkRepository linkRepository, LinkInfoUpdater linkInfoUpdater) {
         this.linkRepository = linkRepository;
-        this.stackoverflowClient = stackoverflowClient;
-        this.gitHubClient = gitHubClient;
+        this.linkInfoUpdater = linkInfoUpdater;
     }
 }

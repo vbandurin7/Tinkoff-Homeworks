@@ -1,52 +1,27 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service;
 
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import ru.tinkoff.edu.java.linkParser.parser.LinkParser;
-import ru.tinkoff.edu.java.linkParser.parserResult.GitHubResult;
-import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
-import ru.tinkoff.edu.java.linkParser.parserResult.StackOverflowResult;
-import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
-import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
-import ru.tinkoff.edu.java.scrapper.dto.response.client.GitHubResponse;
-import ru.tinkoff.edu.java.scrapper.dto.response.client.StackoverflowResponse;
+import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.LinkRepository;
+import ru.tinkoff.edu.java.scrapper.persistence.service.utils.LinkInfoUpdater;
 
-import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static ru.tinkoff.edu.java.scrapper.schedule.utils.SchedulerUtils.getGitHubFunction;
-import static ru.tinkoff.edu.java.scrapper.schedule.utils.SchedulerUtils.getStackoverflowFunction;
 
 
 public abstract class AbstractLinkService implements LinkService {
     protected LinkRepository linkRepository;
-    protected StackoverflowClient stackoverflowClient;
-    protected GitHubClient gitHubClient;
+    protected LinkInfoUpdater linkInfoUpdater;
 
     @Override
-    public void save(Link link) {
-        if (count(link.getUrl()) == 0) {
-            ParseResult parseResult = LinkParser.parseURL(URI.create(link.getUrl()));
-            if (parseResult instanceof GitHubResult pr) {
-                link.setLinkInfo(Map.of("username", pr.name(), "repository", pr.repository()));
-                Optional<GitHubResponse> gitHubResponse = gitHubClient.fetchRepository(pr.name(), pr.repository());
-                if (gitHubResponse.isPresent()) {
-                    setTime(gitHubResponse, getGitHubFunction(), link);
-                    linkRepository.save(link);
-                }
-            } else if (parseResult instanceof StackOverflowResult pr) {
-                Optional<StackoverflowResponse> stackoverflowResponse = stackoverflowClient.fetchQuestion(Long.parseLong(pr.id()));
-                if (stackoverflowResponse.isPresent()) {
-                    link.setLinkInfo(Map.of("question", pr.id(), "answer_count", stackoverflowResponse.get().answerCount().toString()));
-                    setTime(stackoverflowResponse, getStackoverflowFunction(), link);
-                    linkRepository.save(link);
-                }
-            }
+    public void save(LinkSaveRequest lr) {
+        if (count(lr.getDtoLink().getUrl()) == 0) {
+            linkInfoUpdater.update(lr);
+            linkRepository.save(lr.getDtoLink());
         }
     }
 

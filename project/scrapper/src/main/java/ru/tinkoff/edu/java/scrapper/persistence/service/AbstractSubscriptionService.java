@@ -1,6 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service;
 
 import org.springframework.transaction.annotation.Transactional;
+import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
+import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
@@ -9,36 +11,36 @@ import ru.tinkoff.edu.java.scrapper.persistence.repository.SubscriptionRepositor
 import java.util.List;
 
 public abstract class AbstractSubscriptionService implements SubscriptionService {
-    protected LinkService jdbcLinkService;
-    protected ChatService jdbcChatService;
+    protected LinkService linkService;
+    protected ChatService chatService;
     protected SubscriptionRepository subscriptionRepository;
 
 
     @Override
     @Transactional
     public Link addLink(long tgChatId, String url) {
-        Link link = new Link(url);
-        jdbcLinkService.save(link);
-        jdbcChatService.register(new Chat(tgChatId));
-        if (!inRelation(tgChatId, link)) {
-            subscriptionRepository.addRelation(tgChatId, link.getUrl());
+        LinkSaveRequest lr = new LinkSaveRequest(new Link(url), new ru.tinkoff.edu.java.scrapper.persistence.entity.Link());
+        linkService.save(lr);
+        chatService.register(new ChatSaveRequest(new Chat(tgChatId), new ru.tinkoff.edu.java.scrapper.persistence.entity.Chat()));
+        if (!inRelation(tgChatId, lr.getDtoLink())) {
+            subscriptionRepository.addRelation(tgChatId, lr.getDtoLink().getUrl());
         }
-        return link;
+        return lr.getDtoLink();
     }
 
     @Override
     @Transactional
     public Link removeLink(long tgChatId, String url) {
-        Link link = jdbcLinkService.findByUrl(url);
+        Link link = linkService.findByUrl(url);
         if (link == null) {
             throw new LinkNotFoundException();
         }
         subscriptionRepository.deleteRelation(tgChatId, link.getUrl());
         if (countLinkTracks(link.getUrl()) == 0) {
-            jdbcLinkService.delete(link.getUrl());
+            linkService.delete(link.getUrl());
         }
         if (countChatTracks(tgChatId) == 0) {
-            jdbcChatService.unregister(tgChatId);
+            chatService.unregister(tgChatId);
         }
         return link;
     }

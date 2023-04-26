@@ -23,7 +23,7 @@ public class JdbcLinkRepository implements LinkRepository {
     private final long checkInterval;
 
     private final static String DELETE_BY_URL_SQL = "DELETE FROM link WHERE url = ?";
-    private final static String FIND_UNCHECKED_SQL = "SELECT * FROM link WHERE now() - last_checked_at > INTERVAL '%d seconds'";
+    private final static String FIND_UNCHECKED_SQL = "SELECT * FROM link WHERE EXTRACT(EPOCH FROM (now() - last_checked_at)) > ?";
     private final static String FIND_BY_URL = "SELECT * FROM link WHERE url = ?";
     private final static String COUNT_SQL = "SELECT count(*) FROM link WHERE id = ?";
     private final static String COUNT_BY_URL_SQL = "SELECT count(*) FROM link WHERE url = ?";
@@ -49,7 +49,7 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public void updateTime(Link link) {
-        jdbcTemplate.update(UPDATE_TIME_SQL, link.getUpdatedAt(), link.getLastCheckedAt(), link.getUrl().toString());
+        jdbcTemplate.update(UPDATE_TIME_SQL, link.getUpdatedAt(), link.getLastCheckedAt(), link.getUrl());
     }
 
     @Override
@@ -59,7 +59,7 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public List<Link> findUncheckedLinks() {
-        return jdbcTemplate.query(FIND_UNCHECKED_SQL.formatted(checkInterval), LINK_ROW_MAPPER);
+        return jdbcTemplate.query(FIND_UNCHECKED_SQL, LINK_ROW_MAPPER, checkInterval);
     }
 
     @Override

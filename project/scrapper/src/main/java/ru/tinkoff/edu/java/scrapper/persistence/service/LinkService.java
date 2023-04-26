@@ -1,11 +1,12 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service;
 
+import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
 
 import java.util.List;
 
 public interface LinkService {
-    void save(Link link);
+    void save(LinkSaveRequest linkSaveRequest);
     void delete(String url);
     Link findByUrl(String url);
     void updateTime(Link link);
