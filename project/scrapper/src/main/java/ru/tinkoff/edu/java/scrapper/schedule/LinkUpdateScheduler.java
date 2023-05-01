@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.linkParser.parser.LinkParser;
 import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 
 import java.net.URI;
@@ -21,8 +21,8 @@ public class LinkUpdateScheduler {
 
     @Scheduled(fixedDelayString = "#{schedulerInterval}")
     public void update() {
-        List<Link> links = linkService.findUnchecked();
-        links.forEach(link -> {
+        List<LinkDto> linkDtos = linkService.findUnchecked();
+        linkDtos.forEach(link -> {
             ParseResult parseResult = LinkParser.parseURL(URI.create(link.getUrl()));
             updateHandler.handleUpdate(link, parseResult);
             linkService.updateTime(link);

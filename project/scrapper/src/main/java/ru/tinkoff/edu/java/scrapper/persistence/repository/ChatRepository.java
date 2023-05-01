@@ -1,10 +1,10 @@
 package ru.tinkoff.edu.java.scrapper.persistence.repository;
 
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 
-public interface ChatRepository extends CrudRepository<Chat, Long> {
+public interface ChatRepository extends CrudRepository<ChatDto, Long> {
 
-    Chat findById(Long id);
+    ChatDto findById(Long id);
 
     void deleteById(Long id);
 }

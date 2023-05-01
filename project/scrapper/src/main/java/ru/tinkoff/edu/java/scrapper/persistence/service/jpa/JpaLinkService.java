@@ -1,9 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service.jpa;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.utils.EntityConverter;
@@ -31,14 +30,14 @@ public class JpaLinkService implements LinkService {
     }
 
     @Override
-    public Link findByUrl(String url) {
+    public LinkDto findByUrl(String url) {
         var entityLink = jpaLinkRepository.findByUrl(url);
         return entityLink == null ? null : entityToDtoLink(entityLink);
     }
 
     @Override
-    public void updateTime(Link link) {
-        jpaLinkRepository.updateTime(link.getLastCheckedAt(), link.getUpdatedAt(), link.getUrl());
+    public void updateTime(LinkDto linkDto) {
+        jpaLinkRepository.updateTime(linkDto.getLastCheckedAt(), linkDto.getUpdatedAt(), linkDto.getUrl());
     }
 
     @Override
@@ -47,7 +46,7 @@ public class JpaLinkService implements LinkService {
     }
 
     @Override
-    public List<Link> findUnchecked() {
+    public List<LinkDto> findUnchecked() {
         return jpaLinkRepository.findUnchecked(checkInterval).stream().map(EntityConverter::entityToDtoLink).toList();
     }
 }

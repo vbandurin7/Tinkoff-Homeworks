@@ -7,12 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcChatService;
 import ru.tinkoff.edu.scrapper.IntegrationEnvironment;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvider.*;
@@ -20,7 +18,7 @@ import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvi
 @SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
 public class JdbcChatServiceTest extends IntegrationEnvironment {
 
-    private static final ChatSaveRequest TEST_CHAT = new ChatSaveRequest(new Chat(1), null);
+    private static final ChatSaveRequest TEST_CHAT = new ChatSaveRequest(new ChatDto(1), null);
 
     @Autowired
     private JdbcChatService jdbcChatService;

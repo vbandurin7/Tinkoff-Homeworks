@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
@@ -53,7 +53,7 @@ public class JpaLinkServiceTest {
     @Test
     void save_linkDoesNotExist_linkAddedSuccessfully() {
         //given
-        LinkSaveRequest lr = new LinkSaveRequest(new Link(TEST_URL), entityTestLink);
+        LinkSaveRequest lr = new LinkSaveRequest(new LinkDto(TEST_URL), entityTestLink);
 
         //when
         jpaChatRepository.save(enityTestChat);
@@ -69,12 +69,12 @@ public class JpaLinkServiceTest {
     @Test
     void save_linkExist_linkWasNotAdded() {
         //given
-        LinkSaveRequest lr = new LinkSaveRequest(new Link(TEST_URL), entityTestLink);
+        LinkSaveRequest lr = new LinkSaveRequest(new LinkDto(TEST_URL), entityTestLink);
         jpaChatRepository.save(enityTestChat);
         jpaLinkRepository.save(lr.getEntityLink());
         long expectedCount = jpaLinkRepository.countByUrl(TEST_URL);
 
-        jpaLinkService.save(new LinkSaveRequest(new Link(TEST_URL), entityTestLink));
+        jpaLinkService.save(new LinkSaveRequest(new LinkDto(TEST_URL), entityTestLink));
         long count = jpaLinkService.count(TEST_URL);
         var entityTestUrl = jpaLinkRepository.findByUrl(TEST_URL);
 
@@ -86,7 +86,7 @@ public class JpaLinkServiceTest {
     @Test
     void delete_linkExists_linkIsDeleted() {
         //given
-        jpaLinkService.save(new LinkSaveRequest(new Link(TEST_URL), entityTestLink));
+        jpaLinkService.save(new LinkSaveRequest(new LinkDto(TEST_URL), entityTestLink));
         Long expectedCount = jpaLinkRepository.countByUrl(TEST_URL);
 
         //when
@@ -116,7 +116,7 @@ public class JpaLinkServiceTest {
         jpaLinkRepository.save(entityTestLink);
 
         //when
-        Link byUrl = jpaLinkService.findByUrl(TEST_URL);
+        LinkDto byUrl = jpaLinkService.findByUrl(TEST_URL);
 
         //then
         assertThat(byUrl.getUrl()).isEqualTo(TEST_URL);
@@ -130,7 +130,7 @@ public class JpaLinkServiceTest {
     @Test
     void count_linkExists_returnOne() {
         //given
-        jpaLinkService.save(new LinkSaveRequest(new Link(TEST_URL), entityTestLink));
+        jpaLinkService.save(new LinkSaveRequest(new LinkDto(TEST_URL), entityTestLink));
 
         //when
         long count = jpaLinkService.count(TEST_URL);
@@ -148,7 +148,7 @@ public class JpaLinkServiceTest {
     void updateTime_linkNotExist_nothingHappens() {
 
         //when
-        jpaLinkService.updateTime(new Link(TEST_URL));
+        jpaLinkService.updateTime(new LinkDto(TEST_URL));
 
         //then
         assertThat(jpaLinkService.findByUrl(TEST_URL)).isEqualTo(null);
@@ -168,7 +168,7 @@ public class JpaLinkServiceTest {
         //when
         OffsetDateTime updatedAt2 = OffsetDateTime.now().plus(1, ChronoUnit.MINUTES);
         OffsetDateTime lastCheckedAt2 = OffsetDateTime.now().plus(1, ChronoUnit.MINUTES);
-        var testLink = new Link(entityTestLink.getId(), TEST_URL, LINK_INFO, updatedAt2, lastCheckedAt2);
+        var testLink = new LinkDto(entityTestLink.getId(), TEST_URL, LINK_INFO, updatedAt2, lastCheckedAt2);
         jpaLinkService.updateTime(testLink);
         testLink = jpaLinkService.findByUrl(TEST_URL);
 
@@ -189,7 +189,7 @@ public class JpaLinkServiceTest {
         jpaLinkRepository.save(entityTestLink);
 
         //when
-        final List<Link> unchecked = jpaLinkService.findUnchecked();
+        final List<LinkDto> unchecked = jpaLinkService.findUnchecked();
 
         //then
         assertThat(unchecked.size()).isEqualTo(0);
@@ -205,7 +205,7 @@ public class JpaLinkServiceTest {
         jpaLinkRepository.save(entityTestLink);
 
         //when
-        final List<Link> unchecked = jpaLinkService.findUnchecked();
+        final List<LinkDto> unchecked = jpaLinkService.findUnchecked();
 
         //then
         assertThat(unchecked.size()).isEqualTo(1);

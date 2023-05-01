@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
@@ -27,7 +28,7 @@ public class JpaChatServiceTest {
     private static final Chat enityTestChat = new Chat(1L, new HashSet<>());
 
     private static final ChatSaveRequest chr = new ChatSaveRequest(
-            new ru.tinkoff.edu.java.scrapper.persistence.dto.Chat(1L), enityTestChat);
+            new ChatDto(1L), enityTestChat);
 
     private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link entityTestLink
             = new ru.tinkoff.edu.java.scrapper.persistence.entity.Link(TEST_URL, new HashSet<>(),

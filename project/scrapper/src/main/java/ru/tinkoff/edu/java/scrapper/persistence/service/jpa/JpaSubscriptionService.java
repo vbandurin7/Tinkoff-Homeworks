@@ -6,8 +6,8 @@ import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
@@ -26,12 +26,12 @@ public class JpaSubscriptionService implements SubscriptionService {
 
     @Override
     @Transactional
-    public Link addLink(long tgChatId, String url) {
+    public LinkDto addLink(long tgChatId, String url) {
         var entityLink = linkRepository.findByUrl(url);
         var optionalChat = chatRepository.findById(tgChatId);
         var entityChat = optionalChat.orElseGet(() -> new ru.tinkoff.edu.java.scrapper.persistence.entity.Chat(tgChatId));
-        LinkSaveRequest linkSaveRequest = new LinkSaveRequest(new Link(url), entityLink);
-        ChatSaveRequest chatSaveRequest = new ChatSaveRequest(new Chat(tgChatId), entityChat);
+        LinkSaveRequest linkSaveRequest = new LinkSaveRequest(new LinkDto(url), entityLink);
+        ChatSaveRequest chatSaveRequest = new ChatSaveRequest(new ChatDto(tgChatId), entityChat);
         if (entityLink == null) {
             entityLink = new ru.tinkoff.edu.java.scrapper.persistence.entity.Link();
             linkInfoUpdater.update(linkSaveRequest);
@@ -51,7 +51,7 @@ public class JpaSubscriptionService implements SubscriptionService {
 
     @Override
     @Transactional
-    public Link removeLink(long tgChatId, String url) {
+    public LinkDto removeLink(long tgChatId, String url) {
         var entityLink = linkRepository.findByUrl(url);
         if (url == null || entityLink == null) {
             throw new LinkNotFoundException("Link with url " + url + " is not tracked");
@@ -77,7 +77,7 @@ public class JpaSubscriptionService implements SubscriptionService {
     }
 
     @Override
-    public List<Chat> chatList(String url) {
+    public List<ChatDto> chatList(String url) {
         var entityLink = linkRepository.findByUrl(url);
         if (entityLink == null) {
             throw new LinkNotFoundException("Link with url %s is not tracked in any chat".formatted(url));
@@ -86,7 +86,7 @@ public class JpaSubscriptionService implements SubscriptionService {
     }
 
     @Override
-    public List<Link> listAll(long tgChatId) {
+    public List<LinkDto> listAll(long tgChatId) {
         var optionalChat = chatRepository.findById(tgChatId);
         var entityChat = optionalChat.orElse(null);
         if (entityChat == null) {

@@ -2,7 +2,7 @@ package ru.tinkoff.edu.java.scrapper.persistence.service;
 
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.LinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.utils.LinkInfoUpdater;
 
@@ -31,7 +31,7 @@ public abstract class AbstractLinkService implements LinkService {
     }
 
     @Override
-    public Link findByUrl(String url) {
+    public LinkDto findByUrl(String url) {
         try {
             return linkRepository.findByUrl(url);
         } catch (IncorrectResultSizeDataAccessException e) {
@@ -40,12 +40,12 @@ public abstract class AbstractLinkService implements LinkService {
     }
 
     @Override
-    public void updateTime(Link link) {
-        linkRepository.updateTime(link);
+    public void updateTime(LinkDto linkDto) {
+        linkRepository.updateTime(linkDto);
     }
 
     @Override
-    public List<Link> findUnchecked() {
+    public List<LinkDto> findUnchecked() {
         return linkRepository.findUncheckedLinks();
     }
 
@@ -54,8 +54,8 @@ public abstract class AbstractLinkService implements LinkService {
         return linkRepository.countByUrl(url);
     }
 
-    private <T> void setTime(Optional<T> response, Function<T, OffsetDateTime> f, Link link) {
-        link.setUpdatedAt(f.apply(response.get()));
-        link.setLastCheckedAt(OffsetDateTime.now());
+    private <T> void setTime(Optional<T> response, Function<T, OffsetDateTime> f, LinkDto linkDto) {
+        linkDto.setUpdatedAt(f.apply(response.get()));
+        linkDto.setLastCheckedAt(OffsetDateTime.now());
     }
 }

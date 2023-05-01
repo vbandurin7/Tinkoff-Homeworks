@@ -3,6 +3,7 @@ package ru.tinkoff.edu.java.scrapper.configuration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc.JdbcChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc.JdbcSubscriptionRepository;
@@ -28,5 +29,19 @@ public class JdbcAccessConfiguration {
     @Bean
     public SubscriptionService subscriptionService(JdbcLinkRepository linkRepository, JdbcChatRepository jdbcChatRepository, JdbcSubscriptionRepository subscriptionRepository, LinkInfoUpdater linkInfoUpdater) {
         return new JdbcSubscriptionService(new JdbcLinkService(linkRepository, linkInfoUpdater), new JdbcChatService(jdbcChatRepository), subscriptionRepository);
+    }
+
+    @Bean JdbcChatRepository jdbcChatRepository(JdbcTemplate jdbcTemplate) {
+        return new JdbcChatRepository(jdbcTemplate);
+    }
+
+    @Bean
+    public JdbcLinkRepository jdbcLinkRepository(JdbcTemplate jdbcTemplate, long checkInterval) {
+        return new JdbcLinkRepository(jdbcTemplate, checkInterval);
+    }
+
+    @Bean
+    public JdbcSubscriptionRepository subscriptionRepository(JdbcTemplate jdbcTemplate) {
+        return new JdbcSubscriptionRepository(jdbcTemplate);
     }
 }

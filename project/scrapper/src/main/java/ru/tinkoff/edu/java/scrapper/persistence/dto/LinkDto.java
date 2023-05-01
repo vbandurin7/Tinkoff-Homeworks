@@ -11,9 +11,9 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "url")
-public class Link {
+public class LinkDto {
 
-    public Link(String uri) {
+    public LinkDto(String uri) {
         this.url = uri;
         this.lastCheckedAt = OffsetDateTime.now();
     }

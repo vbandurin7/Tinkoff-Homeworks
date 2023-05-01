@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.scrapper.persistence.service.utils;
 
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 
 import java.util.Map;
 
@@ -12,7 +12,7 @@ public class RequestDataProvider {
     );
     public static final String TEST_URL_2= "https://stackoverflow.com/questions/76051046/what-should-i-do-to-load-all-mpnet-base-v2-model-from-sentence-transformers";
     public static final Map<String, String> LINK_INFO_2 = Map.of("question_id", "76051046");
-    public static final Chat TEST_CHAT = new Chat(1);
+    public static final ChatDto TEST_CHAT_DTO = new ChatDto(1);
     public static final String INSERT_LINK_SQL = "INSERT INTO link (url, link_info) VALUES (?, ?::jsonb)";
     public static final String INSERT_CHAT_SQL = "INSERT INTO chat VALUES (?)";
     public static final String INSERT_CHAT_LINK_SQL = "INSERT INTO chat_link VALUES (?,?)";

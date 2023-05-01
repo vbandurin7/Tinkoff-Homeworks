@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.SubscriptionRepository;
 
 import java.sql.ResultSet;
@@ -16,7 +16,6 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 
-@Repository
 @RequiredArgsConstructor
 public class JdbcSubscriptionRepository implements SubscriptionRepository {
 
@@ -29,10 +28,10 @@ public class JdbcSubscriptionRepository implements SubscriptionRepository {
     private static final String COUNT_LINK_TRACKS_SQL = "SELECT count(*) FROM chat_link WHERE link_url = ?";
     private static final String COUNT_CHAT_TRACKS_SQL = "SELECT count(*) FROM chat_link WHERE chat_id = ?";
 
-    private static final RowMapper<Link> LINK_ROW_MAPPER = (ResultSet rs, int rownum) ->
+    private static final RowMapper<LinkDto> LINK_ROW_MAPPER = (ResultSet rs, int rownum) ->
     {
         try {
-            return new Link(rs.getLong("id"),
+            return new LinkDto(rs.getLong("id"),
                     rs.getString("url"),
                     new ObjectMapper().readValue(rs.getString("link_info"), HashMap.class),
                     OffsetDateTime.ofInstant(rs.getTimestamp("last_checked_at").toInstant(), ZoneId.of("UTC")),
@@ -41,7 +40,7 @@ public class JdbcSubscriptionRepository implements SubscriptionRepository {
             throw new RuntimeException(e);
         }
     };
-    private static final RowMapper<Chat> CHAT_ROW_MAPPER = (ResultSet rs, int rownum) -> new Chat(rs.getLong("id"));
+    private static final RowMapper<ChatDto> CHAT_ROW_MAPPER = (ResultSet rs, int rownum) -> new ChatDto(rs.getLong("id"));
 
 
     @Override
@@ -55,14 +54,14 @@ public class JdbcSubscriptionRepository implements SubscriptionRepository {
     }
 
     @Override
-    public List<Link> findAllByChat(long tgChatId) {
+    public List<LinkDto> findAllByChat(long tgChatId) {
         return jdbcTemplate.query(
                 FIND_ALL_BY_CHAT_SQL, LINK_ROW_MAPPER, tgChatId
         );
     }
 
     @Override
-    public List<Chat> findChatsByLink(String url) {
+    public List<ChatDto> findChatsByLink(String url) {
         return jdbcTemplate.query(
                 FIND_CHATS_BY_URL_SQL, CHAT_ROW_MAPPER, url
         );

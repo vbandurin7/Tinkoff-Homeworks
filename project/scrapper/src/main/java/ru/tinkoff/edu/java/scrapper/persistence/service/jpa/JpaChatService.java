@@ -2,7 +2,7 @@ package ru.tinkoff.edu.java.scrapper.persistence.service.jpa;
 
 import lombok.RequiredArgsConstructor;
 import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.ChatService;
 
@@ -11,7 +11,7 @@ public class JpaChatService implements ChatService {
     private final JpaChatRepository chatRepository;
 
     @Override
-    public Chat register(ChatSaveRequest chr) {
+    public ChatDto register(ChatSaveRequest chr) {
         chatRepository.save(chr.getEntityChat());
         return chr.getDtoChat();
     }

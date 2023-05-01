@@ -3,15 +3,13 @@ package ru.tinkoff.edu.java.scrapper.persistence.repository.jooq;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.SubscriptionRepository;
 
 import java.util.List;
 
 import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.*;
-
-@Repository
 @RequiredArgsConstructor
 public class JooqSubscriptionRepository implements SubscriptionRepository {
 
@@ -34,23 +32,23 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
     }
 
     @Override
-    public List<Link> findAllByChat(long tgChatId) {
+    public List<LinkDto> findAllByChat(long tgChatId) {
         return dslContext.select()
                 .from(LINK)
                 .where(LINK.URL.in(
                         dslContext.select(LINK.URL)
                                 .from(CHAT_LINK)
-                                .where(CHAT_LINK.CHAT_ID.eq(tgChatId)).fetch())).fetchInto(Link.class);
+                                .where(CHAT_LINK.CHAT_ID.eq(tgChatId)).fetch())).fetchInto(LinkDto.class);
     }
 
     @Override
-    public List<Chat> findChatsByLink(String url) {
+    public List<ChatDto> findChatsByLink(String url) {
         return dslContext.select()
                 .from(CHAT)
                 .where(CHAT.ID.in(
                         dslContext.select(CHAT.ID)
                                 .from(CHAT_LINK)
-                                .where(CHAT_LINK.LINK_URL.eq(url)).fetch())).fetchInto(Chat.class);
+                                .where(CHAT_LINK.LINK_URL.eq(url)).fetch())).fetchInto(ChatDto.class);
     }
 
     @Override

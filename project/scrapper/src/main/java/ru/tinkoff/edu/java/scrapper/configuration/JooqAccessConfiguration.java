@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.configuration;
 
+import org.jooq.DSLContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,23 @@ public class JooqAccessConfiguration {
         return new JooqChatService(JooqChatRepository);
     }
     @Bean
-    public SubscriptionService subscriptionService(JooqLinkService linkService, JooqChatRepository JooqChatRepository, JooqSubscriptionRepository subscriptionRepository) {
-        return new JooqSubscriptionService(linkService, new JooqChatService(JooqChatRepository), subscriptionRepository);
+    public SubscriptionService subscriptionService(JooqLinkRepository linkRepository, LinkInfoUpdater linkInfoUpdater, JooqChatRepository JooqChatRepository, JooqSubscriptionRepository subscriptionRepository) {
+        return new JooqSubscriptionService(new JooqLinkService(linkRepository, linkInfoUpdater), new JooqChatService(JooqChatRepository), subscriptionRepository);
     }
+
+    @Bean
+    public JooqChatRepository jooqChatRepository(DSLContext dslContext) {
+        return new JooqChatRepository(dslContext);
+    }
+
+    @Bean
+    public JooqLinkRepository jooqChatRepository(DSLContext dslContext, long checkInterval) {
+        return new JooqLinkRepository(dslContext, checkInterval);
+    }
+
+    @Bean
+    public JooqSubscriptionRepository jooqSubscriptionRepository(DSLContext dslContext) {
+        return new JooqSubscriptionRepository(dslContext);
+    }
+
 }

@@ -1,15 +1,15 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service.utils;
 
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 
 public class EntityConverter {
-    public static Link entityToDtoLink(ru.tinkoff.edu.java.scrapper.persistence.entity.Link entityLink) {
-        return new Link(entityLink.getId(), entityLink.getUrl(),
+    public static LinkDto entityToDtoLink(ru.tinkoff.edu.java.scrapper.persistence.entity.Link entityLink) {
+        return new LinkDto(entityLink.getId(), entityLink.getUrl(),
                 entityLink.getLinkInfo(), entityLink.getLastCheckedAt(), entityLink.getUpdatedAt());
     }
 
-    public static Chat entityToDtoChat(ru.tinkoff.edu.java.scrapper.persistence.entity.Chat entityChat) {
-        return new Chat(entityChat.getId());
+    public static ChatDto entityToDtoChat(ru.tinkoff.edu.java.scrapper.persistence.entity.Chat entityChat) {
+        return new ChatDto(entityChat.getId());
     }
 }

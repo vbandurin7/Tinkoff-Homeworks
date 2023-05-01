@@ -3,7 +3,7 @@ package ru.tinkoff.edu.java.scrapper.configuration;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
-import ru.tinkoff.edu.java.scrapper.AccessType;
+import ru.tinkoff.edu.java.scrapper.configuration.enums.AccessType;
 
 import java.time.Duration;
 

@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.scrapper.JdbcRepositoryTestEnvironment;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;
@@ -36,12 +36,12 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void save_linkDoesNotExist_linkAddedSuccessfully() {
         //given
-        LinkSaveRequest lr = new LinkSaveRequest(new Link(TEST_URL), null);
+        LinkSaveRequest lr = new LinkSaveRequest(new LinkDto(TEST_URL), null);
 
         //when
         jdbcLinkService.save(lr);
         long count = jdbcLinkService.count(TEST_URL);
-        Link testUrl = jdbcLinkService.findByUrl(TEST_URL);
+        LinkDto testUrl = jdbcLinkService.findByUrl(TEST_URL);
 
         //then
         assertThat(count).isEqualTo(1);
@@ -51,14 +51,14 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void save_linkExist_linkWasNotAdded() {
         //given
-        LinkSaveRequest lr = new LinkSaveRequest(new Link(TEST_URL), null);
+        LinkSaveRequest lr = new LinkSaveRequest(new LinkDto(TEST_URL), null);
         jdbcLinkService.save(lr);
         long expectedCount = jdbcLinkService.count(TEST_URL);
 
         //when
-        jdbcLinkService.save(new LinkSaveRequest(new Link(TEST_URL), null));
+        jdbcLinkService.save(new LinkSaveRequest(new LinkDto(TEST_URL), null));
         long count = jdbcLinkService.count(TEST_URL);
-        Link testUrl = jdbcLinkService.findByUrl(TEST_URL);
+        LinkDto testUrl = jdbcLinkService.findByUrl(TEST_URL);
 
         //then
         assertThat(count).isEqualTo(expectedCount).isEqualTo(1);
@@ -68,7 +68,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void delete_linkExists_linkIsDeleted() {
         //given
-        jdbcLinkService.save(new LinkSaveRequest(new Link(TEST_URL), null));
+        jdbcLinkService.save(new LinkSaveRequest(new LinkDto(TEST_URL), null));
         Long expectedCount = jdbcTemplate.queryForObject(COUNT_LINK_SQL, Long.class, TEST_URL);
 
         //when
@@ -95,10 +95,10 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void findByUrl_linkExists_linkFound() {
         //given
-        jdbcLinkService.save(new LinkSaveRequest(new Link(TEST_URL), null));
+        jdbcLinkService.save(new LinkSaveRequest(new LinkDto(TEST_URL), null));
 
         //when
-        Link byUrl = jdbcLinkService.findByUrl(TEST_URL);
+        LinkDto byUrl = jdbcLinkService.findByUrl(TEST_URL);
 
         //then
         assertThat(byUrl.getUrl()).isEqualTo(TEST_URL);
@@ -112,7 +112,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Test
     void count_linkExists_returnOne() {
         //given
-        jdbcLinkService.save(new LinkSaveRequest(new Link(TEST_URL), null));
+        jdbcLinkService.save(new LinkSaveRequest(new LinkDto(TEST_URL), null));
 
         //when
         long count = jdbcLinkService.count(TEST_URL);
@@ -130,7 +130,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     void updateTime_linkNotExist_nothingHappens() {
 
         //when
-        jdbcLinkService.updateTime(new Link(TEST_URL));
+        jdbcLinkService.updateTime(new LinkDto(TEST_URL));
 
         //then
         assertThat(jdbcLinkService.findByUrl(TEST_URL)).isEqualTo(null);
@@ -142,22 +142,22 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
         //given
         OffsetDateTime updatedAt = OffsetDateTime.now();
         OffsetDateTime lastCheckedAt = OffsetDateTime.now();
-        Link testLink = new Link(1L, TEST_URL, null, lastCheckedAt, updatedAt);
+        LinkDto testLinkDto = new LinkDto(1L, TEST_URL, null, lastCheckedAt, updatedAt);
         jdbcTemplate.update("INSERT INTO link (url, link_info, last_checked_at, updated_at) VALUES (?, ?::jsonb, ?, ?)",
                 TEST_URL, new JSONObject(LINK_INFO).toString(), lastCheckedAt, updatedAt);
 
         //when
         OffsetDateTime updatedAt2 = OffsetDateTime.now().plus(1, ChronoUnit.MINUTES);
         OffsetDateTime lastCheckedAt2 = OffsetDateTime.now().plus(1, ChronoUnit.MINUTES);
-        testLink = new Link(1L, TEST_URL, LINK_INFO, updatedAt2, lastCheckedAt2);
-        jdbcLinkService.updateTime(testLink);
-        testLink = jdbcLinkService.findByUrl(TEST_URL);
+        testLinkDto = new LinkDto(1L, TEST_URL, LINK_INFO, updatedAt2, lastCheckedAt2);
+        jdbcLinkService.updateTime(testLinkDto);
+        testLinkDto = jdbcLinkService.findByUrl(TEST_URL);
 
         //then
-        assertThat(testLink.getUpdatedAt().toEpochSecond() - updatedAt2.toEpochSecond()).isEqualTo(0);
-        assertThat(testLink.getUpdatedAt().toEpochSecond() - updatedAt.toEpochSecond()).isNotEqualTo(0);
-        assertThat(testLink.getLastCheckedAt().toEpochSecond() - lastCheckedAt2.toEpochSecond()).isEqualTo(0);
-        assertThat(testLink.getLastCheckedAt().toEpochSecond() - lastCheckedAt.toEpochSecond()).isNotEqualTo(0);
+        assertThat(testLinkDto.getUpdatedAt().toEpochSecond() - updatedAt2.toEpochSecond()).isEqualTo(0);
+        assertThat(testLinkDto.getUpdatedAt().toEpochSecond() - updatedAt.toEpochSecond()).isNotEqualTo(0);
+        assertThat(testLinkDto.getLastCheckedAt().toEpochSecond() - lastCheckedAt2.toEpochSecond()).isEqualTo(0);
+        assertThat(testLinkDto.getLastCheckedAt().toEpochSecond() - lastCheckedAt.toEpochSecond()).isNotEqualTo(0);
     }
     @Test
     void findUnchecked_noLinksToRecheck_emptyListReturned() {
@@ -168,7 +168,7 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
                 TEST_URL, new JSONObject(LINK_INFO).toString(), lastCheckedAt, updatedAt);
 
         //when
-        final List<Link> unchecked = jdbcLinkService.findUnchecked();
+        final List<LinkDto> unchecked = jdbcLinkService.findUnchecked();
 
         //then
         assertThat(unchecked.size()).isEqualTo(0);
@@ -179,11 +179,11 @@ public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
         //given
         OffsetDateTime updatedAt = OffsetDateTime.now();
         OffsetDateTime lastCheckedAt = OffsetDateTime.now().minus(6, ChronoUnit.MINUTES);
-        Link testLink = new Link(TEST_URL);
+        LinkDto testLinkDto = new LinkDto(TEST_URL);
         jdbcTemplate.update("INSERT INTO link (url, link_info, last_checked_at, updated_at) VALUES (?, ?::jsonb, ?, ?)",
                 TEST_URL, new JSONObject(LINK_INFO).toString(), lastCheckedAt, updatedAt);
         //when
-        final List<Link> unchecked = jdbcLinkService.findUnchecked();
+        final List<LinkDto> unchecked = jdbcLinkService.findUnchecked();
 
         //then
         assertThat(unchecked.size()).isEqualTo(1);

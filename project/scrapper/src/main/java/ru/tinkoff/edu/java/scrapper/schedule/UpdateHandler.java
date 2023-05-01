@@ -11,8 +11,8 @@ import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkUpdateRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.StackoverflowResponse;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
 
 import java.time.OffsetDateTime;
@@ -28,25 +28,25 @@ public class UpdateHandler {
     private final GitHubClient gitHubClient;
     private final StackoverflowClient stackoverflowClient;
     private final BotClient botClient;
-    public void handleUpdate(Link link, ParseResult parseResult) {
+    public void handleUpdate(LinkDto linkDto, ParseResult parseResult) {
         String description = "";
         if (parseResult instanceof GitHubResult pr) {
             Optional<GitHubResponse> gitHubResponse = gitHubClient.fetchRepository(pr.name(), pr.repository());
-            updateLink(gitHubResponse, getGitHubFunction(), link);
+            updateLink(gitHubResponse, getGitHubFunction(), linkDto);
             description = "User %s has pushed a new commit at repository %s".formatted(pr.name(), pr.repository());
         } else if (parseResult instanceof StackOverflowResult pr) {
             Optional<StackoverflowResponse> stackoverflowResponse = stackoverflowClient.fetchQuestion(Long.parseLong(pr.id()));
-            updateLink(stackoverflowResponse, getStackoverflowFunction(), link);
+            updateLink(stackoverflowResponse, getStackoverflowFunction(), linkDto);
             description = "New answers to the question with ID %s were left".formatted(pr.id());
         }
-        botClient.postUpdate(new LinkUpdateRequest(link.getId(), link.getUrl().toString(), description,
-                subscriptionService.chatList(link.getUrl().toString()).stream().map(Chat::getId).toList()));
+        botClient.postUpdate(new LinkUpdateRequest(linkDto.getId(), linkDto.getUrl().toString(), description,
+                subscriptionService.chatList(linkDto.getUrl().toString()).stream().map(ChatDto::getId).toList()));
     }
 
-    private <T> void updateLink(Optional<T> response, Function<T, OffsetDateTime> f, Link link) {
+    private <T> void updateLink(Optional<T> response, Function<T, OffsetDateTime> f, LinkDto linkDto) {
         if (response.isPresent()) {
-            link.setUpdatedAt(f.apply(response.get()));
-            link.setLastCheckedAt(OffsetDateTime.now());
+            linkDto.setUpdatedAt(f.apply(response.get()));
+            linkDto.setLastCheckedAt(OffsetDateTime.now());
         }
     }
 }

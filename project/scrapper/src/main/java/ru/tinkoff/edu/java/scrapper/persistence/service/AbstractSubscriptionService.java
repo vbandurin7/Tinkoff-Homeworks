@@ -4,8 +4,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Chat;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.SubscriptionRepository;
 
 import java.util.List;
@@ -18,10 +18,10 @@ public abstract class AbstractSubscriptionService implements SubscriptionService
 
     @Override
     @Transactional
-    public Link addLink(long tgChatId, String url) {
-        LinkSaveRequest lr = new LinkSaveRequest(new Link(url), new ru.tinkoff.edu.java.scrapper.persistence.entity.Link());
+    public LinkDto addLink(long tgChatId, String url) {
+        LinkSaveRequest lr = new LinkSaveRequest(new LinkDto(url), new ru.tinkoff.edu.java.scrapper.persistence.entity.Link());
         linkService.save(lr);
-        chatService.register(new ChatSaveRequest(new Chat(tgChatId), new ru.tinkoff.edu.java.scrapper.persistence.entity.Chat()));
+        chatService.register(new ChatSaveRequest(new ChatDto(tgChatId), new ru.tinkoff.edu.java.scrapper.persistence.entity.Chat()));
         if (!inRelation(tgChatId, lr.getDtoLink())) {
             subscriptionRepository.addRelation(tgChatId, lr.getDtoLink().getUrl());
         }
@@ -30,27 +30,27 @@ public abstract class AbstractSubscriptionService implements SubscriptionService
 
     @Override
     @Transactional
-    public Link removeLink(long tgChatId, String url) {
-        Link link = linkService.findByUrl(url);
-        if (link == null) {
+    public LinkDto removeLink(long tgChatId, String url) {
+        LinkDto linkDto = linkService.findByUrl(url);
+        if (linkDto == null) {
             throw new LinkNotFoundException();
         }
-        subscriptionRepository.deleteRelation(tgChatId, link.getUrl());
-        if (countLinkTracks(link.getUrl()) == 0) {
-            linkService.delete(link.getUrl());
+        subscriptionRepository.deleteRelation(tgChatId, linkDto.getUrl());
+        if (countLinkTracks(linkDto.getUrl()) == 0) {
+            linkService.delete(linkDto.getUrl());
         }
         if (countChatTracks(tgChatId) == 0) {
             chatService.unregister(tgChatId);
         }
-        return link;
+        return linkDto;
     }
 
     @Override
-    public List<Link> listAll(long tgChatId) {
+    public List<LinkDto> listAll(long tgChatId) {
         return subscriptionRepository.findAllByChat(tgChatId);
     }
     @Override
-    public List<Chat> chatList(String url) {
+    public List<ChatDto> chatList(String url) {
         return subscriptionRepository.findChatsByLink(url);
     }
 
@@ -62,8 +62,8 @@ public abstract class AbstractSubscriptionService implements SubscriptionService
         return subscriptionRepository.countChatTracks(tgChatId);
     }
 
-    private boolean inRelation(long tgChatId, Link link) {
-        return subscriptionRepository.findAllByChat(tgChatId).contains(link);
+    private boolean inRelation(long tgChatId, LinkDto linkDto) {
+        return subscriptionRepository.findAllByChat(tgChatId).contains(linkDto);
     }
 
 }

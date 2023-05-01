@@ -3,17 +3,16 @@ package ru.tinkoff.edu.scrapper.persistence.service.jpa;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
-import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
@@ -71,9 +70,9 @@ public class JpaSubscriptionServiceTest {
     void addLink_relationNotExist_relationAdded() {
 
         //when
-        jpaSubscriptionService.addLink(TEST_CHAT.getId(), TEST_URL);
+        jpaSubscriptionService.addLink(TEST_CHAT_DTO.getId(), TEST_URL);
         long countLink = jpaLinkRepository.countByUrl(TEST_URL);
-        long countChat = jpaChatRepository.countById(TEST_CHAT.getId());
+        long countChat = jpaChatRepository.countById(TEST_CHAT_DTO.getId());
 
         //then
         assertThat(countLink).isEqualTo(1);
@@ -84,12 +83,12 @@ public class JpaSubscriptionServiceTest {
     @Transactional
     void addLink_relationExists_nothingHappened() {
         //given
-        jpaSubscriptionService.addLink(TEST_CHAT.getId(), TEST_URL);
+        jpaSubscriptionService.addLink(TEST_CHAT_DTO.getId(), TEST_URL);
 
         //when
-        jpaSubscriptionService.addLink(TEST_CHAT.getId(), TEST_URL);
+        jpaSubscriptionService.addLink(TEST_CHAT_DTO.getId(), TEST_URL);
         long countLink = jpaLinkRepository.countByUrl(TEST_URL);
-        long countChat = jpaChatRepository.countById(TEST_CHAT.getId());
+        long countChat = jpaChatRepository.countById(TEST_CHAT_DTO.getId());
 
         //then
         assertThat(countLink).isEqualTo(1);
@@ -100,12 +99,12 @@ public class JpaSubscriptionServiceTest {
     @Transactional
     void removeLink_relationExists_linkRemoved() {
         //given
-        jpaSubscriptionService.addLink(TEST_CHAT.getId(), TEST_URL);
+        jpaSubscriptionService.addLink(TEST_CHAT_DTO.getId(), TEST_URL);
 
         //when
-        jpaSubscriptionService.removeLink(TEST_CHAT.getId(), TEST_URL);
+        jpaSubscriptionService.removeLink(TEST_CHAT_DTO.getId(), TEST_URL);
         long countLink = jpaLinkRepository.countByUrl(TEST_URL);
-        long countChat = jpaChatRepository.countById(TEST_CHAT.getId());
+        long countChat = jpaChatRepository.countById(TEST_CHAT_DTO.getId());
 
         //then
         assertThat(countLink).isEqualTo(0);
@@ -114,7 +113,7 @@ public class JpaSubscriptionServiceTest {
 
     @Test
     void removeLink_relationNotExist_exceptionThrown() {
-        assertThrows(LinkNotFoundException.class, () -> jpaSubscriptionService.removeLink(TEST_CHAT.getId(), TEST_URL));
+        assertThrows(LinkNotFoundException.class, () -> jpaSubscriptionService.removeLink(TEST_CHAT_DTO.getId(), TEST_URL));
     }
 
     @Test
@@ -125,18 +124,18 @@ public class JpaSubscriptionServiceTest {
         jpaSubscriptionService.addLink(enityTestChat.getId(), entityTestLink2.getUrl());
 
         //when
-        final List<Link> links = jpaSubscriptionService.listAll(TEST_CHAT.getId());
+        final List<LinkDto> linkDtos = jpaSubscriptionService.listAll(TEST_CHAT_DTO.getId());
         List<String> expectedLinks = List.of(TEST_URL, TEST_URL_2);
 
         //then
-        assertThat(links.size()).isEqualTo(2);
-        assertTrue(expectedLinks.contains(links.get(0).getUrl()));
-        assertTrue(expectedLinks.contains(links.get(1).getUrl()));
+        assertThat(linkDtos.size()).isEqualTo(2);
+        assertTrue(expectedLinks.contains(linkDtos.get(0).getUrl()));
+        assertTrue(expectedLinks.contains(linkDtos.get(1).getUrl()));
     }
 
     @Test
     void listAll_chatDoesNotTrackLinks_exceptionThrown() {
-        assertThrows(ChatNotFoundException.class, () -> jpaSubscriptionService.listAll(TEST_CHAT.getId()));
+        assertThrows(ChatNotFoundException.class, () -> jpaSubscriptionService.listAll(TEST_CHAT_DTO.getId()));
     }
 
     @Test
@@ -147,11 +146,11 @@ public class JpaSubscriptionServiceTest {
         jpaSubscriptionService.addLink(enityTestChat.getId(), entityTestLink2.getUrl());
 
         //when
-        final List<ru.tinkoff.edu.java.scrapper.persistence.dto.Chat> chats = jpaSubscriptionService.chatList(TEST_URL);
+        final List<ChatDto> chatDtos = jpaSubscriptionService.chatList(TEST_URL);
 
         //then
-        assertThat(chats.size()).isEqualTo(1);
-        assertThat(chats.get(0)).isEqualTo(TEST_CHAT);
+        assertThat(chatDtos.size()).isEqualTo(1);
+        assertThat(chatDtos.get(0)).isEqualTo(TEST_CHAT_DTO);
     }
 
     @Test

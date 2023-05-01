@@ -11,7 +11,7 @@ import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.StackoverflowResponse;
-import ru.tinkoff.edu.java.scrapper.persistence.dto.Link;
+import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -45,8 +45,8 @@ public class LinkInfoUpdater {
             }
         }
     }
-    private <T> void setTime(Optional<T> response, Function<T, OffsetDateTime> f, Link link) {
-        link.setUpdatedAt(f.apply(response.get()));
-        link.setLastCheckedAt(OffsetDateTime.now());
+    private <T> void setTime(Optional<T> response, Function<T, OffsetDateTime> f, LinkDto linkDto) {
+        linkDto.setUpdatedAt(f.apply(response.get()));
+        linkDto.setLastCheckedAt(OffsetDateTime.now());
     }
 }
