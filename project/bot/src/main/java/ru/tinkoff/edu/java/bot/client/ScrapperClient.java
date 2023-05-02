@@ -1,17 +1,12 @@
 package ru.tinkoff.edu.java.bot.client;
 
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.reactive.function.BodyInserter;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.tinkoff.edu.java.bot.configuration.ApplicationConfig;
+import ru.tinkoff.edu.java.bot.configuration.ApplicationProperties;
 import ru.tinkoff.edu.java.bot.dto.request.AddLinkRequest;
 import ru.tinkoff.edu.java.bot.dto.request.RemoveLinkRequest;
 import ru.tinkoff.edu.java.bot.dto.response.DeleteChatResponse;
@@ -19,7 +14,7 @@ import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.bot.dto.response.RegisterChatResponse;
 
-@EnableConfigurationProperties(ApplicationConfig.class)
+@EnableConfigurationProperties(ApplicationProperties.class)
 @RequiredArgsConstructor
 public class ScrapperClient {
 

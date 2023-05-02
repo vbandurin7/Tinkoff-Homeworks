@@ -3,11 +3,20 @@ app:
   bot-token: ${BOT_TOKEN}
   api:
     scrapperBaseUrl: 'http://localhost:8080'
+  queue-name: tinkoff.edu.scrapperQueue
+  exchange-name: tinkoffExchange
 
 springdoc:
   swagger-ui:
     path: /swagger-ui
 
+spring:
+  rabbitmq:
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 1
 server:
   port: 8081
 

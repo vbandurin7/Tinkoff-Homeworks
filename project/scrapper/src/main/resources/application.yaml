@@ -4,6 +4,9 @@ app:
     interval: 5000
   check-interval: 300
   database-access-type: jpa
+  queue-name: tinkoff.edu.scrapperQueue
+  exchange-name: tinkoffExchange
+  use-queue: true
 
 spring:
   datasource:

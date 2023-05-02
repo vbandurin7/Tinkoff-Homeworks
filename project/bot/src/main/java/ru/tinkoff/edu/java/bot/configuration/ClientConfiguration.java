@@ -6,11 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import ru.tinkoff.edu.java.bot.client.ScrapperClient;
 
 @Configuration
-@EnableConfigurationProperties(ApplicationConfig.class)
+@EnableConfigurationProperties(ApplicationProperties.class)
 public class ClientConfiguration {
 
     @Bean(name = "scrapperClient")
-    public ScrapperClient scrapperClient(ApplicationConfig applicationConfig) {
-        return new ScrapperClient(applicationConfig.api().scrapperBaseUrl());
+    public ScrapperClient scrapperClient(ApplicationProperties applicationProperties) {
+        return new ScrapperClient(applicationProperties.api().scrapperBaseUrl());
     }
 }

@@ -10,6 +10,8 @@ import java.time.Duration;
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 public record ApplicationProperties(@NotNull String test, Scheduler scheduler, @NotNull Duration checkInterval,
-                                    @NotNull AccessType databaseAccessType) {
+                                    @NotNull AccessType databaseAccessType,
+                                    @NotNull String queueName, @NotNull String exchangeName,
+                                    boolean useQueue) {
     record Scheduler(Duration interval) {}
 }

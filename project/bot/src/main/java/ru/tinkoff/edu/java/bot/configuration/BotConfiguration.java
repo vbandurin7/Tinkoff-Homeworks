@@ -11,11 +11,11 @@ import ru.tinkoff.edu.java.bot.bot.TelegramBotCommandListener;
 import ru.tinkoff.edu.java.bot.bot.command.commandHandler.GlobalCommandHandler;
 
 @Configuration
-@EnableConfigurationProperties(ApplicationConfig.class)
+@EnableConfigurationProperties(ApplicationProperties.class)
 @RequiredArgsConstructor
 public class BotConfiguration {
 
-    private final ApplicationConfig applicationProperties;
+    private final ApplicationProperties applicationProperties;
     @Bean("telegramBot")
     public TelegramBot telegramBot(GlobalCommandHandler globalCommandHandler) {
         TelegramBot tgBot = new TelegramBot(applicationProperties.botToken());
