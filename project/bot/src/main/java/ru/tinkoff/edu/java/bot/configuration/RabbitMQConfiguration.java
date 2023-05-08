@@ -16,24 +16,8 @@ import java.util.Map;
 public class RabbitMQConfiguration {
 
     @Bean
-    public Queue scrapperQueue(ApplicationProperties applicationProperties) {
-        return QueueBuilder.durable(applicationProperties.queueName())
-                .withArgument("x-dead-letter-exchange", applicationProperties.queueName().concat(".dlx"))
-                .build();
-    }
-    @Bean
-    public DirectExchange scrapperExchange(ApplicationProperties applicationProperties) {
-        return new DirectExchange(applicationProperties.exchangeName(), true, false);
-    }
-
-    @Bean
-    public Binding binding(Queue scrapperQueue, DirectExchange directExchange) {
-        return BindingBuilder.bind(scrapperQueue).to(directExchange).withQueueName();
-    }
-
-    @Bean
-    public FanoutExchange deadLetterExchange(ApplicationProperties applicationProperties) {
-        return new FanoutExchange(applicationProperties.queueName().concat(".dlx"));
+    public DirectExchange deadLetterExchange(ApplicationProperties applicationProperties) {
+        return new DirectExchange(applicationProperties.deadLetterExchangeName().concat(".dlx"), true, false);
     }
 
     @Bean
@@ -42,12 +26,12 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
-    public Binding deadLetterBinding(Queue deadLetterQueue, FanoutExchange deadLetterExchange) {
-        return BindingBuilder.bind(deadLetterQueue).to(deadLetterExchange);
+    public Binding deadLetterBinding(Queue deadLetterQueue, DirectExchange deadLetterExchange) {
+        return BindingBuilder.bind(deadLetterQueue).to(deadLetterExchange).with(deadLetterExchange.getName());
     }
 
     @Bean
-    public ClassMapper classMapper(){
+    public ClassMapper classMapper() {
         Map<String, Class<?>> mappings = new HashMap<>();
         mappings.put("ru.tinkoff.edu.java.scrapper.dto.request.LinkUpdateRequest", LinkUpdateRequest.class);
 
@@ -58,8 +42,8 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
-    public MessageConverter jsonMessageConverter(ClassMapper classMapper){
-        Jackson2JsonMessageConverter jsonConverter=new Jackson2JsonMessageConverter();
+    public MessageConverter jsonMessageConverter(ClassMapper classMapper) {
+        Jackson2JsonMessageConverter jsonConverter = new Jackson2JsonMessageConverter();
         jsonConverter.setClassMapper(classMapper);
         return jsonConverter;
     }

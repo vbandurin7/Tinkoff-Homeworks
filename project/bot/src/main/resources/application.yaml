@@ -4,7 +4,7 @@ app:
   api:
     scrapperBaseUrl: 'http://localhost:8080'
   queue-name: tinkoff.edu.scrapperQueue
-  exchange-name: tinkoffExchange
+  dead-letter-exchange-name: deadLetterTinkoffExchange
 
 springdoc:
   swagger-ui:

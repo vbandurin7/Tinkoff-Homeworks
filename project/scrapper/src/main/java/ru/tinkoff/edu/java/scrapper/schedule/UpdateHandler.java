@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.linkParser.parserResult.GitHubResult;
 import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
 import ru.tinkoff.edu.java.linkParser.parserResult.StackOverflowResult;
-import ru.tinkoff.edu.java.scrapper.client.BotClient;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkUpdateRequest;
@@ -14,6 +13,7 @@ import ru.tinkoff.edu.java.scrapper.dto.response.client.StackoverflowResponse;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
+import ru.tinkoff.edu.java.scrapper.persistence.service.rabbitmq.UpdateSender;
 
 import java.time.OffsetDateTime;
 import java.util.Optional;
@@ -24,10 +24,12 @@ import static ru.tinkoff.edu.java.scrapper.schedule.utils.SchedulerUtils.*;
 @Component
 @RequiredArgsConstructor
 public class UpdateHandler {
+
     private final SubscriptionService subscriptionService;
     private final GitHubClient gitHubClient;
     private final StackoverflowClient stackoverflowClient;
-    private final BotClient botClient;
+    private final UpdateSender updateSender;
+
     public void handleUpdate(LinkDto linkDto, ParseResult parseResult) {
         String description = "";
         if (parseResult instanceof GitHubResult pr) {
@@ -39,8 +41,8 @@ public class UpdateHandler {
             updateLink(stackoverflowResponse, getStackoverflowFunction(), linkDto);
             description = "New answers to the question with ID %s were left".formatted(pr.id());
         }
-        botClient.postUpdate(new LinkUpdateRequest(linkDto.getId(), linkDto.getUrl().toString(), description,
-                subscriptionService.chatList(linkDto.getUrl().toString()).stream().map(ChatDto::getId).toList()));
+        updateSender.postUpdate(new LinkUpdateRequest(linkDto.getId(), linkDto.getUrl(), description,
+                subscriptionService.chatList(linkDto.getUrl()).stream().map(ChatDto::getId).toList()));
     }
 
     private <T> void updateLink(Optional<T> response, Function<T, OffsetDateTime> f, LinkDto linkDto) {

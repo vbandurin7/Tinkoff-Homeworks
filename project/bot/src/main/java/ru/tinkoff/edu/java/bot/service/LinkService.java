@@ -1,26 +1,29 @@
 package ru.tinkoff.edu.java.bot.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import ru.tinkoff.edu.java.bot.client.ScrapperClient;
 import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
 
 import java.util.Optional;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public final class LinkService {
 
-    public Optional<LinkResponse> track(String link) {
-        return Optional.empty();
+    private final ScrapperClient scrapperClient;
+
+    public Optional<LinkResponse> track(long tgChatId, String link) {
+        return Optional.ofNullable(scrapperClient.addLink(tgChatId, link).getBody());
     }
 
-    public Optional<LinkResponse> untrack(String link) {
-        return Optional.empty();
+    public Optional<LinkResponse> untrack(long tgChatId, String link) {
+        return Optional.ofNullable(scrapperClient.deleteLink(tgChatId, link).getBody());
     }
 
-    public Optional<ListLinksResponse> getLinksList() {
-        return Optional.empty();
+    public Optional<ListLinksResponse> getLinksList(long id) {
+        return Optional.ofNullable(scrapperClient.getLinks(id).getBody());
     }
-
 }

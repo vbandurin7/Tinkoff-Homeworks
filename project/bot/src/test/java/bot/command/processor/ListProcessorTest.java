@@ -66,7 +66,7 @@ public class ListProcessorTest {
         when(commandValidator.validateCommand(0, update.message().text()))
                 .thenReturn(Optional.of(Collections.emptyList()));
 
-        when(linkService.getLinksList()).thenReturn(Optional.of(links));
+        when(linkService.getLinksList(update.message().chat().id())).thenReturn(Optional.of(links));
 
         //when
         final SendMessage result = listProcessor.handle(update);
@@ -89,13 +89,13 @@ public class ListProcessorTest {
         when(commandValidator.validateCommand(0, update.message().text()))
                 .thenReturn(Optional.of(Collections.emptyList()));
 
-        when(linkService.getLinksList()).thenReturn(Optional.of(links));
+        when(linkService.getLinksList(update.message().chat().id())).thenReturn(Optional.of(links));
 
         //when
         final SendMessage result = listProcessor.handle(update);
 
         //then
         assertThat(result.getParameters().get("text"))
-                .isEqualTo("No links for track were added. Try <b>'/track <link>'</b>");
+                .isEqualTo("No links for track were added. Try <b>'/track [link]'</b>");
     }
 }

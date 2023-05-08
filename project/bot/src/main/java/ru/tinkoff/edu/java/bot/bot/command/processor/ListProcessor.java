@@ -37,7 +37,7 @@ public final class ListProcessor extends AbstractCommandProcessor {
             return send(update, "Wrong number of arguments.");
         }
 
-        Optional<ListLinksResponse> linkList = linkService.getLinksList();
+        Optional<ListLinksResponse> linkList = linkService.getLinksList(update.message().chat().id());
 
         return send(update, createMessage(linkList));
     }

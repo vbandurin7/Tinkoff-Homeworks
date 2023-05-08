@@ -10,7 +10,9 @@ import ru.tinkoff.edu.java.bot.dto.request.LinkUpdateRequest;
 @RequiredArgsConstructor
 @RabbitListener(queues = "${app.queue-name}")
 public class ScrapperQueueListener {
+
     private final UpdateNotifier updateNotifier;
+
     @RabbitHandler
     public void receiver(LinkUpdateRequest update) {
         updateNotifier.updateNotify(update.tgChatIds(), update.description());

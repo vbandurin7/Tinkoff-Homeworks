@@ -35,7 +35,7 @@ public final class TrackProcessor extends AbstractCommandProcessor {
         if ((argList = commandValidator.validateCommand(1, update.message().text())).isEmpty()) {
             return send(update, "Wrong number of arguments.");
         }
-        if (linkService.track(argList.get().get(0)).isEmpty()) {
+        if (linkService.track(update.message().chat().id(), argList.get().get(0)).isEmpty()) {
             send(update, String.format("Unable to start tracking link %s", argList.get().get(0)));
         }
         return send(update, String.format("link %s was added for tracking successfully", argList.get().get(0)));

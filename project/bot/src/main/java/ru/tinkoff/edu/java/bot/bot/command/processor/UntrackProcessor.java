@@ -34,7 +34,7 @@ public final class UntrackProcessor extends AbstractCommandProcessor {
         if ((argList = commandValidator.validateCommand(1, update.message().text())).isEmpty()) {
             return send(update, "Wrong number of arguments.");
         }
-        if (linkService.untrack(argList.get().get(0)).isEmpty()) {
+        if (linkService.untrack(update.message().chat().id(), argList.get().get(0)).isEmpty()) {
             send(update, String.format("Unable to stop tracking link %s", argList.get().get(0)));
         }
         return send(update, String.format("link %s is no longer tracked", argList.get().get(0)));
