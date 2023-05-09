@@ -17,9 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class TelegramBotCommandListener implements Bot {
+
     private final TelegramBot telegramBot;
     private final GlobalCommandHandler commandProcessor;
-
 
     @Override
     public int process(List<Update> updates) {
