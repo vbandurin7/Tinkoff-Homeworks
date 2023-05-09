@@ -16,6 +16,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class LinkUpdateScheduler {
+
     private final LinkService linkService;
     private final UpdateHandler updateHandler;
 
