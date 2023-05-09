@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service.jpa;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
@@ -9,6 +10,7 @@ import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
@@ -18,6 +20,7 @@ import ru.tinkoff.edu.java.scrapper.persistence.service.utils.LinkInfoUpdater;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class JpaSubscriptionService implements SubscriptionService {
@@ -29,9 +32,16 @@ public class JpaSubscriptionService implements SubscriptionService {
     @Override
     @Transactional
     public LinkDto addLink(long tgChatId, String url) {
-        var entityLink = linkRepository.findByUrl(url);
-        var optionalChat = chatRepository.findById(tgChatId);
-        var entityChat = optionalChat.orElseGet(() -> new Chat(tgChatId));
+        Link entityLink;
+        Optional<Chat> optionalChat;
+        Chat entityChat;
+        try {
+            optionalChat = chatRepository.findById(tgChatId);
+            entityChat = optionalChat.orElseGet(() -> new Chat(tgChatId));
+        } catch (JpaObjectRetrievalFailureException e) {
+            entityChat = new Chat(tgChatId);
+        }
+        entityLink = linkRepository.findByUrl(url);
         LinkSaveRequest linkSaveRequest = new LinkSaveRequest(new LinkDto(url), entityLink);
         ChatSaveRequest chatSaveRequest = new ChatSaveRequest(new ChatDto(tgChatId), entityChat);
         if (entityLink == null) {
