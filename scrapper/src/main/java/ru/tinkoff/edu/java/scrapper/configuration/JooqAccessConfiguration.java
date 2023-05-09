@@ -23,12 +23,12 @@ public class JooqAccessConfiguration {
         return new JooqLinkService(linkRepository, linkInfoUpdater);
     }
     @Bean
-    public ChatService chatService(JooqChatRepository JooqChatRepository) {
-        return new JooqChatService(JooqChatRepository);
+    public ChatService chatService(JooqChatRepository jooqChatRepository) {
+        return new JooqChatService(jooqChatRepository);
     }
     @Bean
-    public SubscriptionService subscriptionService(JooqLinkRepository linkRepository, LinkInfoUpdater linkInfoUpdater, JooqChatRepository JooqChatRepository, JooqSubscriptionRepository subscriptionRepository) {
-        return new JooqSubscriptionService(new JooqLinkService(linkRepository, linkInfoUpdater), new JooqChatService(JooqChatRepository), subscriptionRepository);
+    public SubscriptionService subscriptionService(JooqLinkRepository linkRepository, LinkInfoUpdater linkInfoUpdater, JooqChatRepository jooqChatRepository, JooqSubscriptionRepository subscriptionRepository) {
+        return new JooqSubscriptionService(new JooqLinkService(linkRepository, linkInfoUpdater), new JooqChatService(jooqChatRepository), subscriptionRepository);
     }
 
     @Bean
@@ -37,7 +37,7 @@ public class JooqAccessConfiguration {
     }
 
     @Bean
-    public JooqLinkRepository jooqChatRepository(DSLContext dslContext, long checkInterval) {
+    public JooqLinkRepository jooqLinkRepository(DSLContext dslContext, long checkInterval) {
         return new JooqLinkRepository(dslContext, checkInterval);
     }
 

@@ -5,11 +5,14 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
+import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.scrapper.JdbcRepositoryTestEnvironment;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;
@@ -22,7 +25,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvider.*;
 
 @SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
-public class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
+@ActiveProfiles("test")
+class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Autowired
     private JdbcLinkService jdbcLinkService;
     @Autowired

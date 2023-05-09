@@ -18,7 +18,7 @@ public class DatabaseTest extends IntegrationEnvironment {
 
         try (Connection connection = POSTGRE_SQL_CONTAINER.createConnection("")) {
             //given
-            List<String> expectedColumns = List.of("id", "username");
+            List<String> expectedColumns = List.of("id");
 
             //when
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM chat");
@@ -38,7 +38,7 @@ public class DatabaseTest extends IntegrationEnvironment {
     void migrationLinkTest() {
         try (Connection connection = POSTGRE_SQL_CONTAINER.createConnection("")) {
             //given
-            List<String> expectedColumns = List.of("id", "url", "updated_at");
+            List<String> expectedColumns = List.of("id", "url", "link_info", "last_checked_at", "updated_at");
 
             //when
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM link");

@@ -3,4 +3,7 @@ app:
   scheduler:
     interval: 5000
   check-interval: 300
-  database-access-type: jpa
+  database-access-type: jooq
+  queue-name: tinkoff.edu.scrapperQueue
+  exchange-name: tinkoffExchange
+  use-queue: false

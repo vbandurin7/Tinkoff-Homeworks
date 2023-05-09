@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>ru.tinkoff.edu</groupId>
-        <artifactId>project</artifactId>
+        <artifactId>Tinkoff-Homeworks</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -14,7 +14,7 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <Tinkoff-Homeworks.build.sourceEncoding>UTF-8</Tinkoff-Homeworks.build.sourceEncoding>
     </properties>
 
     <dependencies>

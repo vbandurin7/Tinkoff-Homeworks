@@ -1,17 +1,17 @@
 package ru.tinkoff.edu.scrapper.persistence.service.jpa;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
+import ru.tinkoff.edu.java.scrapper.persistence.service.ChatService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jpa.JpaChatService;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;
 
@@ -23,7 +23,8 @@ import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvi
 
 @SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class JpaChatServiceTest {
+@ActiveProfiles("test")
+class JpaChatServiceTest {
 
     private static final Chat enityTestChat = new Chat(1L, new HashSet<>());
 
@@ -33,11 +34,6 @@ public class JpaChatServiceTest {
     private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link entityTestLink
             = new ru.tinkoff.edu.java.scrapper.persistence.entity.Link(TEST_URL, new HashSet<>(),
             LINK_INFO, OffsetDateTime.now(), OffsetDateTime.now());
-
-    static {
-        enityTestChat.getLinks().add(entityTestLink);
-        entityTestLink.getChats().add(enityTestChat);
-    }
     @Autowired
     private JpaChatService jpaChatService;
 
@@ -47,13 +43,9 @@ public class JpaChatServiceTest {
     @Autowired
     private JpaChatRepository jpaChatRepository;
 
-    @BeforeEach
+    @AfterEach
     public void clearDB() {
         jpaChatRepository.deleteAll();
-    }
-    @BeforeAll
-    public void beforeAll() {
-        jpaLinkRepository.save(entityTestLink);
     }
     @Test
     void register_chatNotExists_chatRegistered() {

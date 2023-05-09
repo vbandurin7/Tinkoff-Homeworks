@@ -3,11 +3,14 @@ package ru.tinkoff.edu.scrapper.persistence.service.jdbc;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
+import ru.tinkoff.edu.java.scrapper.persistence.service.ChatService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcChatService;
 import ru.tinkoff.edu.scrapper.IntegrationEnvironment;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;
@@ -16,7 +19,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvider.*;
 
 @SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
-public class JdbcChatServiceTest extends IntegrationEnvironment {
+@ActiveProfiles("test")
+class JdbcChatServiceTest extends IntegrationEnvironment {
 
     private static final ChatSaveRequest TEST_CHAT = new ChatSaveRequest(new ChatDto(1), null);
 
@@ -31,13 +35,13 @@ public class JdbcChatServiceTest extends IntegrationEnvironment {
 
     @Test
     void register_chatNotExists_chatRegistered() {
-        assertThat(jdbcChatService.register(TEST_CHAT)).isEqualTo(TEST_CHAT);
+        assertThat(jdbcChatService.register(TEST_CHAT)).isEqualTo(TEST_CHAT.getDtoChat());
     }
 
     @Test
     void register_chatExists_chatReturned() {
         jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT.getDtoChat().getId());
-        assertThat(jdbcChatService.register(TEST_CHAT)).isEqualTo(TEST_CHAT);
+        assertThat(jdbcChatService.register(TEST_CHAT)).isEqualTo(TEST_CHAT.getDtoChat());
     }
 
     @Test
@@ -50,7 +54,7 @@ public class JdbcChatServiceTest extends IntegrationEnvironment {
         Long count = jdbcTemplate.queryForObject(COUNT_CHAT_SQL, Long.class, TEST_CHAT.getDtoChat().getId());
 
         //then
-        assertThat(count).isEqualTo(0);
+        assertThat(count).isZero();
     }
 
     @Test
@@ -60,7 +64,7 @@ public class JdbcChatServiceTest extends IntegrationEnvironment {
         Long count = jdbcTemplate.queryForObject(COUNT_CHAT_SQL, Long.class, TEST_CHAT.getDtoChat().getId());
 
         //then
-        assertThat(count).isEqualTo(0);
+        assertThat(count).isZero();
     }
 
     @Test
@@ -77,6 +81,6 @@ public class JdbcChatServiceTest extends IntegrationEnvironment {
 
     @Test
     void count_linkNotExist_returnZero() {
-        assertThat(jdbcChatService.count(TEST_CHAT.getDtoChat().getId())).isEqualTo(0);
+        assertThat(jdbcChatService.count(TEST_CHAT.getDtoChat().getId())).isZero();
     }
 }

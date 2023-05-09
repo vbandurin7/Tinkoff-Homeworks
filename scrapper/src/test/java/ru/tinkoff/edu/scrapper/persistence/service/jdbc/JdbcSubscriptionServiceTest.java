@@ -3,12 +3,16 @@ package ru.tinkoff.edu.scrapper.persistence.service.jdbc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
+import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
+import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcSubscriptionService;
 import ru.tinkoff.edu.scrapper.IntegrationEnvironment;
@@ -21,7 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvider.*;
 
 @SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
-public class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
+@ActiveProfiles("test")
+class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     @Autowired
     private JdbcSubscriptionService jdbcSubscriptionService;
     @Autowired

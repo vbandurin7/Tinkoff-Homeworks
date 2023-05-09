@@ -4,13 +4,16 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
+import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jpa.JpaLinkService;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;
 
@@ -23,18 +26,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvider.*;
 
 @SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
-public class JpaLinkServiceTest {
+@ActiveProfiles("test")
+class JpaLinkServiceTest {
 
     private static final Chat enityTestChat = new Chat(1L, new HashSet<>());
 
     private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link entityTestLink
             = new ru.tinkoff.edu.java.scrapper.persistence.entity.Link(TEST_URL, new HashSet<>(),
             LINK_INFO, OffsetDateTime.now(), OffsetDateTime.now());
-
-    static {
-        enityTestChat.getLinks().add(entityTestLink);
-        entityTestLink.getChats().add(enityTestChat);
-    }
 
     @Autowired
     private JpaLinkService jpaLinkService;

@@ -6,7 +6,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
@@ -30,7 +32,8 @@ import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvi
 
 @SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class JpaSubscriptionServiceTest {
+@ActiveProfiles("test")
+class JpaSubscriptionServiceTest {
 
     private static final Chat enityTestChat = new Chat(1L, new HashSet<>());
 
@@ -41,11 +44,6 @@ public class JpaSubscriptionServiceTest {
     private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link entityTestLink2
             = new ru.tinkoff.edu.java.scrapper.persistence.entity.Link(TEST_URL_2, new HashSet<>(),
             LINK_INFO_2, OffsetDateTime.now(), OffsetDateTime.now());
-
-    static {
-        enityTestChat.getLinks().add(entityTestLink);
-        entityTestLink.getChats().add(enityTestChat);
-    }
 
     @Autowired
     private JpaLinkRepository jpaLinkRepository;
@@ -154,6 +152,7 @@ public class JpaSubscriptionServiceTest {
     }
 
     @Test
+    @Transactional
     void chatList_noRelation_exceptionThrown() {
         assertThrows(LinkNotFoundException.class, () -> jpaSubscriptionService.chatList(TEST_URL));
     }
