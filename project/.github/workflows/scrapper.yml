@@ -1,0 +1,11 @@
+name: build-scrapper-application
+on:
+  push:
+    paths:
+      - 'scrapper/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      uses: actions/checkout@v3
+      run: mvn package -pl scrapper -am
