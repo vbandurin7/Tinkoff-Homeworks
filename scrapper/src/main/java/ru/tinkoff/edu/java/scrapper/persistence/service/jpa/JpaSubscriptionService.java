@@ -8,6 +8,7 @@ import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
+import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
@@ -30,7 +31,7 @@ public class JpaSubscriptionService implements SubscriptionService {
     public LinkDto addLink(long tgChatId, String url) {
         var entityLink = linkRepository.findByUrl(url);
         var optionalChat = chatRepository.findById(tgChatId);
-        var entityChat = optionalChat.orElseGet(() -> new ru.tinkoff.edu.java.scrapper.persistence.entity.Chat(tgChatId));
+        var entityChat = optionalChat.orElseGet(() -> new Chat(tgChatId));
         LinkSaveRequest linkSaveRequest = new LinkSaveRequest(new LinkDto(url), entityLink);
         ChatSaveRequest chatSaveRequest = new ChatSaveRequest(new ChatDto(tgChatId), entityChat);
         if (entityLink == null) {
