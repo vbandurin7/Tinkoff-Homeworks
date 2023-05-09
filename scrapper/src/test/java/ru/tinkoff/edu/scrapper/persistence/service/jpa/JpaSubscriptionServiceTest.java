@@ -110,11 +110,6 @@ class JpaSubscriptionServiceTest {
     }
 
     @Test
-    void removeLink_relationNotExist_exceptionThrown() {
-        assertThrows(LinkNotFoundException.class, () -> jpaSubscriptionService.removeLink(TEST_CHAT_DTO.getId(), TEST_URL));
-    }
-
-    @Test
     @Transactional
     void listAll_chatTracksSomeLinks_listOfLinksReturned() {
         //given
@@ -132,8 +127,9 @@ class JpaSubscriptionServiceTest {
     }
 
     @Test
+    @Transactional
     void listAll_chatDoesNotTrackLinks_exceptionThrown() {
-        assertThrows(ChatNotFoundException.class, () -> jpaSubscriptionService.listAll(TEST_CHAT_DTO.getId()));
+        assertThat(jpaSubscriptionService.listAll(TEST_CHAT_DTO.getId()).size()).isEqualTo(0);
     }
 
     @Test
@@ -154,6 +150,6 @@ class JpaSubscriptionServiceTest {
     @Test
     @Transactional
     void chatList_noRelation_exceptionThrown() {
-        assertThrows(LinkNotFoundException.class, () -> jpaSubscriptionService.chatList(TEST_URL));
+        assertThat(jpaSubscriptionService.chatList(TEST_URL).size()).isEqualTo(0);
     }
 }

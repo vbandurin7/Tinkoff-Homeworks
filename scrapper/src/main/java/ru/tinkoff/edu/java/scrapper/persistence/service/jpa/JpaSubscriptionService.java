@@ -15,6 +15,7 @@ import ru.tinkoff.edu.java.scrapper.persistence.service.utils.EntityConverter;
 import ru.tinkoff.edu.java.scrapper.persistence.service.utils.LinkInfoUpdater;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -63,12 +64,12 @@ public class JpaSubscriptionService implements SubscriptionService {
         var entityChat = optionalEntityChat.get();
         entityChat.getLinks().remove(entityLink);
         entityLink.getChats().remove(entityChat);
-        if (entityChat.getLinks().size() == 0) {
+        if (entityChat.getLinks().isEmpty()) {
             chatRepository.deleteById(entityChat.getId());
         } else {
             chatRepository.save(entityChat);
         }
-        if (entityLink.getChats().size() == 0) {
+        if (entityLink.getChats().isEmpty()) {
             linkRepository.deleteByUrl(entityLink.getUrl());
         } else {
             linkRepository.save(entityLink);
@@ -80,7 +81,7 @@ public class JpaSubscriptionService implements SubscriptionService {
     public List<ChatDto> chatList(String url) {
         var entityLink = linkRepository.findByUrl(url);
         if (entityLink == null) {
-            throw new LinkNotFoundException("Link with url %s is not tracked in any chat".formatted(url));
+            return Collections.emptyList();
         }
         return entityLink.getChats().stream().map(EntityConverter::entityToDtoChat).toList();
     }
@@ -90,7 +91,7 @@ public class JpaSubscriptionService implements SubscriptionService {
         var optionalChat = chatRepository.findById(tgChatId);
         var entityChat = optionalChat.orElse(null);
         if (entityChat == null) {
-            throw new ChatNotFoundException("Chat with id %d is not registered".formatted(tgChatId));
+            return Collections.emptyList();
         }
         return entityChat.getLinks().stream().map(EntityConverter::entityToDtoLink).toList();
     }
