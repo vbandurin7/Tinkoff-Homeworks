@@ -17,5 +17,14 @@ jobs:
 
       - run: mvn package -pl bot -am
 
-      - name: docker-build-scrapper
-        run: docker build -f bot.Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/bot-app:latest .
+      - name: scrapper dockerfile build
+        run: docker build -f bot.Dockerfile -t ${{ secrets.GHCR_USERNAME }}/bot-app:latest .
+
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_PASSWORD }}
+          registry: ghcr.io
+      - name: Push image
+        run: docker push ${{ secrets.GHCR_USERNAME }}/bot-app:latest
