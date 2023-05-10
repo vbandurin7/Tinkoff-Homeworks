@@ -2,6 +2,9 @@ name: build-bot-application
 env:
   REPOSITORY: tinkoff-homeworks
 
+permissions:
+  packages: write
+
 on:
   push:
     paths:
