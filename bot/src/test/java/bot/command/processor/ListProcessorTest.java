@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-public class ListProcessorTest {
+class ListProcessorTest {
 
     @Mock
     private CommandValidatorImpl commandValidator;
