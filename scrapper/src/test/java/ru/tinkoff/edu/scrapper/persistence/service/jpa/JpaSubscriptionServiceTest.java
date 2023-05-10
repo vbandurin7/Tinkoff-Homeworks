@@ -69,7 +69,8 @@ class JpaSubscriptionServiceTest {
         long countChat = jpaChatRepository.countById(ENTITY_TEST_CHAT.getId());
 
         //then
-        assertThat(countLink).isEqualTo(1);
+        assertThat(countLink)
+            .isEqualTo(1);
         assertThat(countChat).isEqualTo(1);
     }
 
