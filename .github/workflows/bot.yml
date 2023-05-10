@@ -1,10 +1,11 @@
 name: build-bot-application
+env:
+  REPOSITORY: tinkoff-homeworks
+  
 on:
   push:
     paths:
       - 'bot/**'
-env:
-  REPOSITORY: tinkoff-homeworks
 
 jobs:
   build:
