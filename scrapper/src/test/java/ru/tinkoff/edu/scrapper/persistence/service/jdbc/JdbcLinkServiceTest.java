@@ -4,6 +4,8 @@ import lombok.SneakyThrows;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -30,9 +32,17 @@ class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    private static final Logger logger = LoggerFactory.getLogger(
+        JdbcLinkServiceTest.class);
+
     @BeforeEach
     public void clearDB() {
-        jdbcTemplate.update(CLEAR_LINK_SQL);
+        try {
+            jdbcTemplate.update(CLEAR_CHAT_LINK_SQL);
+            jdbcTemplate.update(CLEAR_LINK_SQL);
+        } catch (Exception e) {
+            logger.info("Произошёл затуп");
+        }
     }
 
     @Test
