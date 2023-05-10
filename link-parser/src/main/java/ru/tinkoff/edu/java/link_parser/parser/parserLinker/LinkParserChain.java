@@ -1,8 +1,8 @@
-package ru.tinkoff.edu.java.linkParser.parser.parserLinker;
+package ru.tinkoff.edu.java.link_parser.parser.parserLinker;
 
-import ru.tinkoff.edu.java.linkParser.parser.GitHubParser;
-import ru.tinkoff.edu.java.linkParser.parser.Parser;
-import ru.tinkoff.edu.java.linkParser.parser.StackOverflowParser;
+import ru.tinkoff.edu.java.link_parser.parser.GitHubParser;
+import ru.tinkoff.edu.java.link_parser.parser.Parser;
+import ru.tinkoff.edu.java.link_parser.parser.StackOverflowParser;
 
 import java.util.List;
 

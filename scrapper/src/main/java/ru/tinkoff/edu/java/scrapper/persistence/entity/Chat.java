@@ -21,19 +21,24 @@ public class Chat {
     public Chat(long id) {
         this.id = id;
     }
+
     @Id
     private long id;
 
     @ManyToMany
     @JoinTable(name = "chat_link",
-            joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "link_url", referencedColumnName = "url"))
+               joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "link_url", referencedColumnName = "url"))
     private Set<Link> links = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Chat chat = (Chat) o;
         return Objects.equals(id, chat.id);
     }

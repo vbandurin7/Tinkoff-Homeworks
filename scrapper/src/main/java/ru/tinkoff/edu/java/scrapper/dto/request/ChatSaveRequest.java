@@ -12,6 +12,7 @@ public class ChatSaveRequest {
         this.dtoChat = dtoChat;
         this.entityChat = entityChat;
     }
+
     private ChatDto dtoChat;
     private ru.tinkoff.edu.java.scrapper.persistence.entity.Chat entityChat;
 }

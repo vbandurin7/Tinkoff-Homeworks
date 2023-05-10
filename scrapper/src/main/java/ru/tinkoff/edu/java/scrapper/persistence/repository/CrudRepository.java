@@ -1,8 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.persistence.repository;
 
-public interface CrudRepository<T, ID> {
+public interface CrudRepository<T, I> {
 
     T save(T entity);
 
-    long countById(ID id);
+    long countById(I id);
 }

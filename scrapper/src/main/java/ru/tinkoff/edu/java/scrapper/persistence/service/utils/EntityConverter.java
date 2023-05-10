@@ -3,7 +3,11 @@ package ru.tinkoff.edu.java.scrapper.persistence.service.utils;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 
-public class EntityConverter {
+public final class EntityConverter {
+
+    private EntityConverter() {
+    }
+
     public static LinkDto entityToDtoLink(ru.tinkoff.edu.java.scrapper.persistence.entity.Link entityLink) {
         return new LinkDto(entityLink.getId(), entityLink.getUrl(),
                 entityLink.getLinkInfo(), entityLink.getLastCheckedAt(), entityLink.getUpdatedAt());

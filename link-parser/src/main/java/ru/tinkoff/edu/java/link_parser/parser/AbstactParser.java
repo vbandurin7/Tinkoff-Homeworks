@@ -1,10 +1,9 @@
-package ru.tinkoff.edu.java.linkParser.parser;
+package ru.tinkoff.edu.java.link_parser.parser;
 
-import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
+import ru.tinkoff.edu.java.link_parser.parserResult.ParseResult;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 public abstract sealed class AbstactParser implements Parser permits GitHubParser, StackOverflowParser {
     public ParseResult parse(URI url) {

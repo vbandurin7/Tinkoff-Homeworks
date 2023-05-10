@@ -15,13 +15,14 @@ public abstract class AbstractSubscriptionService implements SubscriptionService
     protected ChatService chatService;
     protected SubscriptionRepository subscriptionRepository;
 
-
     @Override
     @Transactional
     public LinkDto addLink(long tgChatId, String url) {
-        LinkSaveRequest lr = new LinkSaveRequest(new LinkDto(url), new ru.tinkoff.edu.java.scrapper.persistence.entity.Link());
+        LinkSaveRequest lr = new LinkSaveRequest(new LinkDto(url),
+                                                 new ru.tinkoff.edu.java.scrapper.persistence.entity.Link());
         linkService.save(lr);
-        chatService.register(new ChatSaveRequest(new ChatDto(tgChatId), new ru.tinkoff.edu.java.scrapper.persistence.entity.Chat()));
+        chatService.register(new ChatSaveRequest(new ChatDto(tgChatId),
+                                                 new ru.tinkoff.edu.java.scrapper.persistence.entity.Chat()));
         if (!inRelation(tgChatId, lr.getDtoLink())) {
             subscriptionRepository.addRelation(tgChatId, lr.getDtoLink().getUrl());
         }
@@ -49,6 +50,7 @@ public abstract class AbstractSubscriptionService implements SubscriptionService
     public List<LinkDto> listAll(long tgChatId) {
         return subscriptionRepository.findAllByChat(tgChatId);
     }
+
     @Override
     public List<ChatDto> chatList(String url) {
         return subscriptionRepository.findChatsByLink(url);

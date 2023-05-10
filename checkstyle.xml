@@ -62,7 +62,6 @@
         <module name="StaticVariableName"/>
         <module name="TypeName"/>
 
-        <module name="AvoidStarImport"/>
         <module name="IllegalImport"/>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
@@ -155,9 +154,6 @@
         <module name="InnerAssignment"/>
         <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
-        <module name="MultipleStringLiterals">
-            <property name="ignoreStringsRegexp" value='^(("")|(".")|("..")|("..>"))$'/>
-        </module>
         <module name="MultipleVariableDeclarations"/>
         <module name="NestedForDepth">
             <property name="max" value="2"/>

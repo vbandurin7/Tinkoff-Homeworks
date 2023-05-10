@@ -1,15 +1,12 @@
 package ru.tinkoff.edu.java.scrapper.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.TypeMismatchException;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.tinkoff.edu.java.scrapper.dto.response.ApiErrorResponse;
-import ru.tinkoff.edu.java.scrapper.exception.ChatAlreadyExistsException;
 import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
 

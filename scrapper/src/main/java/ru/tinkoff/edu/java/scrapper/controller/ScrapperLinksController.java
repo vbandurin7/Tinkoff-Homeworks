@@ -6,7 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.java.scrapper.dto.request.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.ListLinksResponse;
@@ -31,7 +37,9 @@ public class ScrapperLinksController {
         return ResponseEntity.ok(ListLinksResponse.create(linkDtos));
     }
 
-    @PostMapping(value = "/links", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/links",
+                 consumes = MediaType.APPLICATION_JSON_VALUE,
+                 produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") @NotNull Long id,
                                                 @RequestBody @NotNull AddLinkRequest addLinkRequest) {
@@ -39,7 +47,9 @@ public class ScrapperLinksController {
         return ResponseEntity.ok(new LinkResponse(linkDto.getId(), URI.create(linkDto.getUrl())));
     }
 
-    @DeleteMapping(value = "/links", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/links",
+                   consumes = MediaType.APPLICATION_JSON_VALUE,
+                   produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<LinkResponse> deleteLink(@RequestHeader("Tg-Chat-Id") @NotNull Long id,
                                                    @RequestBody @NotNull RemoveLinkRequest removeLinkRequest) {

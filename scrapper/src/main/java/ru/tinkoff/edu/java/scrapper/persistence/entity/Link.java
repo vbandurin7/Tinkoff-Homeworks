@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +17,8 @@ import java.util.*;
 @NoArgsConstructor
 public class Link {
 
-    public Link(String url, Set<Chat> chats, Map<String, String> linkInfo, OffsetDateTime lastCheckedAt, OffsetDateTime updatedAt) {
+    public Link(String url, Set<Chat> chats, Map<String, String> linkInfo,
+        OffsetDateTime lastCheckedAt, OffsetDateTime updatedAt) {
         this.url = url;
         this.chats = chats;
         this.linkInfo = linkInfo;
@@ -48,8 +48,12 @@ public class Link {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Link course = (Link) o;
         return Objects.equals(id, course.id);
     }

@@ -1,4 +1,5 @@
 package ru.tinkoff.edu.java.scrapper.client;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.tinkoff.edu.java.scrapper.dto.response.client.GitHubResponse;
@@ -7,7 +8,7 @@ import java.util.Optional;
 
 @Component
 public class GitHubClient {
-    private final static String GITHUB_BASE_URL = "https://api.github.com";
+    private static final String GITHUB_BASE_URL = "https://api.github.com";
     private final WebClient webClient;
 
     public GitHubClient() {

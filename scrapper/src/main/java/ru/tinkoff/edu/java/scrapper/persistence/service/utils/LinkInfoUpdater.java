@@ -2,10 +2,10 @@ package ru.tinkoff.edu.java.scrapper.persistence.service.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.tinkoff.edu.java.linkParser.parser.LinkParser;
-import ru.tinkoff.edu.java.linkParser.parserResult.GitHubResult;
-import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
-import ru.tinkoff.edu.java.linkParser.parserResult.StackOverflowResult;
+import ru.tinkoff.edu.java.link_parser.parser.LinkParser;
+import ru.tinkoff.edu.java.link_parser.parserResult.GitHubResult;
+import ru.tinkoff.edu.java.link_parser.parserResult.ParseResult;
+import ru.tinkoff.edu.java.link_parser.parserResult.StackOverflowResult;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
@@ -34,17 +34,25 @@ public class LinkInfoUpdater {
         if (parseResult instanceof GitHubResult pr) {
             Optional<GitHubResponse> gitHubResponse = gitHubClient.fetchRepository(pr.name(), pr.repository());
             if (gitHubResponse.isPresent()) {
-                lr.getDtoLink().setLinkInfo(Map.of("username", pr.name(), "repository", pr.repository()));
+                lr.getDtoLink().setLinkInfo(Map.of(
+                    "username", pr.name(),
+                    "repository", pr.repository()
+                ));
                 setTime(gitHubResponse, getGitHubFunction(), lr.getDtoLink());
             }
         } else if (parseResult instanceof StackOverflowResult pr) {
-            Optional<StackoverflowResponse> stackoverflowResponse = stackoverflowClient.fetchQuestion(Long.parseLong(pr.id()));
+            Optional<StackoverflowResponse> stackoverflowResponse =
+                stackoverflowClient.fetchQuestion(Long.parseLong(pr.id()));
             if (stackoverflowResponse.isPresent()) {
-                lr.getDtoLink().setLinkInfo(Map.of("question", pr.id(), "answer_count", stackoverflowResponse.get().answerCount().toString()));
+                lr.getDtoLink().setLinkInfo(Map.of(
+                    "question", pr.id(),
+                    "answer_count", stackoverflowResponse.get().answerCount().toString()
+                ));
                 setTime(stackoverflowResponse, getStackoverflowFunction(), lr.getDtoLink());
             }
         }
     }
+
     private <T> void setTime(Optional<T> response, Function<T, OffsetDateTime> f, LinkDto linkDto) {
         linkDto.setUpdatedAt(f.apply(response.get()));
         linkDto.setLastCheckedAt(OffsetDateTime.now());

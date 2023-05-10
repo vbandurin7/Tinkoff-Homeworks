@@ -1,6 +1,9 @@
-package ru.tinkoff.edu.java.linkParser.validators;
+package ru.tinkoff.edu.java.link_parser.validators;
 
 public final class GitHubValidator implements Validator {
+    private GitHubValidator() {
+    }
+
     private static final String USERNAME_REGEXP = "^[a-zA-Z][a-zA-Z0-9_-]{1,39}$";
     private static final String REPOSITORY_REGEXP = "^[a-zA-Z][a-zA-Z0-9_-]{1,100}$";
 

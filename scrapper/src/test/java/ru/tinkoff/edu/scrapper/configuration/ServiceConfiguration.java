@@ -32,7 +32,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public JpaSubscriptionService jpaSubscriptionService(JpaLinkRepository linkRepository, JpaChatRepository jpaChatRepository, LinkInfoUpdater linkInfoUpdater) {
+    public JpaSubscriptionService jpaSubscriptionService(
+        JpaLinkRepository linkRepository, JpaChatRepository jpaChatRepository, LinkInfoUpdater linkInfoUpdater) {
         return new JpaSubscriptionService(linkRepository, jpaChatRepository, linkInfoUpdater);
     }
 
@@ -40,13 +41,24 @@ public class ServiceConfiguration {
     public JdbcLinkService jdbcLinkService(JdbcLinkRepository linkRepository, LinkInfoUpdater linkInfoUpdater) {
         return new JdbcLinkService(linkRepository, linkInfoUpdater);
     }
+
     @Bean
     public JdbcChatService jdbcChatService(JdbcChatRepository jdbcChatRepository) {
         return new JdbcChatService(jdbcChatRepository);
     }
+
     @Bean
-    public JdbcSubscriptionService jdbcSubscriptionService(JdbcLinkRepository linkRepository, JdbcChatRepository jdbcChatRepository, JdbcSubscriptionRepository subscriptionRepository, LinkInfoUpdater linkInfoUpdater) {
-        return new JdbcSubscriptionService(new JdbcLinkService(linkRepository, linkInfoUpdater), new JdbcChatService(jdbcChatRepository), subscriptionRepository);
+    public JdbcSubscriptionService jdbcSubscriptionService(
+        JdbcLinkRepository linkRepository,
+        JdbcChatRepository jdbcChatRepository,
+        JdbcSubscriptionRepository subscriptionRepository,
+        LinkInfoUpdater linkInfoUpdater
+    ) {
+        return new JdbcSubscriptionService(
+            new JdbcLinkService(linkRepository, linkInfoUpdater),
+            new JdbcChatService(jdbcChatRepository),
+            subscriptionRepository
+        );
     }
 
     @Bean JdbcChatRepository jdbcChatRepository(JdbcTemplate jdbcTemplate) {

@@ -6,8 +6,11 @@ import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import java.util.List;
 
 public interface SubscriptionRepository {
+
     void addRelation(long tgChatId, String linkUrl);
+
     void deleteRelation(long tgChatId, String linkUrl);
+
     List<LinkDto> findAllByChat(long tgChatId);
 
     List<ChatDto> findChatsByLink(String url);

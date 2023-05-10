@@ -1,12 +1,14 @@
-package ru.tinkoff.edu.java.linkParser.parser;
+package ru.tinkoff.edu.java.link_parser.parser;
 
-import ru.tinkoff.edu.java.linkParser.parser.parserLinker.LinkParserChain;
-import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
+import ru.tinkoff.edu.java.link_parser.parser.parserLinker.LinkParserChain;
+import ru.tinkoff.edu.java.link_parser.parserResult.ParseResult;
 
 import java.net.URI;
-import java.net.URL;
 
 public final class LinkParser {
+
+    private LinkParser() {
+    }
 
     public static ParseResult parseURL(URI url) {
         LinkParserChain linkParserChain = new LinkParserChain();

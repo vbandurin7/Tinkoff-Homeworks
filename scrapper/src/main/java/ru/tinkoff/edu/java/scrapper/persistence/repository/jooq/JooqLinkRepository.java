@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.JSONB;
 import org.json.JSONObject;
-import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.LinkRepository;
 
@@ -13,6 +12,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.LINK;
+
 @RequiredArgsConstructor
 public class JooqLinkRepository implements LinkRepository {
 
@@ -36,8 +36,8 @@ public class JooqLinkRepository implements LinkRepository {
 
     @Override
     public LinkDto findByUrl(String url) {
-        var res = dslContext.select(LINK.fields()).from(LINK).
-                where(LINK.URL.eq(url)).limit(1).fetchInto(LinkDto.class);
+        var res = dslContext.select(LINK.fields()).from(LINK)
+            .where(LINK.URL.eq(url)).limit(1).fetchInto(LinkDto.class);
         return res.size() == 0 ? null : res.get(0);
     }
 
@@ -49,7 +49,7 @@ public class JooqLinkRepository implements LinkRepository {
     @Override
     public List<LinkDto> findUncheckedLinks() {
         return dslContext.select(LINK.fields()).from(LINK).fetchInto(LinkDto.class).stream().filter(link ->
-                OffsetDateTime.now().toEpochSecond() - link.getLastCheckedAt().toEpochSecond() > checkInterval).toList();
+            OffsetDateTime.now().toEpochSecond() - link.getLastCheckedAt().toEpochSecond() > checkInterval).toList();
     }
 
     @Override

@@ -1,7 +1,7 @@
-package ru.tinkoff.edu.java.linkParser.parser;
+package ru.tinkoff.edu.java.link_parser.parser;
 
-import ru.tinkoff.edu.java.linkParser.parserResult.GitHubResult;
-import ru.tinkoff.edu.java.linkParser.validators.GitHubValidator;
+import ru.tinkoff.edu.java.link_parser.parserResult.GitHubResult;
+import ru.tinkoff.edu.java.link_parser.validators.GitHubValidator;
 
 import java.net.URI;
 

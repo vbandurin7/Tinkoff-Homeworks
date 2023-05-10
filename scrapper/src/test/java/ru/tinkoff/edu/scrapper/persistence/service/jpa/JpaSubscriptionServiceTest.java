@@ -31,13 +31,13 @@ import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvi
 @ActiveProfiles("test")
 class JpaSubscriptionServiceTest {
 
-    private static final Chat enityTestChat = new Chat(1L, new HashSet<>());
+    private static final Chat ENITY_TEST_CHAT = new Chat(1L, new HashSet<>());
 
-    private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link entityTestLink
+    private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link ENTITY_TEST_LINK
             = new ru.tinkoff.edu.java.scrapper.persistence.entity.Link(TEST_URL, new HashSet<>(),
             LINK_INFO, OffsetDateTime.now(), OffsetDateTime.now());
 
-    private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link entityTestLink2
+    private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link ENTITY_TEST_LINK_2
             = new ru.tinkoff.edu.java.scrapper.persistence.entity.Link(TEST_URL_2, new HashSet<>(),
             LINK_INFO_2, OffsetDateTime.now(), OffsetDateTime.now());
 
@@ -54,7 +54,7 @@ class JpaSubscriptionServiceTest {
     @SneakyThrows
     public void clearDB() {
         try {
-            jpaSubscriptionService.removeLink(enityTestChat.getId(), entityTestLink.getUrl());
+            jpaSubscriptionService.removeLink(ENITY_TEST_CHAT.getId(), ENTITY_TEST_LINK.getUrl());
         } catch (Exception ignored) {
         }
     }
@@ -109,8 +109,8 @@ class JpaSubscriptionServiceTest {
     @Transactional
     void listAll_chatTracksSomeLinks_listOfLinksReturned() {
         //given
-        jpaSubscriptionService.addLink(enityTestChat.getId(), entityTestLink.getUrl());
-        jpaSubscriptionService.addLink(enityTestChat.getId(), entityTestLink2.getUrl());
+        jpaSubscriptionService.addLink(ENITY_TEST_CHAT.getId(), ENTITY_TEST_LINK.getUrl());
+        jpaSubscriptionService.addLink(ENITY_TEST_CHAT.getId(), ENTITY_TEST_LINK_2.getUrl());
 
         //when
         final List<LinkDto> linkDtos = jpaSubscriptionService.listAll(TEST_CHAT_DTO.getId());
@@ -132,8 +132,8 @@ class JpaSubscriptionServiceTest {
     @Transactional
     void chatList_relationExists_listReturned() {
         //given
-        jpaSubscriptionService.addLink(enityTestChat.getId(), entityTestLink.getUrl());
-        jpaSubscriptionService.addLink(enityTestChat.getId(), entityTestLink2.getUrl());
+        jpaSubscriptionService.addLink(ENITY_TEST_CHAT.getId(), ENTITY_TEST_LINK.getUrl());
+        jpaSubscriptionService.addLink(ENITY_TEST_CHAT.getId(), ENTITY_TEST_LINK_2.getUrl());
 
         //when
         final List<ChatDto> chatDtos = jpaSubscriptionService.chatList(TEST_URL);

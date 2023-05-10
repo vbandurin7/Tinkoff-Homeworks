@@ -3,7 +3,6 @@ package ru.tinkoff.edu.scrapper.persistence.service.jdbc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -11,8 +10,6 @@ import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
-import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
-import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcSubscriptionService;
 import ru.tinkoff.edu.scrapper.IntegrationEnvironment;
@@ -56,7 +53,6 @@ class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     void addLink_relationExists_nothingHappened() {
         //given
         jdbcLinkService.save(new LinkSaveRequest(new LinkDto(TEST_URL), null));
-        ;
         jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT_DTO.getId());
         jdbcTemplate.update(INSERT_CHAT_LINK_SQL, TEST_CHAT_DTO.getId(), TEST_URL);
 
@@ -73,7 +69,6 @@ class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     void removeLink_relationExists_linkRemoved() {
         //given
         jdbcLinkService.save(new LinkSaveRequest(new LinkDto(TEST_URL), null));
-        ;
         jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT_DTO.getId());
         jdbcTemplate.update("INSERT INTO chat_link VALUES (?,?)", TEST_CHAT_DTO.getId(), TEST_URL);
 
@@ -90,7 +85,6 @@ class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     void removeLink_relationNotExist_nothingHappened() {
         //given
         jdbcLinkService.save(new LinkSaveRequest(new LinkDto(TEST_URL), null));
-        ;
         jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT_DTO.getId());
 
         //when

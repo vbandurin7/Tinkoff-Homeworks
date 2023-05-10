@@ -2,9 +2,9 @@ package ru.tinkoff.edu.java.scrapper.schedule;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.tinkoff.edu.java.linkParser.parserResult.GitHubResult;
-import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
-import ru.tinkoff.edu.java.linkParser.parserResult.StackOverflowResult;
+import ru.tinkoff.edu.java.link_parser.parserResult.GitHubResult;
+import ru.tinkoff.edu.java.link_parser.parserResult.ParseResult;
+import ru.tinkoff.edu.java.link_parser.parserResult.StackOverflowResult;
 import ru.tinkoff.edu.java.scrapper.client.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.client.StackoverflowClient;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkUpdateRequest;
@@ -37,12 +37,14 @@ public class UpdateHandler {
             updateLink(gitHubResponse, getGitHubFunction(), linkDto);
             description = "User %s has pushed a new commit at repository %s".formatted(pr.name(), pr.repository());
         } else if (parseResult instanceof StackOverflowResult pr) {
-            Optional<StackoverflowResponse> stackoverflowResponse = stackoverflowClient.fetchQuestion(Long.parseLong(pr.id()));
+            Optional<StackoverflowResponse> stackoverflowResponse =
+                stackoverflowClient.fetchQuestion(Long.parseLong(pr.id()));
             updateLink(stackoverflowResponse, getStackoverflowFunction(), linkDto);
             description = "New answers to the question with ID %s were left".formatted(pr.id());
         }
         updateSender.postUpdate(new LinkUpdateRequest(linkDto.getId(), linkDto.getUrl(), description,
-                subscriptionService.chatList(linkDto.getUrl()).stream().map(ChatDto::getId).toList()));
+            subscriptionService.chatList(linkDto.getUrl()).stream().map(ChatDto::getId).toList()
+        ));
     }
 
     private <T> void updateLink(Optional<T> response, Function<T, OffsetDateTime> f, LinkDto linkDto) {

@@ -5,14 +5,12 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
-import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.scrapper.JdbcRepositoryTestEnvironment;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;
@@ -163,6 +161,7 @@ class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
         assertThat(testLinkDto.getLastCheckedAt().toEpochSecond() - lastCheckedAt2.toEpochSecond()).isEqualTo(0);
         assertThat(testLinkDto.getLastCheckedAt().toEpochSecond() - lastCheckedAt.toEpochSecond()).isNotEqualTo(0);
     }
+
     @Test
     void findUnchecked_noLinksToRecheck_emptyListReturned() {
         //given

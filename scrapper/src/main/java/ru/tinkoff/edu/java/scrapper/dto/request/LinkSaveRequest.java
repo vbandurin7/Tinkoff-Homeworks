@@ -12,6 +12,7 @@ public class LinkSaveRequest {
         this.dtoLink = dtoLink;
         this.entityLink = entityLink;
     }
+
     private LinkDto dtoLink;
     private ru.tinkoff.edu.java.scrapper.persistence.entity.Link entityLink;
 }

@@ -5,7 +5,10 @@ import ru.tinkoff.edu.java.scrapper.persistence.service.AbstractSubscriptionServ
 
 public class JooqSubscriptionService extends AbstractSubscriptionService {
 
-    public JooqSubscriptionService(JooqLinkService linkService, JooqChatService chatService, JooqSubscriptionRepository subscriptionRepository) {
+    public JooqSubscriptionService(
+        JooqLinkService linkService, JooqChatService chatService,
+        JooqSubscriptionRepository subscriptionRepository
+    ) {
         this.subscriptionRepository = subscriptionRepository;
         this.linkService = linkService;
         this.chatService = chatService;

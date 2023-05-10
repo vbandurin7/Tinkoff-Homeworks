@@ -5,7 +5,11 @@ import ru.tinkoff.edu.java.scrapper.dto.response.client.StackoverflowResponse;
 import java.time.OffsetDateTime;
 import java.util.function.Function;
 
-public class SchedulerUtils {
+public final class SchedulerUtils {
+
+    private SchedulerUtils() {
+    }
+
     public static Function<GitHubResponse, OffsetDateTime> getGitHubFunction() {
         return GitHubResponse::updatedAt;
     }

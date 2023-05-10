@@ -2,11 +2,11 @@ package ru.tinkoff.edu.java.scrapper.persistence.repository.jooq;
 
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
-import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.ChatRepository;
 
 import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.CHAT;
+
 @RequiredArgsConstructor
 public class JooqChatRepository implements ChatRepository {
     private final DSLContext dslContext;
@@ -18,8 +18,8 @@ public class JooqChatRepository implements ChatRepository {
 
     @Override
     public ChatDto findById(Long id) {
-        var res = dslContext.select(CHAT.fields()).from(CHAT).
-                where(CHAT.ID.eq(id)).limit(1).fetchInto(ChatDto.class);
+        var res = dslContext.select(CHAT.fields()).from(CHAT)
+            .where(CHAT.ID.eq(id)).limit(1).fetchInto(ChatDto.class);
         return res.size() == 0 ? null : res.get(0);
     }
 

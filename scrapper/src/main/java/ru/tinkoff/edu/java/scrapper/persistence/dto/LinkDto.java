@@ -17,6 +17,7 @@ public class LinkDto {
         this.url = uri;
         this.lastCheckedAt = OffsetDateTime.now();
     }
+
     @Id
     private Long id;
     String url;

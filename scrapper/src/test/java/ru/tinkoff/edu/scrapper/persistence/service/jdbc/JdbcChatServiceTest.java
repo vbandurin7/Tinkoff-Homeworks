@@ -3,14 +3,12 @@ package ru.tinkoff.edu.scrapper.persistence.service.jdbc;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
-import ru.tinkoff.edu.java.scrapper.persistence.service.ChatService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jdbc.JdbcChatService;
 import ru.tinkoff.edu.scrapper.IntegrationEnvironment;
 import ru.tinkoff.edu.scrapper.configuration.TestConfig;
@@ -28,6 +26,7 @@ class JdbcChatServiceTest extends IntegrationEnvironment {
     private JdbcChatService jdbcChatService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
     @AfterEach
     public void clearDB() {
         jdbcTemplate.update(CLEAR_CHAT_SQL);

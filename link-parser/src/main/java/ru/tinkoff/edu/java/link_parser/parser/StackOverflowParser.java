@@ -1,8 +1,8 @@
-package ru.tinkoff.edu.java.linkParser.parser;
+package ru.tinkoff.edu.java.link_parser.parser;
 
-import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
-import ru.tinkoff.edu.java.linkParser.parserResult.StackOverflowResult;
-import ru.tinkoff.edu.java.linkParser.validators.StackoverflowValidator;
+import ru.tinkoff.edu.java.link_parser.parserResult.ParseResult;
+import ru.tinkoff.edu.java.link_parser.parserResult.StackOverflowResult;
+import ru.tinkoff.edu.java.link_parser.validators.StackoverflowValidator;
 
 import java.net.URI;
 

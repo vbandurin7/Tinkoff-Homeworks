@@ -18,17 +18,25 @@ import ru.tinkoff.edu.java.scrapper.persistence.service.utils.LinkInfoUpdater;
 @Configuration
 @ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jooq")
 public class JooqAccessConfiguration {
+
     @Bean
     public LinkService linkService(JooqLinkRepository linkRepository, LinkInfoUpdater linkInfoUpdater) {
         return new JooqLinkService(linkRepository, linkInfoUpdater);
     }
+
     @Bean
     public ChatService chatService(JooqChatRepository jooqChatRepository) {
         return new JooqChatService(jooqChatRepository);
     }
+
     @Bean
-    public SubscriptionService subscriptionService(JooqLinkRepository linkRepository, LinkInfoUpdater linkInfoUpdater, JooqChatRepository jooqChatRepository, JooqSubscriptionRepository subscriptionRepository) {
-        return new JooqSubscriptionService(new JooqLinkService(linkRepository, linkInfoUpdater), new JooqChatService(jooqChatRepository), subscriptionRepository);
+    public SubscriptionService subscriptionService(
+        JooqLinkRepository linkRepository, LinkInfoUpdater linkInfoUpdater,
+        JooqChatRepository jooqChatRepository, JooqSubscriptionRepository subscriptionRepository
+    ) {
+        return new JooqSubscriptionService(new JooqLinkService(linkRepository, linkInfoUpdater),
+            new JooqChatService(jooqChatRepository), subscriptionRepository
+        );
     }
 
     @Bean
@@ -45,5 +53,4 @@ public class JooqAccessConfiguration {
     public JooqSubscriptionRepository jooqSubscriptionRepository(DSLContext dslContext) {
         return new JooqSubscriptionRepository(dslContext);
     }
-
 }

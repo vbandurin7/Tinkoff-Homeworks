@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import ru.tinkoff.edu.java.linkParser.parser.LinkParser;
-import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
+import ru.tinkoff.edu.java.link_parser.parser.LinkParser;
+import ru.tinkoff.edu.java.link_parser.parserResult.ParseResult;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 

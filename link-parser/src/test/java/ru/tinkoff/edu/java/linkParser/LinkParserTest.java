@@ -5,13 +5,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.tinkoff.edu.java.linkParser.parser.LinkParser;
-import ru.tinkoff.edu.java.linkParser.parserResult.GitHubResult;
-import ru.tinkoff.edu.java.linkParser.parserResult.ParseResult;
-import ru.tinkoff.edu.java.linkParser.parserResult.StackOverflowResult;
+import ru.tinkoff.edu.java.link_parser.parser.LinkParser;
+import ru.tinkoff.edu.java.link_parser.parserResult.GitHubResult;
+import ru.tinkoff.edu.java.link_parser.parserResult.ParseResult;
+import ru.tinkoff.edu.java.link_parser.parserResult.StackOverflowResult;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,14 +18,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
-public class LinkParserTest {
-
-    LinkParser linkParser = new LinkParser();
+class LinkParserTest {
 
     @ParameterizedTest
     @MethodSource("incorrectTestsProvider")
     void parseURL_invalidLinks_exceptionThrown(String link) {
-        assertThrows(RuntimeException.class, () -> linkParser.parseURL(URI.create(link)));
+        assertThrows(RuntimeException.class, () -> LinkParser.parseURL(URI.create(link)));
     }
 
     @SneakyThrows
@@ -38,7 +35,7 @@ public class LinkParserTest {
         GitHubResult expectedResult = new GitHubResult(vals.get(1), vals.get(2));
 
         //when
-        ParseResult parseResult = linkParser.parseURL(url);
+        ParseResult parseResult = LinkParser.parseURL(url);
 
         //then
         assertThat(parseResult).isEqualTo(expectedResult);
@@ -53,7 +50,7 @@ public class LinkParserTest {
         StackOverflowResult expectedResult = new StackOverflowResult(vals.get(1));
 
         //when
-        ParseResult parseResult = linkParser.parseURL(url);
+        ParseResult parseResult = LinkParser.parseURL(url);
 
         //then
         assertThat(parseResult).isEqualTo(expectedResult);
