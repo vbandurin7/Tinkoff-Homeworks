@@ -3,6 +3,9 @@ on:
   push:
     paths:
       - 'bot/**'
+env:
+  REPOSITORY: tinkoff-homeworks
+
 jobs:
   build:
     runs-on: ubuntu-latest
