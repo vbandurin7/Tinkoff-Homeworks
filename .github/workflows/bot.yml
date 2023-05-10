@@ -1,7 +1,7 @@
 name: build-bot-application
 env:
   REPOSITORY: tinkoff-homeworks
-  
+
 on:
   push:
     paths:
