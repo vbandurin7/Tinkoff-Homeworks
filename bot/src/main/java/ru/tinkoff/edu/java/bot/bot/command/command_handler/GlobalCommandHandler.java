@@ -16,8 +16,7 @@ public final class GlobalCommandHandler {
 
     public SendMessage handle(Update update) {
         Optional<? extends CommandProcessor> first = commandProcessors.stream()
-            .filter(processor -> processor.supports(update))
-            .findFirst();
+            .filter(processor -> processor.supports(update)).findFirst();
         return first.isPresent() ? first.get().handle(update) : unsupportedCommand(update);
     }
 
