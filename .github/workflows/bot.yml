@@ -5,9 +5,6 @@ on:
     paths:
       - 'bot/**'
 
-env:
-  REPOSITORY: tinkoff-homeworks
-
 permissions:
   packages: write
 
@@ -33,10 +30,10 @@ jobs:
           registry: ghcr.io
 
       - name: Build bot image
-        run: docker build -f bot.Dockerfile -t ghcr.io/${{ github.actor }}/${{ env.REPOSITORY }}/bot-app:latest .
+        run: docker build -f bot.Dockerfile -t ghcr.io/${{ github.actor }}/bot-app:latest .
 
       - name: Push bot image
-        run: docker push ghcr.io/${{ github.actor }}/${{ env.REPOSITORY }}/bot-app:latest
+        run: docker push ghcr.io/${{ github.actor }}/bot-app:latest
 
   checkstyle:
     runs-on: ubuntu-latest
