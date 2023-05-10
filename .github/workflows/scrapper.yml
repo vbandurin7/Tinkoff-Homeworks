@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-java@v3
         with:
           java-version: '17'
@@ -24,5 +25,20 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_PASSWORD }}
           registry: ghcr.io
+
       - name: Push image
         run: docker push ${{ secrets.GHCR_USERNAME }}/scrapper-app:latest
+
+  checkstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Checkstyle run
+        run: mvn -pl scrapper -am checkstyle:check
