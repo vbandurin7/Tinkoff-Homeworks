@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.tinkoff.edu.java.bot.bot.TelegramBotCommandListener;
-import ru.tinkoff.edu.java.bot.bot.command.commandHandler.GlobalCommandHandler;
+import ru.tinkoff.edu.java.bot.bot.command.command_handler.GlobalCommandHandler;
 
 @Configuration
 @EnableConfigurationProperties(ApplicationProperties.class)
@@ -16,10 +16,11 @@ import ru.tinkoff.edu.java.bot.bot.command.commandHandler.GlobalCommandHandler;
 public class BotConfiguration {
 
     private final ApplicationProperties applicationProperties;
+
     @Bean("telegramBot")
     public TelegramBot telegramBot(GlobalCommandHandler globalCommandHandler) {
         TelegramBot tgBot = new TelegramBot(applicationProperties.botToken());
-        TelegramBotCommandListener telegramBotCommandListener = new TelegramBotCommandListener(tgBot, globalCommandHandler);
+        var telegramBotCommandListener = new TelegramBotCommandListener(tgBot, globalCommandHandler);
         tgBot.setUpdatesListener(telegramBotCommandListener);
         tgBot.execute(new SetMyCommands(telegramBotCommandListener.getCommands().toArray(new BotCommand[0])));
         return tgBot;

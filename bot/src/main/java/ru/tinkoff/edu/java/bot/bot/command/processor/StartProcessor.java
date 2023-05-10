@@ -26,8 +26,7 @@ public final class StartProcessor extends AbstractCommandProcessor {
 
     @Override
     public SendMessage handle(Update update) {
-        // if user.registered -> return "You are already registered" (вроде как мы не можем это сейчас обработать, пока нет бд)
-        if (commandValidator.validateCommand( 0, update.message().text()).isEmpty()) {
+        if (commandValidator.validateCommand(0, update.message().text()).isEmpty()) {
             return send(update, "No arguments expected");
         }
         return send(update, "You have successfully registered");

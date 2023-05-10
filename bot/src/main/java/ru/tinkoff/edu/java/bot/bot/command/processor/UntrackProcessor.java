@@ -30,8 +30,8 @@ public final class UntrackProcessor extends AbstractCommandProcessor {
 
     @Override
     public SendMessage handle(Update update) {
-        Optional<List<String>> argList;
-        if ((argList = commandValidator.validateCommand(1, update.message().text())).isEmpty()) {
+        Optional<List<String>> argList = commandValidator.validateCommand(1, update.message().text());
+        if (argList.isEmpty()) {
             return send(update, "Wrong number of arguments.");
         }
         if (linkService.untrack(update.message().chat().id(), argList.get().get(0)).isEmpty()) {

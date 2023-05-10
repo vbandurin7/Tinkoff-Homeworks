@@ -4,7 +4,8 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 
-public abstract sealed class AbstractCommandProcessor implements CommandProcessor permits HelpProcessor, ListProcessor, StartProcessor, TrackProcessor, UntrackProcessor {
+public abstract sealed class AbstractCommandProcessor implements CommandProcessor permits HelpProcessor,
+    ListProcessor, StartProcessor, TrackProcessor, UntrackProcessor {
 
     @Override
     public String toString() {

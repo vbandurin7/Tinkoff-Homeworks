@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.tinkoff.edu.java.bot.bot.command.processor.ListProcessor;
 import ru.tinkoff.edu.java.bot.bot.command.validator.CommandValidatorImpl;
@@ -15,7 +16,6 @@ import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
 import ru.tinkoff.edu.java.bot.service.LinkService;
 import com.pengrad.telegrambot.model.Update;
 import ru.tinkoff.edu.java.bot.dto.response.LinkResponse;
-import org.mockito.*;
 
 import java.net.URI;
 import java.util.Collections;
@@ -28,6 +28,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ListProcessorTest {
+
+    private static final String LIST_COMMAND = "/list";
 
     @Mock
     private CommandValidatorImpl commandValidator;
@@ -44,7 +46,7 @@ class ListProcessorTest {
 
     @Test
     void command_returnsCorrectCommand() {
-        assertThat(listProcessor.command()).isEqualTo("/list");
+        assertThat(listProcessor.command()).isEqualTo(LIST_COMMAND);
     }
 
     @Test
@@ -62,7 +64,7 @@ class ListProcessorTest {
         when(update.message()).thenReturn(message);
         when(update.message().chat()).thenReturn(chat);
         when(update.message().chat().id()).thenReturn(555L);
-        when(update.message().text()).thenReturn("/list");
+        when(update.message().text()).thenReturn(LIST_COMMAND);
         when(commandValidator.validateCommand(0, update.message().text()))
                 .thenReturn(Optional.of(Collections.emptyList()));
 
@@ -85,7 +87,7 @@ class ListProcessorTest {
         when(update.message()).thenReturn(message);
         when(update.message().chat()).thenReturn(chat);
         when(update.message().chat().id()).thenReturn(555L);
-        when(update.message().text()).thenReturn("/list");
+        when(update.message().text()).thenReturn(LIST_COMMAND);
         when(commandValidator.validateCommand(0, update.message().text()))
                 .thenReturn(Optional.of(Collections.emptyList()));
 

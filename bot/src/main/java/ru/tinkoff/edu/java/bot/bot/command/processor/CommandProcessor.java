@@ -13,9 +13,9 @@ public sealed interface CommandProcessor permits AbstractCommandProcessor {
     SendMessage handle(Update update);
 
     default boolean supports(Update update) {
-        return update.message() != null &&
-                update.message().text() != null &&
-                update.message().text().split(" ")[0].equals(command());
+        return update.message() != null
+            && update.message().text() != null
+            && update.message().text().split(" ")[0].equals(command());
     }
 
     default BotCommand toApiCommand() {

@@ -46,9 +46,9 @@ public final class ListProcessor extends AbstractCommandProcessor {
         if (linkResponses.isEmpty() || linkResponses.get().size() == 0) {
             return "No links for track were added. Try <b>'/track [link]'</b>";
         }
-        return "<b>All tracking links are below:</b> " + System.lineSeparator() +
-                linkResponses.get().links().stream()
-                        .map(l -> "<i>" + l.url().toString() + "</i>")
-                        .collect(Collectors.joining(System.lineSeparator()));
+        return "<b>All tracking links are below:</b> " + System.lineSeparator()
+            + linkResponses.get().links().stream()
+            .map(l -> "<i>" + l.url().toString() + "</i>")
+            .collect(Collectors.joining(System.lineSeparator()));
     }
 }

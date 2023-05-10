@@ -1,11 +1,10 @@
-package ru.tinkoff.edu.java.bot.bot.command.commandHandler;
+package ru.tinkoff.edu.java.bot.bot.command.command_handler;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.bot.command.processor.CommandProcessor;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +16,8 @@ public final class GlobalCommandHandler {
 
     public SendMessage handle(Update update) {
         Optional<? extends CommandProcessor> first = commandProcessors.stream()
-                .filter(processor -> processor.supports(update))
-                .findFirst();
+            .filter(processor -> processor.supports(update))
+            .findFirst();
         return first.isPresent() ? first.get().handle(update) : unsupportedCommand(update);
     }
 

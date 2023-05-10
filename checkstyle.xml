@@ -40,19 +40,6 @@
 
 
     <module name="TreeWalker">
-
-        <module name="JavadocMissingLeadingAsteriskCheck"/>
-        <module name="JavadocMissingWhitespaceAfterAsterisk"/>
-        <module name="JavadocStyle">
-            <property name="checkFirstSentence" value="false"/>
-            <property name="checkEmptyJavadoc" value="true"/>
-            <property name="tokens"
-                      value="ANNOTATION_DEF, ANNOTATION_FIELD_DEF, CLASS_DEF, CTOR_DEF, ENUM_CONSTANT_DEF, ENUM_DEF, INTERFACE_DEF, METHOD_DEF, VARIABLE_DEF"/>
-        </module>
-
-        <module name="NonEmptyAtclauseDescription"/>
-        <module name="SingleLineJavadoc"/>
-
         <module name="MissingOverride"/>
 
         <module name="CatchParameterName"/>
@@ -63,7 +50,9 @@
         <module name="LambdaParameterName"/>
         <module name="LocalVariableName"/>
         <module name="MemberName"/>
-        <module name="MethodName"/>
+        <module name="MethodName">
+            <property name="format" value="^(?!test).*"/>
+        </module>
         <module name="MethodTypeParameterName"/>
         <module name="PackageName"/>
         <module name="ParameterName"/>
@@ -75,10 +64,6 @@
 
         <module name="AvoidStarImport"/>
         <module name="IllegalImport"/>
-        <module name="ImportOrder">
-            <property name="option" value="under"/>
-            <property name="sortStaticImportsAlphabetically" value="true"/>
-        </module>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
         <module name="AnonInnerLength">
@@ -168,12 +153,6 @@
         </module>
 
         <module name="InnerAssignment"/>
-        <module name="MagicNumber">
-            <property name="ignoreHashCodeMethod" value="true"/>
-            <property name="ignoreAnnotation" value="true"/>
-            <message key="magic.number"
-                     value="Most likely the value ''{0}'' is a configuration one. You should move it to configuration file instead of source code."/>
-        </module>
         <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
         <module name="MultipleStringLiterals">

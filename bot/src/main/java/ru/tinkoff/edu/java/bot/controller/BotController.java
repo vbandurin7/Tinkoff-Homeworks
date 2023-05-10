@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.java.bot.dto.request.LinkUpdateRequest;
 import ru.tinkoff.edu.java.bot.dto.response.LinkUpdateResponse;
-import ru.tinkoff.edu.java.bot.service.LinkService;
 import ru.tinkoff.edu.java.bot.service.UpdateNotifier;
-
-import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -22,6 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Validated
 @RequiredArgsConstructor
 public class BotController {
+
     private final UpdateNotifier updateNotifier;
 
     @PostMapping(value = "/updates", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
