@@ -1,14 +1,15 @@
 name: build-bot-application
-env:
-  REPOSITORY: tinkoff-homeworks
-
-permissions:
-  packages: write
 
 on:
   push:
     paths:
       - 'bot/**'
+
+env:
+  REPOSITORY: tinkoff-homeworks
+
+permissions:
+  packages: write
 
 jobs:
   build:
@@ -25,7 +26,7 @@ jobs:
       - run: mvn package -pl bot -am
 
       - name: Login to GHCR
-        uses: docker/login-action@v2
+        uses: docker/login-action@v1
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PASSWORD }}
