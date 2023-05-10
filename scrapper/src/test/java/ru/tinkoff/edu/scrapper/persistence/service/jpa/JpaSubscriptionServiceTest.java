@@ -3,10 +3,12 @@ package ru.tinkoff.edu.scrapper.persistence.service.jpa;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
@@ -57,6 +59,11 @@ class JpaSubscriptionServiceTest {
             jpaSubscriptionService.removeLink(ENTITY_TEST_CHAT.getId(), ENTITY_TEST_LINK.getUrl());
         } catch (Exception ignored) {
         }
+    }
+
+    @BeforeAll
+    public void addChat() {
+        jpaChatRepository.save(ENTITY_TEST_CHAT);
     }
 
     @Test

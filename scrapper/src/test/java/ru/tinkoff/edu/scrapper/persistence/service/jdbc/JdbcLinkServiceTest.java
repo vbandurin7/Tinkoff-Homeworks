@@ -27,22 +27,16 @@ import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvi
 @SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
 @ActiveProfiles("test")
 class JdbcLinkServiceTest extends JdbcRepositoryTestEnvironment {
+
     @Autowired
     private JdbcLinkService jdbcLinkService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private static final Logger logger = LoggerFactory.getLogger(
-        JdbcLinkServiceTest.class);
-
     @BeforeEach
     public void clearDB() {
-        try {
-            jdbcTemplate.update(CLEAR_CHAT_LINK_SQL);
-            jdbcTemplate.update(CLEAR_LINK_SQL);
-        } catch (Exception e) {
-            logger.info("Произошёл затуп");
-        }
+        jdbcTemplate.update(CLEAR_CHAT_LINK_SQL);
+        jdbcTemplate.update(CLEAR_LINK_SQL);
     }
 
     @Test
