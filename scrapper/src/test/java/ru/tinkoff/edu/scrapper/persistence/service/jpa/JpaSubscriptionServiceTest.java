@@ -2,6 +2,7 @@ package ru.tinkoff.edu.scrapper.persistence.service.jpa;
 
 
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -63,6 +64,11 @@ class JpaSubscriptionServiceTest {
     @BeforeAll
     public void addChat() {
         jpaChatRepository.save(ENTITY_TEST_CHAT);
+    }
+
+    @AfterAll
+    public void deleteChat() {
+        jpaChatRepository.deleteById(ENTITY_TEST_CHAT.getId());
     }
 
     @Test
