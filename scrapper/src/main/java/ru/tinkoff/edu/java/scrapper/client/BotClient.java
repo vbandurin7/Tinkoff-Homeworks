@@ -1,6 +1,5 @@
 package ru.tinkoff.edu.java.scrapper.client;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,18 +13,18 @@ public class BotClient implements UpdateSender {
 
     public BotClient(String url) {
         this.webClient = WebClient.builder()
-                .baseUrl(url)
-                .build();
+            .baseUrl(url)
+            .build();
     }
 
     public ResponseEntity<LinkUpdateResponse> postUpdate(LinkUpdateRequest linkUpdateRequest) {
         return webClient.post()
-                .uri("/updates")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(linkUpdateRequest)
-                .retrieve()
-                .toEntity(LinkUpdateResponse.class)
-                .block();
+            .uri("/updates")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(linkUpdateRequest)
+            .retrieve()
+            .toEntity(LinkUpdateResponse.class)
+            .block();
     }
 
     public void sendUpdate(LinkUpdateRequest linkUpdateRequest) {
