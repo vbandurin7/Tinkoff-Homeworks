@@ -12,6 +12,6 @@ public class UpdatePoster {
     private final UpdateSender updateSender;
 
     public void sendMessage(LinkUpdateRequest linkUpdateRequest) {
-        updateSender.postUpdate(linkUpdateRequest);
+        updateSender.sendUpdate(linkUpdateRequest);
     }
 }

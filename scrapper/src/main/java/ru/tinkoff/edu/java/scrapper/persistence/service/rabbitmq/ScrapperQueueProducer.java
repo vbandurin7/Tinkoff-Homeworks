@@ -15,7 +15,7 @@ public class ScrapperQueueProducer implements UpdateSender {
     private final RabbitTemplate rabbitTemplate;
     private final ApplicationProperties applicationProperties;
 
-    public void postUpdate(LinkUpdateRequest update) {
+    public void sendUpdate(LinkUpdateRequest update) {
         rabbitTemplate.convertAndSend(applicationProperties.exchangeName(), applicationProperties.queueName(), update);
     }
 }

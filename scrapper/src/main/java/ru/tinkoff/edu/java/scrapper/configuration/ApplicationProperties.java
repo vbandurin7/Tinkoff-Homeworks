@@ -12,6 +12,7 @@ import java.time.Duration;
 public record ApplicationProperties(@NotNull String test, Scheduler scheduler, @NotNull Duration checkInterval,
                                     @NotNull AccessType databaseAccessType,
                                     @NotNull String queueName, @NotNull String exchangeName,
-                                    boolean useQueue) {
+                                    boolean useQueue, @NotNull String botBaseUrl, @NotNull String githubBaseUrl,
+                                    @NotNull String stackoverflowBaseUrl) {
     record Scheduler(Duration interval) {}
 }

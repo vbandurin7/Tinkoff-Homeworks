@@ -7,6 +7,9 @@ app:
   queue-name: tinkoff.edu.scrapperQueue
   exchange-name: tinkoffExchange
   use-queue: true
+  bot-base-url: http://localhost:8081
+  github-base-url: https://api.github.com
+  stackoverflow-base-url: https://api.stackexchange.com/2.3
 
 spring:
   datasource:

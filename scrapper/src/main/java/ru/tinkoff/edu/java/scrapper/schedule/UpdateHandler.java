@@ -42,7 +42,7 @@ public class UpdateHandler {
             updateLink(stackoverflowResponse, getStackoverflowFunction(), linkDto);
             description = "New answers to the question with ID %s were left".formatted(pr.id());
         }
-        updateSender.postUpdate(new LinkUpdateRequest(linkDto.getId(), linkDto.getUrl(), description,
+        updateSender.sendUpdate(new LinkUpdateRequest(linkDto.getId(), linkDto.getUrl(), description,
             subscriptionService.chatList(linkDto.getUrl()).stream().map(ChatDto::getId).toList()
         ));
     }

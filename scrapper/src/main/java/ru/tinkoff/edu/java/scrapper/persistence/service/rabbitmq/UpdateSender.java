@@ -4,6 +4,6 @@ import ru.tinkoff.edu.java.scrapper.dto.request.LinkUpdateRequest;
 
 public interface UpdateSender {
 
-    void postUpdate(LinkUpdateRequest update);
+    void sendUpdate(LinkUpdateRequest update);
 
 }
