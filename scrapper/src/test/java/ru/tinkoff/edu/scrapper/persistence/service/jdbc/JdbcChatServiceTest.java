@@ -2,8 +2,8 @@ package ru.tinkoff.edu.scrapper.persistence.service.jdbc;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,6 +20,7 @@ import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvi
 
 @SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JdbcChatServiceTest extends IntegrationEnvironment {
 
     private static final ChatSaveRequest TEST_CHAT = new ChatSaveRequest(new ChatDto(1), null);
