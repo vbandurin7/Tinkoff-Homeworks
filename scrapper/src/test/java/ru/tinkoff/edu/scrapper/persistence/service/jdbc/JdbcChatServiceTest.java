@@ -1,5 +1,7 @@
 package ru.tinkoff.edu.scrapper.persistence.service.jdbc;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,14 @@ class JdbcChatServiceTest extends IntegrationEnvironment {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @BeforeEach
+    @BeforeAll
+    public void prepDB() {
+        jdbcTemplate.update(CLEAR_CHAT_LINK_SQL);
+        jdbcTemplate.update(CLEAR_LINK_SQL);
+        jdbcTemplate.update(CLEAR_CHAT_SQL);
+    }
+
+    @AfterEach
     public void clearDB() {
         jdbcTemplate.update(CLEAR_CHAT_SQL);
     }
