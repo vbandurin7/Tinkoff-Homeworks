@@ -5,6 +5,7 @@ on:
     paths:
       - 'bot/**'
       - '.github/workflow/bot.yml'
+      
 
 permissions:
   packages: write
