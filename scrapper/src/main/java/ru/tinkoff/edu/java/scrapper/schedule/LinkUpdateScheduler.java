@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.link_parser.parser.LinkParser;
 import ru.tinkoff.edu.java.link_parser.parserResult.ParseResult;
+import ru.tinkoff.edu.java.scrapper.metric.MessageProcessorMetric;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.service.LinkService;
 
@@ -24,10 +25,10 @@ public class LinkUpdateScheduler {
     public void update() {
         List<LinkDto> linkDtos = linkService.findUnchecked();
         linkDtos.forEach(link -> {
+            MessageProcessorMetric.incrementProcessedMessageCount();
             ParseResult parseResult = LinkParser.parseURL(URI.create(link.getUrl()));
             updateHandler.handleUpdate(link, parseResult);
             linkService.updateTime(link);
         });
     }
 }
-

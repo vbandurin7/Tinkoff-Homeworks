@@ -1,7 +1,7 @@
 app:
   test: 123
   scheduler:
-    interval: 5000
+    interval: 45000
   check-interval: 300
   database-access-type: jpa
   queue-name: tinkoff.edu.scrapperQueue
@@ -16,6 +16,25 @@ spring:
     url: jdbc:postgresql://localhost:5432/scrapper
     username: root
     password: root
+  application:
+    name: scrapper-app
+
+management:
+  server:
+    port: 8090
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+      exposure.include: [ "info", "health", "prometheus" ]
+      path-mapping:
+        prometheus: metrics
+  endpoint:
+    info.enabled: true
+    health.enabled: true
+    prometheus.enabled: true
+  metrics.tags:
+    application: ${spring.application.name}
 
 springdoc:
   swagger-ui:

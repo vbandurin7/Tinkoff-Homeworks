@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfigurati
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import ru.tinkoff.edu.java.scrapper.configuration.ApplicationProperties;
+import ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc.JdbcLinkRepository;
 
 @EnableScheduling
 @SpringBootApplication(exclude = LiquibaseAutoConfiguration.class)

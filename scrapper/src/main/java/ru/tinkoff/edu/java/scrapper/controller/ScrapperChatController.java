@@ -14,6 +14,7 @@ import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.DeleteChatResponse;
 import ru.tinkoff.edu.java.scrapper.dto.response.RegisterChatResponse;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
+import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.persistence.service.ChatService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -30,7 +31,7 @@ public class ScrapperChatController {
     public ResponseEntity<RegisterChatResponse> registerChat(@PathVariable("id") @NotNull Long id) {
         chatService.register(new ChatSaveRequest(
             new ChatDto(id),
-            new ru.tinkoff.edu.java.scrapper.persistence.entity.Chat()
+            new Chat(id)
         ));
         return ResponseEntity.ok(new RegisterChatResponse("Chat with id " + id + " was registered successfully"));
     }
