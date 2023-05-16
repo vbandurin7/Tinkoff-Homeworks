@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - 'scrapper/**'
-      - '.github/workflow/scrapper.yml'
+      - '.github/workflows/scrapper.yml'
       - 'link-parser/**'
 
 permissions:
