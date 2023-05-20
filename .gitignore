@@ -1,4 +1,4 @@
 *.iml
 .idea
 target
-/project/scrapper/rabbitmq_data/
+/scrapper/rabbitmq_data/

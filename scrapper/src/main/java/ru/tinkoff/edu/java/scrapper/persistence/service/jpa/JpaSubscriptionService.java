@@ -89,6 +89,7 @@ public class JpaSubscriptionService implements SubscriptionService {
     }
 
     @Override
+    @Transactional
     public List<ChatDto> chatList(String url) {
         var entityLink = linkRepository.findByUrl(url);
         if (entityLink == null) {
@@ -98,6 +99,7 @@ public class JpaSubscriptionService implements SubscriptionService {
     }
 
     @Override
+    @Transactional
     public List<LinkDto> listAll(long tgChatId) {
         var optionalChat = chatRepository.findById(tgChatId);
         var entityChat = optionalChat.orElse(null);

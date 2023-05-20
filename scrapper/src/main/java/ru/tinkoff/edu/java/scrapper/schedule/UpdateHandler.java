@@ -16,6 +16,7 @@ import ru.tinkoff.edu.java.scrapper.persistence.service.SubscriptionService;
 import ru.tinkoff.edu.java.scrapper.persistence.service.rabbitmq.UpdateSender;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -32,24 +33,27 @@ public class UpdateHandler {
 
     public void handleUpdate(LinkDto linkDto, ParseResult parseResult) {
         String description = "";
+        OffsetDateTime updatedBefore = linkDto.getUpdatedAt();
         if (parseResult instanceof GitHubResult pr) {
             Optional<GitHubResponse> gitHubResponse = gitHubClient.fetchRepository(pr.name(), pr.repository());
             updateLink(gitHubResponse, getGitHubFunction(), linkDto);
-            description = "User %s has pushed a new commit at repository %s".formatted(pr.name(), pr.repository());
+            description = "User <b>%s</b> has pushed a new commit at repository %s".formatted(pr.name(), linkDto.getUrl());
         } else if (parseResult instanceof StackOverflowResult pr) {
             Optional<StackoverflowResponse> stackoverflowResponse =
                 stackoverflowClient.fetchQuestion(Long.parseLong(pr.id()));
             updateLink(stackoverflowResponse, getStackoverflowFunction(), linkDto);
             description = "New answers to the question with ID %s were left".formatted(pr.id());
         }
-        updateSender.sendUpdate(new LinkUpdateRequest(linkDto.getId(), linkDto.getUrl(), description,
-            subscriptionService.chatList(linkDto.getUrl()).stream().map(ChatDto::getId).toList()
-        ));
+        if (updatedBefore.isBefore(linkDto.getUpdatedAt())) {
+            updateSender.sendUpdate(new LinkUpdateRequest(linkDto.getId(), linkDto.getUrl(), description,
+                subscriptionService.chatList(linkDto.getUrl()).stream().map(ChatDto::getId).toList()
+            ));
+        }
     }
 
     private <T> void updateLink(Optional<T> response, Function<T, OffsetDateTime> f, LinkDto linkDto) {
         if (response.isPresent()) {
-            linkDto.setUpdatedAt(f.apply(response.get()));
+            linkDto.setUpdatedAt(f.apply(response.get()).withOffsetSameInstant(ZoneOffset.ofHours(3)));
             linkDto.setLastCheckedAt(OffsetDateTime.now());
         }
     }
