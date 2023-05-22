@@ -56,6 +56,7 @@ public class JpaSubscriptionService implements SubscriptionService {
         entityChat.getLinks().add(entityLink);
         linkSaveRequest.setEntityLink(entityLink);
         chatSaveRequest.setEntityChat(entityChat);
+        linkSaveRequest.getDtoLink().setId(entityLink.getId());
         linkRepository.save(linkSaveRequest.getEntityLink());
         chatRepository.save(chatSaveRequest.getEntityChat());
         return linkSaveRequest.getDtoLink();

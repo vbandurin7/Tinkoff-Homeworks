@@ -37,12 +37,13 @@ public class UpdateHandler {
         if (parseResult instanceof GitHubResult pr) {
             Optional<GitHubResponse> gitHubResponse = gitHubClient.fetchRepository(pr.name(), pr.repository());
             updateLink(gitHubResponse, getGitHubFunction(), linkDto);
-            description = "User <b>%s</b> has pushed a new commit at repository %s".formatted(pr.name(), linkDto.getUrl());
+            description =
+                "User <b>%s</b> has pushed a new commit at repository %s".formatted(pr.name(), linkDto.getUrl());
         } else if (parseResult instanceof StackOverflowResult pr) {
             Optional<StackoverflowResponse> stackoverflowResponse =
                 stackoverflowClient.fetchQuestion(Long.parseLong(pr.id()));
             updateLink(stackoverflowResponse, getStackoverflowFunction(), linkDto);
-            description = "New answers to the question with ID %s were left".formatted(pr.id());
+            description = "New answers to the question %s were left".formatted(linkDto.getUrl());
         }
         if (updatedBefore.isBefore(linkDto.getUpdatedAt())) {
             updateSender.sendUpdate(new LinkUpdateRequest(linkDto.getId(), linkDto.getUrl(), description,

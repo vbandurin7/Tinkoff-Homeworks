@@ -3,7 +3,7 @@ app:
   scheduler:
     interval: 45000
   check-interval: 300
-  database-access-type: jpa
+  database-access-type: jdbc
   queue-name: tinkoff.edu.scrapperQueue
   exchange-name: tinkoffExchange
   use-queue: true
