@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,6 +55,7 @@ class ListProcessorTest {
         assertThat(listProcessor.description()).isNotEmpty();
     }
 
+    @SneakyThrows
     @Test
     void handle_formattingIsHTML() {
         //given
@@ -77,6 +79,7 @@ class ListProcessorTest {
         assertThat(result.getParameters().get("parse_mode")).isEqualTo(ParseMode.HTML.toString());
     }
 
+    @SneakyThrows
     @Test
     void handle_emptyList_specialMessage() {
         //given

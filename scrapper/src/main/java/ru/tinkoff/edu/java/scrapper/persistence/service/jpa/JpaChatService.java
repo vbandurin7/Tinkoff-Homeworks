@@ -5,9 +5,11 @@ import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.ChatService;
+import ru.tinkoff.edu.java.scrapper.persistence.service.utils.EntityConverter;
 
 @RequiredArgsConstructor
 public class JpaChatService implements ChatService {
+
     private final JpaChatRepository chatRepository;
 
     @Override
@@ -21,6 +23,11 @@ public class JpaChatService implements ChatService {
         if (count(tgChatId) != 0) {
             chatRepository.deleteById(tgChatId);
         }
+    }
+
+    @Override
+    public ChatDto findById(long tgChatId) {
+        return EntityConverter.entityToDtoChat(chatRepository.findById(tgChatId).get());
     }
 
     @Override

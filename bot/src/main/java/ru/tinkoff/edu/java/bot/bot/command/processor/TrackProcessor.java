@@ -5,8 +5,11 @@ import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.bot.command.validator.CommandValidator;
+import ru.tinkoff.edu.java.bot.exception.ChatNotRegisteredException;
 import ru.tinkoff.edu.java.bot.service.LinkService;
+import ru.tinkoff.edu.java.link_parser.parser.LinkParser;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +38,16 @@ public final class TrackProcessor extends AbstractCommandProcessor {
         if (argList.isEmpty()) {
             return send(update, "Wrong number of arguments.");
         }
-        if (linkService.track(update.message().chat().id(), argList.get().get(0)).isEmpty()) {
-            send(update, String.format("Unable to start tracking link %s", argList.get().get(0)));
+
+        final String link = argList.get().get(0);
+        if (LinkParser.parseURL(URI.create(link)) == null) {
+            return send(update, String.format("Unable to start track link %s", link));
         }
-        return send(update, String.format("link %s was added for tracking successfully", argList.get().get(0)));
+        try {
+            linkService.track(update.message().chat().id(), link);
+        } catch (ChatNotRegisteredException e) {
+            return send(update, "To start working with links, please enter the command /start.");
+        }
+        return send(update, String.format("link %s was added for tracking successfully", link));
     }
 }

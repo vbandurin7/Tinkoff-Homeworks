@@ -10,4 +10,6 @@ public interface ChatService {
     void unregister(Long tgChatId);
 
     long count(Long tgChatId);
+
+    ChatDto findById(long tgChatId);
 }

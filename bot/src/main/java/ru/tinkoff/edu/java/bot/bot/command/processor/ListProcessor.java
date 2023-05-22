@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.bot.command.validator.CommandValidator;
 import ru.tinkoff.edu.java.bot.dto.response.ListLinksResponse;
+import ru.tinkoff.edu.java.bot.exception.ChatNotRegisteredException;
 import ru.tinkoff.edu.java.bot.service.LinkService;
 
 import java.util.Optional;
@@ -38,9 +39,13 @@ public final class ListProcessor extends AbstractCommandProcessor {
             return send(update, "Wrong number of arguments.");
         }
 
-        Optional<ListLinksResponse> linkList = linkService.getLinksList(update.message().chat().id());
-
-        return send(update, createMessage(linkList));
+        Optional<ListLinksResponse> linkList;
+        try {
+            linkList = linkService.getLinksList(update.message().chat().id());
+            return send(update, createMessage(linkList));
+        } catch (ChatNotRegisteredException ex) {
+            return send(update, "To start working with links, please enter the command /start.");
+        }
     }
 
     private String createMessage(Optional<ListLinksResponse> linkResponses) {

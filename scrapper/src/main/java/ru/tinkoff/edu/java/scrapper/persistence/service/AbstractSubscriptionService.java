@@ -1,16 +1,21 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
+import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
+import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.SubscriptionRepository;
 
 import java.util.List;
 
 public abstract class AbstractSubscriptionService implements SubscriptionService {
+
     protected LinkService linkService;
     protected ChatService chatService;
     protected SubscriptionRepository subscriptionRepository;
@@ -18,11 +23,12 @@ public abstract class AbstractSubscriptionService implements SubscriptionService
     @Override
     @Transactional
     public LinkDto addLink(long tgChatId, String url) {
+        checkChatExistence(tgChatId);
         LinkSaveRequest lr = new LinkSaveRequest(new LinkDto(url),
-                                                 new ru.tinkoff.edu.java.scrapper.persistence.entity.Link());
+                                                 new Link());
         linkService.save(lr);
         chatService.register(new ChatSaveRequest(new ChatDto(tgChatId),
-                                                 new ru.tinkoff.edu.java.scrapper.persistence.entity.Chat()));
+                                                 new Chat()));
         if (!inRelation(tgChatId, lr.getDtoLink())) {
             subscriptionRepository.addRelation(tgChatId, lr.getDtoLink().getUrl());
         }
@@ -32,6 +38,7 @@ public abstract class AbstractSubscriptionService implements SubscriptionService
     @Override
     @Transactional
     public LinkDto removeLink(long tgChatId, String url) {
+        checkChatExistence(tgChatId);
         LinkDto linkDto = linkService.findByUrl(url);
         if (linkDto == null) {
             throw new LinkNotFoundException();
@@ -40,14 +47,12 @@ public abstract class AbstractSubscriptionService implements SubscriptionService
         if (countLinkTracks(linkDto.getUrl()) == 0) {
             linkService.delete(linkDto.getUrl());
         }
-        if (countChatTracks(tgChatId) == 0) {
-            chatService.unregister(tgChatId);
-        }
         return linkDto;
     }
 
     @Override
     public List<LinkDto> listAll(long tgChatId) {
+        checkChatExistence(tgChatId);
         return subscriptionRepository.findAllByChat(tgChatId);
     }
 
@@ -68,4 +73,11 @@ public abstract class AbstractSubscriptionService implements SubscriptionService
         return subscriptionRepository.findAllByChat(tgChatId).contains(linkDto);
     }
 
+    private void checkChatExistence(long tgChatId) {
+        try {
+            chatService.findById(tgChatId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ChatNotFoundException("Chat with id %d doesn't exist".formatted(tgChatId));
+        }
+    }
 }

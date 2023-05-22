@@ -35,12 +35,8 @@ public class JpaSubscriptionService implements SubscriptionService {
         Link entityLink;
         Optional<Chat> optionalChat;
         Chat entityChat;
-        try {
-            optionalChat = chatRepository.findById(tgChatId);
-            entityChat = optionalChat.orElseGet(() -> new Chat(tgChatId));
-        } catch (JpaObjectRetrievalFailureException e) {
-            entityChat = new Chat(tgChatId);
-        }
+        optionalChat = chatRepository.findById(tgChatId);
+        entityChat = optionalChat.orElseThrow(() -> new ChatNotFoundException("Chat with id %d doesn't exist".formatted(tgChatId)));
         entityLink = linkRepository.findByUrl(url);
         LinkSaveRequest linkSaveRequest = new LinkSaveRequest(new LinkDto(url), entityLink);
         ChatSaveRequest chatSaveRequest = new ChatSaveRequest(new ChatDto(tgChatId), entityChat);
@@ -67,7 +63,7 @@ public class JpaSubscriptionService implements SubscriptionService {
     public LinkDto removeLink(long tgChatId, String url) {
         var entityLink = linkRepository.findByUrl(url);
         if (url == null || entityLink == null) {
-            throw new LinkNotFoundException("Link with url " + url + " is not tracked");
+            throw new LinkNotFoundException("Link with url %s is not tracked".formatted(url));
         }
         var optionalEntityChat = chatRepository.findById(tgChatId);
         if (optionalEntityChat.isEmpty()) {
@@ -76,11 +72,7 @@ public class JpaSubscriptionService implements SubscriptionService {
         var entityChat = optionalEntityChat.get();
         entityChat.getLinks().remove(entityLink);
         entityLink.getChats().remove(entityChat);
-        if (entityChat.getLinks().isEmpty()) {
-            chatRepository.deleteById(entityChat.getId());
-        } else {
-            chatRepository.save(entityChat);
-        }
+        chatRepository.save(entityChat);
         if (entityLink.getChats().isEmpty()) {
             linkRepository.deleteByUrl(entityLink.getUrl());
         } else {
@@ -105,7 +97,7 @@ public class JpaSubscriptionService implements SubscriptionService {
         var optionalChat = chatRepository.findById(tgChatId);
         var entityChat = optionalChat.orElse(null);
         if (entityChat == null) {
-            return Collections.emptyList();
+            throw new ChatNotFoundException("Chat with id %d doesn't exist".formatted(tgChatId));
         }
         return entityChat.getLinks().stream().map(EntityConverter::entityToDtoLink).toList();
     }

@@ -30,6 +30,11 @@ public abstract class AbstractChatService implements ChatService {
         return chatRepository.countById(tgChatId);
     }
 
+    @Override
+    public ChatDto findById(long tgChatId) {
+        return chatRepository.findById(tgChatId);
+    }
+
     private void validateId(Long tgChatId) {
         if (tgChatId == null || tgChatId < 0 || !tgChatId.toString().matches("^[0-9]{1,10}$")) {
             throw new ChatNotFoundException();
