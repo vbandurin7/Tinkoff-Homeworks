@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.bot.command.validator.CommandValidator;
 import ru.tinkoff.edu.java.bot.exception.ChatNotRegisteredException;
 import ru.tinkoff.edu.java.bot.service.LinkService;
-import ru.tinkoff.edu.java.link_parser.parser.LinkParser;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 

@@ -80,7 +80,7 @@ public class JdbcLinkRepository implements LinkRepository {
         Long id = jdbcTemplate.queryForObject(
             SAVE_SQL,
             Long.class,
-            entity.getUrl().toString(),
+            entity.getUrl(),
             new JSONObject(entity.getLinkInfo()).toString(),
             entity.getUpdatedAt()
         );

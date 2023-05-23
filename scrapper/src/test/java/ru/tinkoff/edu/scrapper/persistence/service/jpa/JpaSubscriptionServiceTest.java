@@ -1,6 +1,5 @@
 package ru.tinkoff.edu.scrapper.persistence.service.jpa;
 
-
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +14,7 @@ import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jpa.JpaSubscriptionService;
@@ -35,13 +35,13 @@ class JpaSubscriptionServiceTest {
 
     private static final Chat ENTITY_TEST_CHAT = new Chat(1L, new HashSet<>());
 
-    private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link ENTITY_TEST_LINK
-            = new ru.tinkoff.edu.java.scrapper.persistence.entity.Link(TEST_URL, new HashSet<>(),
-            LINK_INFO, OffsetDateTime.now(), OffsetDateTime.now());
+    private static final Link ENTITY_TEST_LINK = new Link(TEST_URL, new HashSet<>(),
+        LINK_INFO, OffsetDateTime.now(), OffsetDateTime.now()
+    );
 
-    private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link ENTITY_TEST_LINK_2
-            = new ru.tinkoff.edu.java.scrapper.persistence.entity.Link(TEST_URL_2, new HashSet<>(),
-            LINK_INFO_2, OffsetDateTime.now(), OffsetDateTime.now());
+    private static final Link ENTITY_TEST_LINK_2 = new Link(TEST_URL_2, new HashSet<>(),
+        LINK_INFO_2, OffsetDateTime.now(), OffsetDateTime.now()
+    );
 
     @Autowired
     private JpaLinkRepository jpaLinkRepository;
@@ -115,7 +115,7 @@ class JpaSubscriptionServiceTest {
 
         //then
         assertThat(countLink).isEqualTo(0);
-        assertThat(countChat).isEqualTo(0);
+        assertThat(countChat).isEqualTo(1);
     }
 
     @Test

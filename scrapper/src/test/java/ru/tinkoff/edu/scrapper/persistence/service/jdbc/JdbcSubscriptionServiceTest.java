@@ -24,6 +24,7 @@ import static ru.tinkoff.edu.scrapper.persistence.service.utils.RequestDataProvi
 @SpringBootTest(classes = {ScrapperApplication.class, TestConfig.class})
 @ActiveProfiles("test")
 class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
+
     @Autowired
     private JdbcSubscriptionService jdbcSubscriptionService;
     @Autowired
@@ -40,6 +41,8 @@ class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
 
     @Test
     void addLink_relationNotExist_relationAdded() {
+        //given
+        jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT_DTO.getId());
 
         //when
         jdbcSubscriptionService.addLink(TEST_CHAT_DTO.getId(), TEST_URL);
@@ -118,6 +121,7 @@ class JdbcSubscriptionServiceTest extends IntegrationEnvironment {
     @Test
     void listAll_chatDoesNotTrackLinks_noRelations() {
         //when
+        jdbcTemplate.update(INSERT_CHAT_SQL, TEST_CHAT_DTO.getId());
         final List<LinkDto> linkDtos = jdbcSubscriptionService.listAll(TEST_CHAT_DTO.getId());
 
         //then

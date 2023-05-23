@@ -25,6 +25,7 @@ class JpaChatServiceTest {
 
     private static final ChatSaveRequest CHAT_SAVE_REQUEST = new ChatSaveRequest(
             new ChatDto(1L), ENITY_TEST_CHAT);
+
     @Autowired
     private JpaChatService jpaChatService;
 

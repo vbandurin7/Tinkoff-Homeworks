@@ -4,6 +4,7 @@ import org.jooq.DSLContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jooq.JooqChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jooq.JooqLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jooq.JooqSubscriptionRepository;
@@ -17,6 +18,7 @@ import ru.tinkoff.edu.java.scrapper.persistence.service.utils.LinkInfoUpdater;
 
 @Configuration
 @ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jooq")
+@Profile("!test")
 public class JooqAccessConfiguration {
 
     @Bean

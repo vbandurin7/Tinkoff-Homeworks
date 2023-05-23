@@ -26,7 +26,6 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
 class ListProcessorTest {
 
@@ -68,8 +67,7 @@ class ListProcessorTest {
         when(update.message().chat().id()).thenReturn(555L);
         when(update.message().text()).thenReturn(LIST_COMMAND);
         when(commandValidator.validateCommand(0, update.message().text()))
-                .thenReturn(Optional.of(Collections.emptyList()));
-
+            .thenReturn(Optional.of(Collections.emptyList()));
         when(linkService.getLinksList(update.message().chat().id())).thenReturn(Optional.of(links));
 
         //when
@@ -92,8 +90,7 @@ class ListProcessorTest {
         when(update.message().chat().id()).thenReturn(555L);
         when(update.message().text()).thenReturn(LIST_COMMAND);
         when(commandValidator.validateCommand(0, update.message().text()))
-                .thenReturn(Optional.of(Collections.emptyList()));
-
+            .thenReturn(Optional.of(Collections.emptyList()));
         when(linkService.getLinksList(update.message().chat().id())).thenReturn(Optional.of(links));
 
         //when
@@ -101,6 +98,6 @@ class ListProcessorTest {
 
         //then
         assertThat(result.getParameters().get("text"))
-                .isEqualTo("No links for track were added. Try <b>'/track [link]'</b>");
+            .isEqualTo("No links for track were added. Try <b>'/track [link]'</b>");
     }
 }

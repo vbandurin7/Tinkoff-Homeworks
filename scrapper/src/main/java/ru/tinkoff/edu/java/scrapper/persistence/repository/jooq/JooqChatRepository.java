@@ -33,4 +33,8 @@ public class JooqChatRepository implements ChatRepository {
     public long countById(Long aLong) {
         return dslContext.selectCount().from(CHAT).where(CHAT.ID.eq(aLong)).fetchOne().value1();
     }
+
+    public void deleteAll() {
+        dslContext.deleteFrom(CHAT).execute();
+    }
 }

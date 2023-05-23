@@ -54,7 +54,8 @@ public final class ListProcessor extends AbstractCommandProcessor {
         }
         return "<b>All tracking links are below:</b> " + System.lineSeparator()
             + IntStream.range(1, linkResponses.get().size() + 1)
-            .mapToObj(i -> "<b>%d)</b> ".formatted(i) + "<i>" + linkResponses.get().links().get(i - 1).url().toString() + "</i>")
+            .mapToObj(i -> "<b>%d)</b> ".formatted(i) + "<i>"
+                + linkResponses.get().links().get(i - 1).url().toString() + "</i>")
             .collect(Collectors.joining(System.lineSeparator()));
     }
 }

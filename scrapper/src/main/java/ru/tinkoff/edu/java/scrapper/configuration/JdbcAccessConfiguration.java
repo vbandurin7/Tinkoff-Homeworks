@@ -3,6 +3,7 @@ package ru.tinkoff.edu.java.scrapper.configuration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc.JdbcChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jdbc.JdbcLinkRepository;
@@ -17,6 +18,7 @@ import ru.tinkoff.edu.java.scrapper.persistence.service.utils.LinkInfoUpdater;
 
 @Configuration
 @ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jdbc")
+@Profile("!test")
 public class JdbcAccessConfiguration {
 
     @Bean

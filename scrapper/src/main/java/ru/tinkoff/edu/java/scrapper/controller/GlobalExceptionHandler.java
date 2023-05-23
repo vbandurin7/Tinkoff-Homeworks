@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.tinkoff.edu.java.scrapper.dto.response.ApiErrorResponse;
 import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
-import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
 
 import java.util.Arrays;
 
@@ -22,7 +21,7 @@ public class GlobalExceptionHandler {
         return createError("Incorrect request parameters", HttpStatus.BAD_REQUEST, e);
     }
 
-    @ExceptionHandler({ChatNotFoundException.class, LinkNotFoundException.class})
+    @ExceptionHandler({ChatNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ApiErrorResponse> chatNotFoundHandler(Exception e) {
         return createError("Chat doesn't exist", HttpStatus.NOT_FOUND, e);

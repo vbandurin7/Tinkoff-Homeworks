@@ -1,12 +1,10 @@
 package ru.tinkoff.edu.java.scrapper.persistence.service.jpa;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.request.ChatSaveRequest;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.exception.ChatNotFoundException;
-import ru.tinkoff.edu.java.scrapper.exception.LinkNotFoundException;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.ChatDto;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
@@ -36,7 +34,8 @@ public class JpaSubscriptionService implements SubscriptionService {
         Optional<Chat> optionalChat;
         Chat entityChat;
         optionalChat = chatRepository.findById(tgChatId);
-        entityChat = optionalChat.orElseThrow(() -> new ChatNotFoundException("Chat with id %d doesn't exist".formatted(tgChatId)));
+        entityChat = optionalChat.orElseThrow(() ->
+            new ChatNotFoundException("Chat with id %d doesn't exist".formatted(tgChatId)));
         entityLink = linkRepository.findByUrl(url);
         LinkSaveRequest linkSaveRequest = new LinkSaveRequest(new LinkDto(url), entityLink);
         ChatSaveRequest chatSaveRequest = new ChatSaveRequest(new ChatDto(tgChatId), entityChat);
@@ -63,7 +62,7 @@ public class JpaSubscriptionService implements SubscriptionService {
     public LinkDto removeLink(long tgChatId, String url) {
         var entityLink = linkRepository.findByUrl(url);
         if (url == null || entityLink == null) {
-            throw new LinkNotFoundException("Link with url %s is not tracked".formatted(url));
+            return new LinkDto(url);
         }
         var optionalEntityChat = chatRepository.findById(tgChatId);
         if (optionalEntityChat.isEmpty()) {

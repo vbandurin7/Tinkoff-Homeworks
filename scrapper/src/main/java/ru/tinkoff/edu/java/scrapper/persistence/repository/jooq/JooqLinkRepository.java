@@ -19,12 +19,16 @@ public class JooqLinkRepository implements LinkRepository {
     private final DSLContext dslContext;
     private final long checkInterval;
 
-
     @Override
     public LinkDto save(LinkDto entity) {
-        final Long id = dslContext.insertInto(LINK, LINK.URL, LINK.LINK_INFO)
-                .values(entity.getUrl().toString(), JSONB.jsonb(new JSONObject(entity.getLinkInfo()).toString()))
-                .returning(LINK.ID).fetchOne().getId();
+        final Long id = dslContext.insertInto(LINK, LINK.URL, LINK.LINK_INFO, LINK.LAST_CHECKED_AT, LINK.UPDATED_AT)
+            .values(
+                entity.getUrl(),
+                JSONB.jsonb(new JSONObject(entity.getLinkInfo()).toString()),
+                entity.getLastCheckedAt(),
+                entity.getUpdatedAt()
+            )
+            .returning(LINK.ID).fetchOne().getId();
         entity.setId(id);
         return entity;
     }
@@ -55,13 +59,17 @@ public class JooqLinkRepository implements LinkRepository {
     @Override
     public void updateTime(LinkDto linkDto) {
         dslContext.update(LINK)
-                .set(LINK.LAST_CHECKED_AT, OffsetDateTime.now())
-                .set(LINK.UPDATED_AT, OffsetDateTime.ofInstant(linkDto.getUpdatedAt().toInstant(), ZoneId.of("UTC")))
-                .where(LINK.URL.eq(linkDto.getUrl().toString())).execute();
+            .set(LINK.LAST_CHECKED_AT, linkDto.getLastCheckedAt())
+            .set(LINK.UPDATED_AT, OffsetDateTime.ofInstant(linkDto.getUpdatedAt().toInstant(), ZoneId.of("UTC")))
+            .where(LINK.URL.eq(linkDto.getUrl())).execute();
     }
 
     @Override
     public long countByUrl(String url) {
         return dslContext.selectCount().from(LINK).where(LINK.URL.eq(url)).fetchOne().value1();
+    }
+
+    public void deleteAll() {
+        dslContext.deleteFrom(LINK).execute();
     }
 }

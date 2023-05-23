@@ -10,6 +10,7 @@ import ru.tinkoff.edu.java.scrapper.ScrapperApplication;
 import ru.tinkoff.edu.java.scrapper.dto.request.LinkSaveRequest;
 import ru.tinkoff.edu.java.scrapper.persistence.dto.LinkDto;
 import ru.tinkoff.edu.java.scrapper.persistence.entity.Chat;
+import ru.tinkoff.edu.java.scrapper.persistence.entity.Link;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.persistence.service.jpa.JpaLinkService;
@@ -29,9 +30,9 @@ class JpaLinkServiceTest {
 
     private static final Chat ENITY_TEST_CHAT = new Chat(1L, new HashSet<>());
 
-    private static final ru.tinkoff.edu.java.scrapper.persistence.entity.Link ENTITY_TEST_LINK
-            = new ru.tinkoff.edu.java.scrapper.persistence.entity.Link(TEST_URL, new HashSet<>(),
-            LINK_INFO, OffsetDateTime.now(), OffsetDateTime.now());
+    private static final Link ENTITY_TEST_LINK = new Link(TEST_URL, new HashSet<>(),
+        LINK_INFO, OffsetDateTime.now(), OffsetDateTime.now()
+    );
 
     @Autowired
     private JpaLinkService jpaLinkService;
@@ -160,7 +161,6 @@ class JpaLinkServiceTest {
         ENTITY_TEST_LINK.setUpdatedAt(updatedAt);
         ENTITY_TEST_LINK.setLastCheckedAt(lastCheckedAt);
         jpaLinkRepository.save(ENTITY_TEST_LINK);
-
 
         //when
         OffsetDateTime updatedAt2 = OffsetDateTime.now().plus(1, ChronoUnit.MINUTES);
