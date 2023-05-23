@@ -1,8 +1,3 @@
-<style>
-li:before {
-color: yellow;
-}
-</style>
 <h1 align="center">UpdateListenerBot&#x1F916;</h1>
 
 Телеграм бот, написанный на Java. \
