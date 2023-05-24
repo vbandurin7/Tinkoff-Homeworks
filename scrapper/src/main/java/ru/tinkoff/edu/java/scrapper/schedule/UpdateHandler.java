@@ -38,7 +38,7 @@ public class UpdateHandler {
             Optional<GitHubResponse> gitHubResponse = gitHubClient.fetchRepository(pr.name(), pr.repository());
             updateLink(gitHubResponse, getGitHubFunction(), linkDto);
             description =
-                "User <b>%s</b> has pushed a new commit at repository %s".formatted(pr.name(), linkDto.getUrl());
+                "User <b>%s</b> has pushed a new commit to the repository %s".formatted(pr.name(), linkDto.getUrl());
         } else if (parseResult instanceof StackOverflowResult pr) {
             Optional<StackoverflowResponse> stackoverflowResponse =
                 stackoverflowClient.fetchQuestion(Long.parseLong(pr.id()));

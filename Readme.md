@@ -1,8 +1,3 @@
-<style>
-li:before {
-color: yellow;
-}
-</style>
 <h1 align="center">UpdateListenerBot&#x1F916;</h1>
 
 Телеграм бот, написанный на Java. \
@@ -38,3 +33,9 @@ web-сервиса для отслеживания обновления конт
 &nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
 &nbsp;+------------+&nbsp;&nbsp;
 </pre>
+
+## Поддерживаемвые на данный момент возможности:
+
+<ul>
+  <li></li>
+</ul>
