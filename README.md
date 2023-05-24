@@ -42,7 +42,7 @@ web-сервиса для отслеживания обновления конт
 ```bash
 /track <your-tracking-url>
 ```
-![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/212fa09d-a1e2-4148-8e63-f3bc742dd22b) 
+![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/e9bf9c09-12b8-4c64-b720-a87fa0115b3f)
 <ul>
     <li>Оповещение об обновлении репозитория: </li>
 </ul>
