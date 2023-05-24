@@ -1,4 +1,4 @@
-<h1 align="center">UpdateListenerBot&#x1F916;</h1>
+<h1 align="center"><a href=https://t.me/UpdateListenerBot>UpdateListenerBot</a>&#x1F916;</h1>
 
 Телеграм бот, написанный на Java. \
 Данный проект полностью написан мной в рамках курса от Тинькофф по бэкенд разработке на Java. В ходе заданий было написано 2
@@ -33,3 +33,16 @@ web-сервиса для отслеживания обновления конт
 &nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
 &nbsp;+------------+&nbsp;&nbsp;
 </pre>
+
+Взаимодействие с базой данных может происходить по одному из следующих способов: JDBC, JPA, jOOQ.
+
+## Взаимодействие с ботом:
+
+Чтобы начать отслеживать ссылку, нужно написать следующую команду:
+```bash
+/track <your-tracking-url>
+```
+![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/212fa09d-a1e2-4148-8e63-f3bc742dd22b) 
+<ul>
+    <li>Оповещение об обновлении репозитория: </li>
+</ul>
