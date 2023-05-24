@@ -37,29 +37,32 @@ web-сервиса для отслеживания обновления конт
 Взаимодействие с базой данных может происходить по одному из следующих способов: JDBC, JPA, jOOQ.
 
 ## Взаимодействие с ботом:
-
-Чтобы начать отслеживать ссылку, нужно ввести следующую команду:
-```bash
-/track <your-tracking-url>
-```
-![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/e9bf9c09-12b8-4c64-b720-a87fa0115b3f)
+<ul>
+    <li>Чтобы начать отслеживать ссылку, нужно ввести следующую команду:
+    ```bash
+    /track <your-tracking-url>
+    ```
+    ![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/e9bf9c09-12b8-4c64-b720-a87fa0115b3f) </li>
 \
 
-Чтобы прекратить отслеживать ссылку, нужно ввести следующую команду:
-```bash
-/track <url-to-untrack>
-```
-![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/7c288e55-935b-4d7c-b5d6-ca28ca314164)
+    <li>Чтобы прекратить отслеживать ссылку, нужно ввести следующую команду:
+    ```bash
+    /track <url-to-untrack>
+    ```
+    ![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/7c288e55-935b-4d7c-b5d6-ca28ca314164)</li>
 \
 
-Чтобы получить список всех отслеживаемых ссылок, нужно ввести следующую команду:
-```bash
-/list
-```
-![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/604e878c-9ad6-4870-a1d5-b3291133884a)
+    <li>Чтобы получить список всех отслеживаемых ссылок, нужно ввести следующую команду:
+    ```bash
+    /list
+    ```
+    ![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/604e878c-9ad6-4870-a1d5-b3291133884a)</li>
+</ul>
 
 ## Поддерживаемые на данный момент сообщения об обновлениях:
 
 <ul>
-    <li>Оповещение об обновлении репозитория: </li>
+    <li>Оповещение об обновлении репозитория выглядит следующим образом: 
+    ![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/3a6bb0aa-cf88-4884-a217-85cd75a07cad)
+</li>
 </ul>
