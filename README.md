@@ -63,6 +63,7 @@ web-сервиса для отслеживания обновления конт
 ![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/3a6bb0aa-cf88-4884-a217-85cd75a07cad)
 
 ## StackOverflow
-
+Оповещение о новых ответах на вопрос выглядит следующим образом:
+![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/05013f2c-35e6-4412-882b-f9c5b51cb055)
 
 
