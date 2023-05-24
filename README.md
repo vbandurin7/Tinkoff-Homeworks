@@ -41,9 +41,8 @@ web-сервиса для отслеживания обновления конт
     <li>Чтобы начать отслеживать ссылку, нужно ввести следующую команду:
     ```bash
     /track <your-tracking-url>
-    ```
-    ![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/e9bf9c09-12b8-4c64-b720-a87fa0115b3f) </li>
-\
+    ```</li>
+            ![image](https://github.com/vbandurin7/Tinkoff-Homeworks/assets/93590005/e9bf9c09-12b8-4c64-b720-a87fa0115b3f) 
 
     <li>Чтобы прекратить отслеживать ссылку, нужно ввести следующую команду:
     ```bash
